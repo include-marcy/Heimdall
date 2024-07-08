@@ -1,6 +1,6 @@
 ![HeimdallTextLogo](https://github.com/include-marcy/Heimdall-Example-Project/assets/173523610/d16b957d-42ec-492e-a3a1-1ad10ef7b6d1)
 # What is Heimdall?
-Heimdall is a Roblox game framework and API (Application Program Interface) for the Roblox Studio game engine, developed by k1bbel. The Heimdall API should be used as a standard by developers to promote cross-platform and cross-game usage when necessary.
+Heimdall is a Roblox game framework and API (Application Program Interface) for the Roblox Studio game engine. The Heimdall API should be used as a standard by developers to promote cross-platform and cross-game usage when necessary.
 Heimdall is designed to be used by high-performance applications, providing multi-threaded applications a standardized way to create and develop services. Heimdall users benefit from its explicit API, allowing users ultimate control over their games and programs.
 
 # Overview of Heimdall API
