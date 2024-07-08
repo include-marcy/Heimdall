@@ -140,6 +140,6 @@ Above paragraphs have mentioned that Heimdall can be used to create ECS framewor
 Due to the demand for ECS, Heimdall ships with a built-in language called HECL (Heimdall Entity Composition Language). HECL compiles directly into Luau, and is composed of name.hc module script files in your game. To run HECL, you will need to create an hdHeclInterpreter object and feed it .hc files to return results from the source code in the .hc file. HECL was designed around ECS, and .hc files are designed to make programming games in ECS significantly easier. HECL is in an alpha state and is not recommended for production use. The hdInstance object which is the main "second layer" of the Heimdall API, housed only secondary to the hdObject, contains built-in functions for storing an abstract Entity with a key "name". It also provides methods to directly query entities stored in the hdInstance, so any hdService can access a set of entities at will based on entity query parameters.
 
 # License
-Heimdall is distributed under the terms of the [MIT License](LICENSE.md).
+Heimdall is distributed under the terms of the [MIT License](LICENSE).
 
 When Heimdall is integrated into external projects, we ask to honor the MIT license and include any necessary attribution into user-facing documentation. Attribution using the [Heimdall logo](assets/HeimdallLogo.png) is also encouraged (Looks cool on loading screens!)
