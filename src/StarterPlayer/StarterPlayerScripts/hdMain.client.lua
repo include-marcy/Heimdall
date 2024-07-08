@@ -269,14 +269,4 @@ end
 print("Successfully initialized Heimdall.");
 print(hdScene:hdGetSceneParticipants());
 
-local Entity = hdInstance:hdGetEntity("TestEntityName");
-local Component : hdTypes.hdComponentCreateInfo = {
-	name = "TestComponentName",
-	details = {
-		Foo = 1;
-		Bar = 2;
-        Baz = 3;
-	};
-};
-Entity:hdAddComponent(Component);
 hdSceneWarper:Warp(hdSceneHandle, hdSceneParticipant);

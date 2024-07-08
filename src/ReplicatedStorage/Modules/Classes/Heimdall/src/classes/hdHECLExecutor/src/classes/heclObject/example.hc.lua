@@ -1,20 +1,16 @@
 return [[
-hecl:
-	declare name, age, rootPart;
-	as string, number, Instance;
+--// hecl entrance function includes possiblity for var args declared in the hecl function
+hecl (string name, int age, Instance rootPart):
+	include "heclComponents.hc";
 
-	return make:
-		type: "entity";
-		with:
-			component:
-				name: "component1";
-				details:
-					name: name;
-					age: age;
-			component:
-				name: "bodyMover";
-				details:
-					parent: rootPart;
-		in: "entities";
+	declare e1 as entity:
+        with:
+            component main->VirtualTestComponent:
+				name = name;
+				age = age;
+        in:
+            namespace: main->entities;
+
+	return e1;
 endhecl;
 ]]

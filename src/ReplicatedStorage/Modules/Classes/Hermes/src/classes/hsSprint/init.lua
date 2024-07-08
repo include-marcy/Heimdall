@@ -34,7 +34,7 @@ function hsSprint:hsAllocateActor(actorIndex : number, hsSprintRunConfig : hsTyp
     
 end
 
-function hsSprint:hsPauseSprint()
+function hsSprint:hsPauseSprint(f)
     
 end
 
