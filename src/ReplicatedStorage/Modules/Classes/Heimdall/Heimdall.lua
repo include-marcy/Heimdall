@@ -66,7 +66,7 @@ function Heimdall.new(hdObjectCreateInfo : hdTypes.hdObjectCreateInfo) : hdObjec
 end
 
 --[=[
-	Creates the hdInstance object, the central objects from which most other Heimdall objects are created.
+	Creates the hdInstance object, the central object from which most other Heimdall objects are created.
 	
 	@param hdInstanceCreateInfo;
 	@return hdInstance;
