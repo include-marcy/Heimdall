@@ -23,22 +23,12 @@ end
 
 function heclValue:heclDeconstruct()
 	local value : heclValue = self;
-<<<<<<< Updated upstream
-
-=======
-	
->>>>>>> Stashed changes
 	if value.heclValueType == "VAL_BOOL" then
 		return value.boolean;
 	elseif value.heclValueType == "VAL_NUMBER" then
 		return value.num;
 	elseif value.heclValueType == "VAL_NIL" then
 		return "nil";
-<<<<<<< Updated upstream
-=======
-	elseif value.heclValueType == "VAL_OBJ" then
-		
->>>>>>> Stashed changes
 	end
 end
 
