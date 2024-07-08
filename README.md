@@ -1,4 +1,4 @@
-![HeimdallTextLogo](https://github.com/include-marcy/Heimdall-Example-Project/assets/173523610/d16b957d-42ec-492e-a3a1-1ad10ef7b6d1)
+![HeimdallTextLogo](https://github.com/include-marcy/Heimdall/assets/173523610/d16b957d-42ec-492e-a3a1-1ad10ef7b6d1)
 # What is Heimdall?
 Heimdall is a Roblox game framework and API (Application Program Interface) for the Roblox Studio game engine. Heimdall is designed to build high-performing applications, providing a standardized way to create and develop services and utilize parallel Luau features. Heimdall users benefit from its explicit API, allowing users ultimate control over the execution and control flow of their backend.
 
@@ -138,3 +138,8 @@ The 3 afforementioned objects above are considered the "core" of your game, and 
 # ECS implementations
 Above paragraphs have mentioned that Heimdall can be used to create ECS frameworks. Heimdall in itself is not an ECS, but it provides sandboxed objects that can easily allow your project to act like a very proper ECS if you wish for it to do that.
 Due to the demand for ECS, Heimdall ships with a built-in language called HECL (Heimdall Entity Composition Language). HECL compiles directly into Luau, and is composed of name.hc module script files in your game. To run HECL, you will need to create an hdHeclInterpreter object and feed it .hc files to return results from the source code in the .hc file. HECL was designed around ECS, and .hc files are designed to make programming games in ECS significantly easier. HECL is in an alpha state and is not recommended for production use. The hdInstance object which is the main "second layer" of the Heimdall API, housed only secondary to the hdObject, contains built-in functions for storing an abstract Entity with a key "name". It also provides methods to directly query entities stored in the hdInstance, so any hdService can access a set of entities at will based on entity query parameters.
+
+# License
+Heimdall is distributed under the terms of the [MIT License](LICENSE.md).
+
+When Heimdall is integrated into external projects, we ask to honor the MIT license and include any necessary attribution into user-facing documentation. The attribution using [Heimdall logo](assets/HeimdallLogo.png) is also encouraged (Looks cool on loading screens!)
