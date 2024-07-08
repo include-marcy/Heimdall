@@ -131,7 +131,7 @@ export type hdCoreModuleManagerCreateInfo = {
 	debugMessenger : any;
 };
 
-export type hdInstanceFriendCreateInfo = {
+export type hdWrappingCreateInfo = {
 	instance : Instance;
 };
 

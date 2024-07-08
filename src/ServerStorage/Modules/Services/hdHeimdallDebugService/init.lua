@@ -10,7 +10,7 @@ local hdTypes = require(hdLib.hdTypes);
 local hdEnums = require(hdLib.hdEnums);
 local hdInstance = Heimdall.awaitHdInstance();
 --
-local hdInstanceFriend = require(hdClasses.hdInstanceFriend);
+local hdWrapping = require(hdClasses.hdWrapping);
 
 -- Service declaration
 local HeimdallDebugServiceCreateInfo : hdTypes.hdServiceCreateInfo = {
@@ -28,13 +28,13 @@ function HeimdallDebugService:Update(deltaTime)
 	--// print(deltaTime);
 end
 
-function HeimdallDebugService:PlayerAdded(player : Player) : hdInstanceFriend.hdInstanceFriend
-	local hdInstanceFriendCreateInfo : hdTypes.hdInstanceFriendCreateInfo = {
+function HeimdallDebugService:PlayerAdded(player : Player) : hdWrapping.hdWrapping
+	local hdWrappingCreateInfo : hdTypes.hdWrappingCreateInfo = {
 		instance = player;
 	};
-	local hdInstanceFriend = hdInstanceFriend.new(hdInstanceFriendCreateInfo);
+	local wrapping = hdWrapping.new(hdWrappingCreateInfo);
 
-	hdInstanceFriend:Add(function()
+	wrapping:Add(function()
 		print("Cleaning up player...", player);
 		local entityName = `entity_{player.UserId}`;
 		local playerEntity = hdInstance:hdGetEntity(entityName);
@@ -43,7 +43,7 @@ function HeimdallDebugService:PlayerAdded(player : Player) : hdInstanceFriend.hd
 		end
 	end)
 	
-	return hdInstanceFriend;
+	return wrapping;
 end
 
 function HeimdallDebugService:Boot()

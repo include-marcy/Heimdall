@@ -11,7 +11,7 @@ local hdTypes = require(hdLib.hdTypes);
 local hdEnums = require(hdLib.hdEnums);
 local hdInstance = Heimdall.awaitHdInstance();
 --
-local hdInstanceFriend = require(hdClasses.hdInstanceFriend);
+local hdWrapping = require(hdClasses.hdWrapping);
 --HECL
 local heclMachine = require(hdClasses.hdHECLExecutor.src.classes.heclMachine);
 
@@ -57,16 +57,16 @@ function HeimdallDebugService:Update(deltaTime)
 	--// print(deltaTime);
 end
 
-function HeimdallDebugService:PlayerAdded(player : Player) : hdInstanceFriend.hdInstanceFriend
-	local hdInstanceFriendCreateInfo : hdTypes.hdInstanceFriendCreateInfo = {
+function HeimdallDebugService:PlayerAdded(player : Player) : hdWrapping.hdWrapping
+	local hdWrappingCreateInfo : hdTypes.hdWrappingCreateInfo = {
 		instance = player;
 	};
-	local hdInstanceFriend = hdInstanceFriend.new(hdInstanceFriendCreateInfo);
+	local wrapping = hdWrapping.new(hdWrappingCreateInfo);
 
 	task.wait(5)
 
 
-	return hdInstanceFriend;
+	return wrapping;
 end
 
 function HeimdallDebugService:Boot()
