@@ -1,5 +1,5 @@
 ![HeimdallTextLogo](https://github.com/include-marcy/Heimdall/assets/173523610/d16b957d-42ec-492e-a3a1-1ad10ef7b6d1)
-![DOCS](https://img.shields.io/badge/release-v1.0.0-blue-flat-square-#00A2FF)  ![Non-Production](https://img.shields.io/badge/production-no-red-flat-square-#00A2FF)
+![DOCS](https://img.shields.io/badge/latest_release-v1.0.0-blue?style=flat-square&logo=Roblox%20Studio)  ![Non-Production](https://img.shields.io/badge/production-no-red?style=flat-square&logo=Roblox%20Studio)
 # What is Heimdall? 
 Heimdall is a Roblox game framework and API (Application Program Interface) for the Roblox Studio game engine. Heimdall is designed to build high-performing applications, providing a standardized way to create and develop services and utilize parallel Luau features. Heimdall users benefit from its explicit API, allowing users ultimate control over the execution and control flow of their backend.
 
