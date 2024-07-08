@@ -142,4 +142,4 @@ Due to the demand for ECS, Heimdall ships with a built-in language called HECL (
 # License
 Heimdall is distributed under the terms of the [MIT License](LICENSE.md).
 
-When Heimdall is integrated into external projects, we ask to honor the MIT license and include any necessary attribution into user-facing documentation. The attribution using [Heimdall logo](assets/HeimdallLogo.png) is also encouraged (Looks cool on loading screens!)
+When Heimdall is integrated into external projects, we ask to honor the MIT license and include any necessary attribution into user-facing documentation. Attribution using the [Heimdall logo](assets/HeimdallLogo.png) is also encouraged (Looks cool on loading screens!)
