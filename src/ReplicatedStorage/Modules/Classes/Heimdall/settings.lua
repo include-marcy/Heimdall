@@ -1,0 +1,3 @@
+return {
+	hdEnableHeimdallReplication = true;
+}
