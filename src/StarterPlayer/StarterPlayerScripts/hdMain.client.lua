@@ -70,9 +70,15 @@ end
 --// After creating the hdServiceManager, we want to use it's hdCompileServices function to build our list of game services like so:
 local hdCompileServicesInfo : hdTypes.hdCompileServicesInfo = {};
 hdCompileServicesInfo.timeOut = 30;
+<<<<<<< Updated upstream
 local hdCompileServicesResult = hdServiceManager:hdCompileServices(hdCompileServicesInfo);
 
 if not hdCompileServicesResult.Success then
+=======
+local hdResult = hdServiceManager:hdCompileServices(hdCompileServicesInfo);
+
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to compile services!");
 	return;
 end
@@ -106,15 +112,25 @@ local hdCommandChainCreateInfo : hdTypes.hdCommandChainCreateInfo = {
 	};
 	debugMessenger = hdDebugMessenger;
 };
+<<<<<<< Updated upstream
 local hdCreateCommandChainResult, hdCommandChain = hdServiceManager:hdCreateCommandChain(hdCommandChainCreateInfo);
 if not hdCreateCommandChainResult.Success then
+=======
+local hdResult, hdCommandChain = hdServiceManager:hdCreateCommandChain(hdCommandChainCreateInfo);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to create command chain!");
 	return;
 end
 
 --// Example code of reconciling the hdCommandChainFunctionMap:
+<<<<<<< Updated upstream
 local hdGetFunctionMapResult, hdCommandChainFunctionMap = hdCommandChain:hdGetCommandChainFunctionMap();
 if not hdGetFunctionMapResult then
+=======
+local hdResult, hdCommandChainFunctionMap = hdCommandChain:hdGetCommandChainFunctionMap();
+if not hdResult then
+>>>>>>> Stashed changes
 	error("failed to fetch command chain function map!");
 	return;
 end
@@ -127,8 +143,13 @@ local hdFenceCreateInfo : hdTypes.hdFenceCreateInfo = {
 };
 local synchronization : hdFence.hdFence = hdFence.new(hdFenceCreateInfo);
 
+<<<<<<< Updated upstream
 local hdInvokeCommandResult = hdServiceManager:hdInvokeCommandChain(hdCommandChain, synchronization);
 if not hdInvokeCommandResult.Success then
+=======
+local hdResult = hdServiceManager:hdInvokeCommandChain(hdCommandChain, synchronization);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to boot services!");
 	return;
 end
@@ -140,7 +161,11 @@ synchronization:hdResetFence();
 
 --// After booting the services using our command chain, we will then run the player added event for client-sided services.
 --// Again, we must reconfigure the command chain and invoke it.
+<<<<<<< Updated upstream
 local hdAddPlayerCommandInfo : hdTypes.hdCommandInfo = {
+=======
+local hdCommandInfo : hdTypes.hdCommandInfo = {
+>>>>>>> Stashed changes
 	name = "PlayerAddedCommand";
 	commandSafetyLevel = "HD_CMD_SAFETY_LEVEL_HIGH";
 	commandInvocationType = "HD_COMMAND_INVOC_TYPE_MIXED";
@@ -148,6 +173,7 @@ local hdAddPlayerCommandInfo : hdTypes.hdCommandInfo = {
 		"HD_ADD_PLR";
 	};
 };
+<<<<<<< Updated upstream
 local hdSetAddPlayerCommandInfo = hdCommandChain:hdSetCommandInfo(hdAddPlayerCommandInfo);
 if not hdSetAddPlayerCommandInfo.Success then
 	error("error while configuring command chain for adding player!");
@@ -155,6 +181,15 @@ end
 
 local hdAddPlayerCommandResult = hdServiceManager:hdInvokeCommandChain(hdCommandChain, synchronization, Player);
 if not hdAddPlayerCommandResult.Success then
+=======
+local hdResult = hdCommandChain:hdSetCommandInfo(hdCommandInfo);
+if not hdResult.Success then
+	error("error while configuring command chain for adding player!");
+end
+
+local hdResult = hdServiceManager:hdInvokeCommandChain(hdCommandChain, synchronization, Player);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to add player!");
 end
 
@@ -162,7 +197,11 @@ end
 synchronization:hdWaitForFence();
 
 --// Since we want to utilize hdService's Update function each frame, we can now rebind the hdCommandChain to run the HD_UPDT command.
+<<<<<<< Updated upstream
 local hdUpdateCommandInfo : hdTypes.hdCommandInfo = {
+=======
+local hdCommandInfo : hdTypes.hdCommandInfo = {
+>>>>>>> Stashed changes
 	name = "Update";
 	commandSafetyLevel = "HD_CMD_SAFETY_LEVEL_MEDIUM";
 	commandInvocationType = "HD_COMMAND_INVOC_TYPE_MIXED";
@@ -170,19 +209,32 @@ local hdUpdateCommandInfo : hdTypes.hdCommandInfo = {
 		"HD_UPDT";
 	};
 };
+<<<<<<< Updated upstream
 local hdUpdateCommandResult = hdCommandChain:hdSetCommandInfo(hdUpdateCommandInfo);
 if not hdUpdateCommandResult.Success then
+=======
+local hdResult = hdCommandChain:hdSetCommandInfo(hdCommandInfo);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to reconfigure command chain!");
 	return;
 end
 
+<<<<<<< Updated upstream
 RunService.Heartbeat:Connect(function(deltaTime : number)
+=======
+local UpdateLoopConnection; UpdateLoopConnection = RunService.Heartbeat:Connect(function(deltaTime : number)
+>>>>>>> Stashed changes
 	if hdCommandChain:hdGetCommandChainState() == "HD_COMMAND_CHAIN_BUSY" then
 		return;
 	end
 
 	local hdResult = hdServiceManager:hdInvokeCommandChain(hdCommandChain, nil, deltaTime);
 	if not hdResult.Success then
+<<<<<<< Updated upstream
+=======
+		--UpdateLoopConnection:Disconnect();
+>>>>>>> Stashed changes
 		error("failed to update services!");
 		return;
 	end
@@ -195,8 +247,13 @@ local hdClient;
 local hdClientCreateInfo : hdTypes.hdClientCreateInfo = {
 	player = Player;
 };
+<<<<<<< Updated upstream
 local hdCreateClientResult, hdClientResult = hdInstance:hdCreateClient(hdClientCreateInfo);
 if not hdCreateClientResult.Success then
+=======
+local hdResult, hdClientResult = hdInstance:hdCreateClient(hdClientCreateInfo);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to create client socket!");
 	return;
 end
@@ -212,8 +269,13 @@ local hdSceneCreateInfo : hdTypes.hdSceneCreateInfo = {
 	sceneOwner = "global";
 	debugMessenger = hdDebugMessenger;
 };
+<<<<<<< Updated upstream
 local hdCreateSceneResult, hdSceneResult = hdInstance:hdCreateScene(hdSceneCreateInfo);
 if not hdCreateSceneResult.Success then
+=======
+local hdResult, hdSceneResult = hdInstance:hdCreateScene(hdSceneCreateInfo);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to create heimdall scene");
 	return;
 end
@@ -227,8 +289,13 @@ local hdSceneWarperCreateInfo : hdTypes.hdSceneWarperCreateInfo = {
 	hdDebugMessenger = hdDebugMessenger;
 	hdWarpType = "HD_DEFAULT_SET_ROOT_CFRAME_CALLBACK"; -- since we aren't changing anything about how we set the cframe of our participant, use the default callback.
 };
+<<<<<<< Updated upstream
 local hdCreateSceneWarperResult, hdSceneWarper = hdInstance:hdCreateSceneWarper(hdSceneWarperCreateInfo);
 if not hdCreateSceneWarperResult.Success then
+=======
+local hdResult, hdSceneWarper = hdInstance:hdCreateSceneWarper(hdSceneWarperCreateInfo);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to create scene warper!");
 	return;
 end
@@ -239,14 +306,24 @@ local hdSceneParticipantCreateInfo : hdTypes.hdSceneParticipantCreateInfo = {
 	participantInstance = Player.Character or Player.CharacterAdded:Wait();
 	debugMessenger = hdDebugMessenger;
 };
+<<<<<<< Updated upstream
 local hdCreateSceneParticipantResult, hdSceneParticipant = hdInstance:hdCreateSceneParticipant(hdSceneParticipantCreateInfo);
 if not hdCreateSceneParticipantResult.Success then
+=======
+local hdResult, hdSceneParticipant = hdInstance:hdCreateSceneParticipant(hdSceneParticipantCreateInfo);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to create scene participant!");
 	return;
 end
 
+<<<<<<< Updated upstream
 local hdAddSceneParticipantResult = hdScene:hdAddSceneParticipant(hdSceneParticipant);
 if not hdAddSceneParticipantResult.Success then
+=======
+local hdResult = hdScene:hdAddSceneParticipant(hdSceneParticipant);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to append scene participant to scene!");
 end
 
@@ -260,13 +337,19 @@ local hdSceneHandleCreateInfo : hdTypes.hdSceneHandleCreateInfo = {
 		hdHandleType = hdEnums.hdHandleType.hdRootHandle;
 	};
 };
+<<<<<<< Updated upstream
 local hdCreateSceneHandleResult, hdSceneHandle = hdInstance:hdCreateSceneHandle(hdSceneHandleCreateInfo);
 if not hdCreateSceneHandleResult.Success then
+=======
+local hdResult, hdSceneHandle = hdInstance:hdCreateSceneHandle(hdSceneHandleCreateInfo);
+if not hdResult.Success then
+>>>>>>> Stashed changes
 	error("failed to create scene handle!");
 	return;
 end
 
 print("Successfully initialized Heimdall.");
+<<<<<<< Updated upstream
 print(hdScene:hdGetSceneParticipants());
 
 local Entity = hdInstance:hdGetEntity("TestEntityName");
@@ -283,3 +366,9 @@ hdSceneWarper:Warp(hdSceneHandle, hdSceneParticipant);
 
 local hdGetComponentResult, hdComponent = Entity:hdGetComponent("TestComponentName");
 print(hdComponent)
+=======
+
+print(hdScene:hdGetSceneParticipants());
+
+hdSceneWarper:Warp(hdSceneHandle, hdSceneParticipant);
+>>>>>>> Stashed changes
