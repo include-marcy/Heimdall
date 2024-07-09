@@ -39,6 +39,7 @@ There are no current open highlighted issues.
 - [ ] Heimdall Cutscene API
 - [ ] Heimdall Conversion Tools API (tools to convert existing projects to Heimdall)
 - [ ] Heimdall Core Utilities API
+- [ ] Heimdall Assets API
 - [ ] Heimdall Diagnostics API
 - [ ] Heimdall Hot Reload API
 - [ ] Heimdall Debug Dump API
