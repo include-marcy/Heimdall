@@ -36,13 +36,12 @@ The Heimdall project is not complete! We are always interested in ways to improv
 There are no current open highlighted issues.
 
 # Future Features and Loftiest Ideas
-- [ ] Heimdall Cutscene API
 - [ ] Heimdall Conversion Tools API (tools to convert existing projects to Heimdall)
 - [ ] Heimdall Core Utilities API
-- [ ] Heimdall Assets API
-- [ ] Heimdall Diagnostics API
-- [ ] Heimdall Hot Reload API
-- [ ] Heimdall Debug Dump API
+- [ ] Heimdall Assets API (Asset management, loading and unloading assets, etc.)
+- [ ] Heimdall Cloud Tools API (Datastore, Live Cloud Features, Cloud Integration API features and quality of life)
+- [ ] Heimdall Hot Reload API (Re-build a project while it is running a simulation)
+- [ ] Heimdall Debug Dump API (Output files and debug information about a running project)
 - [ ] Heimdall Subtitles and Localization API
 - [ ] HECL Linter and Analysis API
 - [ ] HECL IDE plugin and `.hc` file support in third party editors
