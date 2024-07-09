@@ -135,6 +135,14 @@ export type hdWrappingCreateInfo = {
 	instance : Instance;
 };
 
+export type hdCharacterCreateInfo = {
+	physical : Model;
+};
+
+export type hdHumanoidCreateInfo = {
+	hdCharacter : any;
+};
+
 export type hdCoreModuleRuntimeBehavior = "HD_CORE_CHARACTER" | "HD_CORE_PLAYER";
 
 --// hd core modules extend the service type so that we can reuse hdCommandChain structure to execute hdCoreModule functions with the hdCoreModuleManager

@@ -57,9 +57,9 @@ end
 
 	@param Object {.new(), :Destroy()};
 ]=]
-function hdWrapping:Create(Object : any)
+function hdWrapping:Create(Object : any, ...)
 	local Wrapping : hdWrapping = self;
-	return Wrapping.friendTrove:Construct(Object);
+	return Wrapping.friendTrove:Construct(Object, ...);
 end
 
 --[=[

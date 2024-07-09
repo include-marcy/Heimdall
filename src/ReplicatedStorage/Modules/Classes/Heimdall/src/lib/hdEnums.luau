@@ -25,6 +25,49 @@ local function hdDefineEnum(enumData) : hdEnum
 	return setmetatable(enumData, enumDebugOutput);
 end
 
+hdEnums["hdHumanoidState"] = {
+	hdIdling = hdDefineEnum { --// The hdHumanoid state which is enabled when not moving nor doing anything else
+		Name = "hdIdling";
+		Value = 1;
+        HdEnumFamily = "hdHumanoidState";
+	} :: hdEnum;
+	hdWalking = hdDefineEnum { --// The hdHumanoid state which is enabled while moving
+		Name = "hdWalking";
+		Value = 2;
+        HdEnumFamily = "hdHumanoidState";
+	} :: hdEnum;
+	hdJumping = hdDefineEnum { --// The hdHumanoid state which is enabled briefly after jumping
+		Name = "hdJumping";
+		Value = 3;
+        HdEnumFamily = "hdHumanoidState";
+	} :: hdEnum;
+	hdFalling = hdDefineEnum { --// The hdHumanoid state which is enabled when falling in the air
+		Name = "hdFalling";
+		Value = 4;
+        HdEnumFamily = "hdHumanoidState";
+	} :: hdEnum;
+	hdLanding = hdDefineEnum { --// The hdHumanoid state which is enabled when landing on the ground, briefly.
+		Name = "hdLanding";
+		Value = 5;
+        HdEnumFamily = "hdHumanoidState";
+	} :: hdEnum;
+	hdSwimming = hdDefineEnum { --// The hdHumanoid state which is enabled while in water
+		Name = "hdSwimming";
+		Value = 6;
+        HdEnumFamily = "hdHumanoidState";
+	} :: hdEnum;
+	hdRagdolling = hdDefineEnum { --// The hdHumanoid state which is functionally similar to hdParalyzed, but automatically creates constraints to cause joints to be freely rotated
+		Name = "hdRagdolling";
+		Value = 7;
+        HdEnumFamily = "hdHumanoidState";
+	} :: hdEnum;
+	hdParalyzed = hdDefineEnum { --// The hdHumanoid state of free control; The same as your character being a rigid body in the scene
+		Name = "hdParalyzed";
+		Value = 8;
+        HdEnumFamily = "hdHumanoidState";
+	} :: hdEnum;
+};
+
 hdEnums["hdInstanceType"] = {
 	hdRootInstance = hdDefineEnum {
 		Name = "hdRootInstance";

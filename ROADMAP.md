@@ -32,30 +32,47 @@ The Heimdall project is not complete! We are always interested in ways to improv
 - [ ] Executor API Full Launch [^5]
 - [ ] HECL Variables expansion [^6]
 
+# Hermes API Goals
+- [ ] Hermes Worker API
+- [ ] Hermes Testing API
+- [ ] Hermes Benchmarking API
+- [ ] Hermes Validation Layers API
+
+# Hera API Goals
+- [ ] Hera Transit API
+- [ ] Hera Transit Saves API
+- [ ] Hera Transit Editor Plugin
+- [ ] Hera Transit Visualizer Plugin
+- [ ] Hera Testing API
+- [ ] Hera Benchmarking API
+- [ ] Hera OSS Utility and Tinker Tools [^7]
+
 # Open Problems and Highlighted Issues
 There are no current open highlighted issues.
 
 # Future Features and Loftiest Ideas
-- [ ] Heimdall Conversion Tools API [^7]
+- [ ] Heimdall Conversion Tools API [^8]
 - [ ] Heimdall Core Utilities API
-- [ ] Heimdall Assets API [^8]
-- [ ] Heimdall Cloud Tools API [^9]
-- [ ] Heimdall Package Manager API and Plugin [^10]
-- [ ] Heimdall Hot Reload API [^11]
-- [ ] Heimdall Debug Dump API [^12]
+- [ ] Heimdall Assets API [^9]
+- [ ] Heimdall Cloud Tools API [^10]
+- [ ] Heimdall Package Manager API and Plugin [^11]
+- [ ] Heimdall Hot Reload API [^12]
+- [ ] Heimdall Debug Dump API [^13]
 - [ ] Heimdall Subtitles and Localization API
+- [ ] Hera Visual Studio Extension
 - [ ] HECL Linter and Analysis API
 - [ ] HECL IDE plugin and `.hc` file support in third party editors
 
-[^1]: (*Hermes* Project)
+[^1]: Contents of the *Hermes* Project, a subset of Heimdall
 [^2]: Basic globals/builtins, basic data types
 [^3]: Functions, strings, other objects
 [^4]: Include statements and file management
 [^5]: Interface for running and receiving results from HECL lang
 [^6]: Struct, namespace declaration, entity and component objects
-[^7]: Tools to convert existing projects to Heimdall
-[^8]: Asset management, loading and unloading assets, etc.
-[^9]: Datastore, Live Cloud Features, Cloud Integration API features and quality of life
-[^10]: GitHub synchronization, Roblox Team Create support
-[^11]: Re-build a project while it is running a simulation
-[^12]: Output files and debug information about a running project
+[^7]: Ensuring Hera is compatible and seamless with popular UI libraries
+[^8]: Tools to convert existing projects to Heimdall
+[^9]: Asset management, loading and unloading assets, etc.
+[^10]: Datastore, Live Cloud Features, Cloud Integration API features and quality of life
+[^11]: GitHub synchronization, Roblox Team Create support
+[^12]: Re-build a project while it is running a simulation
+[^13]: Output files and debug information about a running project
