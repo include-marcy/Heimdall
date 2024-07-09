@@ -118,7 +118,7 @@ if not hdInvokeCommandResult.Success then
 end
 ```
 
-Heimdall is written in Luau, but future support for popular languages like [roblox-ts](https://github.com/roblox-ts/roblox-ts) will be a focus of the framework's roadmap later on.
+Heimdall is written in Luau, but future support for popular languages like [roblox-ts](https://github.com/roblox-ts/roblox-ts) will be a focus of the framework's [Road Map](ROADMAP.md) later on.
 
 Heimdall also natively ships with 2 key features:
 1. Heimdall Core Scripts - Heimdall ships with compatible `hdServices` that supercede the functionality of the core ©Roblox scripts, these are known as `hdCoreScript`s. This allows you to seamlessly modify them to your liking, leaving you with more control over how your game runs.
