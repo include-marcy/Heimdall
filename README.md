@@ -12,7 +12,7 @@ Installation can be made in the following ways:
 - Install the Heimdall standalonge package (`TODO`)
 
 # Initialization
-To initialize Heimdall, you have to make 1[^2] object for both the client and server, being the `hdObject` singleton, as the base of your application.
+To initialize Heimdall, you have to make a single[^2] object twice, for both the client and server —that being the `hdObject` singleton— as the base of your application.
 ```lua
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 --...
@@ -118,7 +118,8 @@ if not hdInvokeCommandResult.Success then
 end
 ```
 
-Heimdall is written in Luau, but future support for popular languages like [roblox-ts](https://github.com/roblox-ts/roblox-ts) will be a focus of the framework's [Road Map](ROADMAP.md) later on.
+Heimdall is written in Luau, and is designed to be used either in studio or in the third party code editor of your choice.
+High level support and possible implementation in [roblox-ts](https://github.com/roblox-ts/roblox-ts) will be a focus of the framework's [Road Map](ROADMAP.md) later on.
 
 Heimdall also natively ships with 2 key features:
 1. Heimdall Core Scripts - Heimdall ships with compatible `hdServices` that supercede the functionality of the core ©Roblox scripts, these are known as `hdCoreScript`s. This allows you to seamlessly modify them to your liking, leaving you with more control over how your game runs.
@@ -126,6 +127,8 @@ Heimdall also natively ships with 2 key features:
 
 # When to use Heimdall
 Heimdall provides extremely explicit control and doesn't hide any of its functionality behind black boxes. This means that beginners should not use Heimdall for their first game. If your game is a lightweight application that only requires a few features, Heimdall is not necessary. However, if your game intends to support many compute intensive features and has a wide array of mechanics, the Heimdall architecture may benefit your games organization and performance by making use of its Parallel-Luau-housing `hdParallelService` class. Additionally, games that want to expand the design of their characters should consider Heimdall for its customizable and explicit rebuilt ©Roblox character services.
+
+Any game that wants to override the core functionality of Roblox character services or the Roblox core scripts should consider Heimdall, especially if your project utilizes frameworks like [Knit](https://github.com/Sleitnick/Knit). The conversion from Knit project to Heimdall project should be fairly seamless, as Knit services are fairly identical to Heimdall `hdServices`.
 
 Games that include manipulation of perspective and that desire strong control over the location and relativity of the character to the game in a multiplayer setting will be attracted to the native Scene objects.
 Heimdall provides a series of objects for working with "Scenes", which are an abstraction over a common problem in ©Roblox games that are usually considered "story driven" or might normally be ruined by multiplayer. By providing granular control over the workspace and abstracting its state into a "Scene", Heimdall provides developers with the ability to easily make streamlined experiences across ©Roblox's diverse environments and within user generated worlds.
