@@ -137,7 +137,7 @@ For this, Heimdall provides the `hdScene` and its corresponding classes:
 This list is expanding as the `hdScene` API matures, so its not all!
 
 # Usage and general information
-In the Heimdall API, almost everything is designed around objects that you create manually and then use. This is not only for actual things like Services, but also for internal configuration structures that describe how you want your games state to be commanded. The framework was designed to allow developers to implement the logic of their game in any way that they desire. For example, it could be used to build a game that runs like an ECS (Entity Component System), or more like a traditional OOP (Object Oriented Programming) style engine. It all depends on the way you decide to explicitly implement Heimdall Objects and manipulate them.
+In the Heimdall API, almost everything is designed around objects that you create manually and then use. This is not only for actual things like Services, but also for internal configuration structures that describe how you want your games state to be commanded. The framework was designed to allow developers to implement the logic of their game in any way that they desire. For example, it could be used to build a game that runs like an [ECS](https://github.com/SanderMertens/ecs-faq) (Entity Component System), or more like a traditional OOP (Object Oriented Programming) style engine. It all depends on the way you decide to explicitly implement Heimdall Objects and manipulate them.
 
 In general, implementing Heimdall generally means that your entire game will be contained inside the Heimdall API.
 
@@ -155,6 +155,9 @@ Due to the demand for ECS, Heimdall ships with a built-in language called HECL (
 Heimdall is distributed under the terms of the [MIT License](LICENSE).
 
 When Heimdall is integrated into external projects, we ask that you honor the MIT license and include any necessary attribution into user-facing documentation. Attribution using the [Heimdall logo](assets/HeimdallLogo.png) is also encouraged (Looks neat on loading screens, too!)
+
+©2024 Roblox Corporation. All rights belong to their respective owners. Roblox, the Roblox logo and Powering Imagination are among their registered and unregistered trademarks in the U.S. and other countries.
+This software is not affiliated with, owned, maintained, nor created by Roblox Corporation. Any and all rights belong to their respective owners.
 
 [^1]: Apply usage of `--!native` appropriately. Not all scenarios benefit from usage of the native flag.
 [^2]: You can create multiple `hdObject` instances under namespaces to build seperate environments within the same context (i.e client having 2 hdInstances).
