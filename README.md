@@ -1,7 +1,7 @@
 ![HeimdallTextLogo](https://github.com/include-marcy/Heimdall/assets/173523610/d16b957d-42ec-492e-a3a1-1ad10ef7b6d1)
 ![DOCS](https://img.shields.io/badge/latest_release-v1.0.0-blue?style=flat-square&logo=Roblox%20Studio)  ![Non-Production](https://img.shields.io/badge/production-no-red?style=flat-square&logo=Roblox%20Studio)
 # What is Heimdall? 
-Heimdall (ˈhaɪmdɔl) is a ©Roblox Game Framework and API (Application Program Interface) for the ©Roblox Studio software. Heimdall is designed to build high-performing applications, providing a standardized way to create and develop services and utilize parallel [Luau](https://github.com/luau-lang/luau) features. Heimdall users benefit from its explicit API, which offers them ultimate control over the execution and control flow of their backend.
+Heimdall (ˈhaɪmdɔl) is a ©Roblox Experience Framework and API (Application Program Interface) for the ©Roblox Studio software. Heimdall is designed to build high-performing applications, providing a standardized way to create and develop services and utilize parallel [Luau](https://github.com/luau-lang/luau) features. Heimdall users benefit from its explicit API, which offers them ultimate control over the execution and control flow of their backend.
 
 # Overview of Heimdall API
 The Heimdall API provides a series of objects that each provide their own methods and properties, and each usually requires an `<hdObjectType>CreateInfo` argument. Heimdall's API is strictly typed and it is recommended to enable `--!strict` in all implementations. Include the type header file in your source code to take advantage of the many built-in types by requiring the `lib.hdTypes` module. We also recommend compiling in native with `--!native`[^1] for further boosts to performance.
@@ -26,7 +26,7 @@ local Heimdall = require(hd);
 local hdObjectCreateInfo : hdTypes.hdObjectCreateInfo = {};
 local hdObject : Heimdall.hdObject = Heimdall.new(hdObjectCreateInfo);
 ```
-From this hdObject we can create various other framework integral components and give birth to our game's `hdServices`, the class that drives the framework.
+From this hdObject we can create various other framework integral components and give birth to our experience's `hdServices`, the class that drives the framework.
 ```lua
 local hdDebugMessengerCreateInfo : hdTypes.hdDebugMessengerCreateInfo = {
 	name = "generalDebug";
@@ -57,7 +57,7 @@ if not hdResult.Success then
 	return;
 end
 ```
-With these objects in place, you can now fetch and initialize the game services like so:
+With these objects in place, you can now fetch and initialize the experience services like so:
 ```lua
 local hdCompileServicesInfo : hdTypes.hdCompileServicesInfo = {};
 hdCompileServicesInfo.timeOut = 30;
@@ -103,7 +103,7 @@ if not hdCreateCommandChainResult.Success then
 	return;
 end
 
---// Now that the hdServiceManager has been successfully initialized, we can invoke its command chain to boot all the game services!
+--// Now that the hdServiceManager has been successfully initialized, we can invoke its command chain to boot all the experience services!
 --// The hdCommandChain allows us to overwrite arrays of instructions for the hdServiceManager, so we will re-use this hdCommandChain object later on when we
 --// need to call more commands on all services at once.
 local hdFenceCreateInfo : hdTypes.hdFenceCreateInfo = {
@@ -122,16 +122,16 @@ Heimdall is written in Luau, and is designed to be used either in studio or in t
 High level support and possible implementation in [roblox-ts](https://github.com/roblox-ts/roblox-ts) will be a focus of the framework's [Road Map](ROADMAP.md) later on.
 
 Heimdall also natively ships with 2 key features:
-1. Heimdall Core Scripts - Heimdall ships with compatible `hdServices` that supercede the functionality of the core ©Roblox scripts, these are known as `hdCoreScript`s. This allows you to seamlessly modify them to your liking, leaving you with more control over how your game runs.
-2. Heimdall Characters - Heimdall also ships with compatible `hdServices` that completely overrule the ©Roblox character system. ©Roblox's Character system is often known to be buggy and outdated, and often has strange and undesirable behavior that complex games have little control over. The Heimdall framework has accounted for this and includes a rewritten Character paradigm that completely changes how a ©Roblox character is controlled and constructed. It also has significant boosts to replication speed of the character's position, and a simpler exposed hdHumanoid API. The two objects, `hdCharacter` and `hdHumanoid` are the most relevant user facing features of the rewrite. To enable these experimental features, you can find them implemented in `hdCharacterService` in the [example project repository](https://github.com/include-marcy/Heimdall)
+1. Heimdall Core Scripts - Heimdall ships with compatible `hdServices` that supercede the functionality of the core ©Roblox scripts, these are known as `hdCoreScript`s. This allows you to seamlessly modify them to your liking, leaving you with more control over how your experience runs.
+2. Heimdall Characters - Heimdall also ships with compatible `hdServices` that completely overrule the ©Roblox character system. ©Roblox's Character system is often known to be buggy and outdated, and often has strange and undesirable behavior that complex experiences have little control over. The Heimdall framework has accounted for this and includes a rewritten Character paradigm that completely changes how a ©Roblox character is controlled and constructed. It also has significant boosts to replication speed of the character's position, and a simpler exposed hdHumanoid API. The two objects, `hdCharacter` and `hdHumanoid` are the most relevant user facing features of the rewrite. To enable these experimental features, you can find them implemented in `hdCharacterService` in the [example project repository](https://github.com/include-marcy/Heimdall)
 
 # When to use Heimdall
-Heimdall provides extremely explicit control and doesn't hide any of its functionality behind black boxes. This means that beginners should not use Heimdall for their first game. If your game is a lightweight application that only requires a few features, Heimdall is not necessary. However, if your game intends to support many compute intensive features and has a wide array of mechanics, the Heimdall architecture may benefit your games organization and performance by making use of its Parallel-Luau-housing `hdParallelService` class. Additionally, games that want to expand the design of their characters should consider Heimdall for its customizable and explicit rebuilt ©Roblox character services.
+Heimdall provides extremely explicit control and doesn't hide any of its functionality behind black boxes. This means that beginners should not use Heimdall for their first experience. If your experience is a lightweight application that only requires a few features, Heimdall is not necessary. However, if your experience intends to support many compute intensive features and has a wide array of mechanics, the Heimdall architecture may benefit your experiences organization and performance by making use of its Parallel-Luau-housing `hdParallelService` class. Additionally, experiences that want to expand the design of their characters should consider Heimdall for its customizable and explicit rebuilt ©Roblox character services.
 
-Any game that wants to override the core functionality of Roblox character services or the Roblox core scripts should consider Heimdall, especially if your project utilizes frameworks like [Knit](https://github.com/Sleitnick/Knit). The conversion from Knit project to Heimdall project should be fairly seamless, as Knit services are fairly identical to Heimdall `hdServices`.
+Any experience that wants to override the core functionality of ©Roblox character services or the ©Roblox core scripts should consider Heimdall, especially if your project utilizes frameworks like [Knit](https://github.com/Sleitnick/Knit). The conversion from Knit project to Heimdall project should be fairly seamless, as Knit services are fairly identical to Heimdall `hdServices`.
 
-Games that include manipulation of perspective and that desire strong control over the location and relativity of the character to the game in a multiplayer setting will be attracted to the native Scene objects.
-Heimdall provides a series of objects for working with "Scenes", which are an abstraction over a common problem in ©Roblox games that are usually considered "story driven" or might normally be ruined by multiplayer. By providing granular control over the workspace and abstracting its state into a "Scene", Heimdall provides developers with the ability to easily make streamlined experiences across ©Roblox's diverse environments and within user generated worlds.
+Experiences that include manipulation of perspective and that desire strong control over the location and relativity of the character to the experience in a multiplayer setting will be attracted to the native Scene objects.
+Heimdall provides a series of objects for working with "Scenes", which are an abstraction over a common problem in ©Roblox experiences that are usually considered "story driven" or might normally be ruined by multiplayer. By providing granular control over the workspace and abstracting its state into a "Scene", Heimdall provides developers with the ability to easily make streamlined experiences across ©Roblox's diverse environments and within user generated worlds.
 
 For this, Heimdall provides the `hdScene` and its corresponding classes:
 - `hdSceneParticipant` : An abstraction layer over ©Roblox characters that defines their existence in the `hdScene`.
@@ -140,19 +140,19 @@ For this, Heimdall provides the `hdScene` and its corresponding classes:
 This list is expanding as the `hdScene` API matures, so its not all!
 
 # Usage and general information
-In the Heimdall API, almost everything is designed around objects that you create manually and then use. This is not only for actual things like Services, but also for internal configuration structures that describe how you want your games state to be commanded. The framework was designed to allow developers to implement the logic of their game in any way that they desire. For example, it could be used to build a game that runs like an [ECS](https://github.com/SanderMertens/ecs-faq) (Entity Component System), or more like a traditional OOP (Object Oriented Programming) style engine. It all depends on the way you decide to explicitly implement Heimdall Objects and manipulate them.
+In the Heimdall API, almost everything is designed around objects that you create manually and then use. This is not only for actual things like Services, but also for internal configuration structures that describe how you want your experiences state to be commanded. The framework was designed to allow developers to implement the logic of their experience in any way that they desire. For example, it could be used to build an experience that runs like an [ECS](https://github.com/SanderMertens/ecs-faq) (Entity Component System), or more like a traditional OOP (Object Oriented Programming) style engine. It all depends on the way you decide to explicitly implement Heimdall Objects and manipulate them.
 
-In general, implementing Heimdall generally means that your entire game will be contained inside the Heimdall API.
+In general, implementing Heimdall generally means that your entire experience will be contained inside the Heimdall API.
 
 # hdServices, hdCompiledServices, and hdParallelServices
-The 3 afforementioned objects above are considered the "core" of your game, and as such all behavior should be derived from them. They are usually stored in a contextually appropriate location in a folder like "`ReplicatedStore.Modules.Services`". Services as a general abstraction have been the default implementation for lifetime methods and for game functionality being packed into a globally accessed singleton. In Heimdall, they come in 3 particular types.
+The 3 afforementioned objects above are considered the "core" of your experience, and as such all behavior should be derived from them. They are usually stored in a contextually appropriate location in a folder like "`ReplicatedStore.Modules.Services`". Services as a general abstraction have been the default implementation for lifetime methods and for experience functionality being packed into a globally accessed singleton. In Heimdall, they come in 3 particular types.
 1. `hdService`: The default version of a Service.
 2. `hdCompiledService`: Functionally equivalent to `hdService`, except that it takes a module script and then writes the content and descendant content into an array stored in the hdCompiledService.
 3. `hdParallelService`: Runs functions in Parallel, with specified fields for compute work and internal runtime configuration (Like how many actors to include, etc...)
 
 # ECS implementations
 Above paragraphs have mentioned that Heimdall can be used to create ECS frameworks. Heimdall in itself is not an ECS, but it provides sandboxed objects that can easily allow your project to act like a very proper ECS if you wish for it to do that.
-Due to the demand for ECS, Heimdall ships with a built-in language called HECL (Heimdall Entity Composition Language). HECL compiles directly into Luau, and is composed of `name.hc` module script files in your game. To run HECL, you will need to create an hdHeclInterpreter object and feed it `.hc` files to return results from the source code in the `.hc` file. HECL was designed around ECS, and `.hc` files are designed to make programming games in ECS significantly easier. HECL is in an alpha state and is not recommended for production use. The `hdInstance` object which is the main "second layer" of the Heimdall API, housed only secondary to the `hdObject`, contains built-in functions for storing an abstract Entity with a key "name". It also provides methods to directly query entities stored in the `hdInstance`, so any `hdService` can access a set of entities at will based on entity query parameters.
+Due to the demand for ECS, Heimdall ships with a built-in language called HECL (Heimdall Entity Composition Language). HECL compiles directly into Luau, and is composed of `name.hc` module script files in your experience. To run HECL, you will need to create an hdHeclInterpreter object and feed it `.hc` files to return results from the source code in the `.hc` file. HECL was designed around ECS, and `.hc` files are designed to make programming experiences in ECS significantly easier. HECL is in an alpha state and is not recommended for production use. The `hdInstance` object which is the main "second layer" of the Heimdall API, housed only secondary to the `hdObject`, contains built-in functions for storing an abstract Entity with a key "name". It also provides methods to directly query entities stored in the `hdInstance`, so any `hdService` can access a set of entities at will based on entity query parameters.
 
 # License
 Heimdall is distributed under the terms of the [MIT License](LICENSE).
