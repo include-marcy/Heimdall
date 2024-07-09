@@ -121,7 +121,8 @@ function heraAnimator.prototype:_updateKeyframe(keyframe : heraTypes.heraTransit
         signal:Fire(keyframe.arg);
     elseif keyframeType == "HERA_OBJECT_KEYFRAME" then
         local time = animator.prototype._getKeyframeTweenTime(animator, keyframe);
-        local tween = TweenService:Create(object, TweenInfo.new(time, ), stateValues);
+        local tweenData = keyframe.tweenData;
+        local tween = TweenService:Create(object, TweenInfo.new(time, tweenData.easingStyle, tweenData.easingDirection), stateValues);
         tween:Play();
 
         local connection; connection = tween.Stopped:Connect(function()
