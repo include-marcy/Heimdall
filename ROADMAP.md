@@ -53,6 +53,7 @@ There are no current open highlighted issues.
 # Future Features and Loftiest Ideas
 - [ ] Heimdall Conversion Tools API [^8]
 - [ ] Heimdall Core Utilities API
+- [ ] Heimdall Physical Character R15 and Rthro API Extensions
 - [ ] Heimdall Assets API [^9]
 - [ ] Heimdall Cloud Tools API [^10]
 - [ ] Heimdall Package Manager API and Plugin [^11]

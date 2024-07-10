@@ -7,15 +7,17 @@ local Players = game:GetService("Players");
 -- Dependencies
 local hd = ReplicatedStorage.Modules.Classes.Heimdall;
 local hdLib = hd.src.lib;
+local hdClasses = hd.src.classes;
 local Heimdall = require(hd);
 local hdTypes = require(hdLib.hdTypes);
 local hdEnums = require(hdLib.hdEnums);
 local hdUtils = require(hdLib.hdUtils);
+local hdFence = require(hdClasses.hdFence);
 
 --// Heimdall bootstrap
 local hdObjectCreateInfo : hdTypes.hdObjectCreateInfo = {};
 hdObjectCreateInfo.User = "global";
-local hdObject = Heimdall.new(hdObjectCreateInfo);
+local hdObject : Heimdall.hdObject = Heimdall.new(hdObjectCreateInfo);
 
 --// Create Launch Token
 local hdVersion = hdUtils.hdMakeVersion(1, 0, 0,
@@ -80,7 +82,7 @@ end
 local hdCommandChainCreateInfo : hdTypes.hdCommandChainCreateInfo = {
 	commandInfo = {
 		name = "commands";
-		commandInvocationType = "HD_CMD_INVOC_TYPE_ASYNC";
+		commandInvocationType = "HD_COMMAND_INVOC_TYPE_MIXED";
 		commandSafetyLevel = "HD_CMD_SAFETY_LEVEL_HIGH";
 		commands = {
 			"HD_COMP";
@@ -97,16 +99,23 @@ if hdResult.ProtectedCallResult ~= hdEnums.hdProtectedCallResults.Passed.Value t
 	return;
 end
 
+local hdFenceCreateInfo : hdTypes.hdFenceCreateInfo = {
+	fenceInitialState = "HD_FENCE_UNSIGNALED";
+};
+local sync = hdFence.new(hdFenceCreateInfo);
+
 --// Invoke hdCommandChain
-local hdResult = hdServiceManager:hdInvokeCommandChain(hdCommandChain);
+local hdResult = hdServiceManager:hdInvokeCommandChain(hdCommandChain, sync);
 if hdResult.ProtectedCallResult ~= hdEnums.hdProtectedCallResults.Passed.Value then
 	error("failed to invoke command chain!");
 	return;
 end
+print "waiting for fence...";
+sync:hdWaitForFence();
+print "done waiting for fence!";
 
 print("Successfully initialized Heimdall.");
-
-Players.PlayerAdded:Connect(function(Player : Player)
+local function addPlayer(player)
 	local hdCommandInfo : hdTypes.hdCommandInfo = {
 		name = "PlayerAddedCommand";
 		commandInvocationType = "HD_CMD_INVOC_TYPE_ASYNC";
@@ -115,11 +124,15 @@ Players.PlayerAdded:Connect(function(Player : Player)
 			"HD_ADD_PLR";
 		};
 	};
-	
+
 	local hdResult = hdCommandChain:hdSetCommandInfo(hdCommandInfo);
 	if not hdResult.Success then
 		error("error while configuring command chain for adding player!");
 	end
-	
-	hdServiceManager:hdInvokeCommandChain(hdCommandChain, nil, Player);
-end)
+
+	hdServiceManager:hdInvokeCommandChain(hdCommandChain, nil, player);
+end
+for i, v in Players:GetPlayers() do
+	task.spawn(addPlayer, v);
+end
+Players.PlayerAdded:Connect(addPlayer)

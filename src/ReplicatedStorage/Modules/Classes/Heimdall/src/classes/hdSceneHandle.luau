@@ -19,18 +19,18 @@ export type hdSceneHandle = typeof(setmetatable({} :: {
 ]=]
 function hdSceneHandle.new(hdSceneHandleCreateInfo : hdTypes.hdSceneHandleCreateInfo) : hdSceneHandle
 	local sceneHandle = setmetatable({}, hdSceneHandle);
-	
+
 	sceneHandle.name = hdSceneHandleCreateInfo.handleName;
 	sceneHandle._handleTags = hdSceneHandleCreateInfo.handleTags;
 	sceneHandle._CFrame = hdSceneHandleCreateInfo.handleCFrame;
-	
+
 	sceneHandle.Properties = {
 		MaxParticipants = hdSceneHandleCreateInfo.handleMaxParticipants or math.huge;
 		MinParticipants = hdSceneHandleCreateInfo.handleMinParticipants or 1;
 	};
-	
+
 	local scene = hdSceneHandleCreateInfo.handleScene;
-	
+
 	return sceneHandle; --scene:hdCreateSceneHandle(hdSceneHandleCreateInfo);
 end
 
@@ -39,6 +39,12 @@ function hdSceneHandle:hdGetHandleAssemblyCFrame() : CFrame
 	local sceneHandle : hdSceneHandle = self;
 	
 	return sceneHandle._CFrame;
+end
+
+function hdSceneHandle:hdGetHandleTag(handleTagName : string) : boolean
+	local sceneHandle : hdSceneHandle = self;
+
+	return sceneHandle._handleTags[handleTagName];
 end
 
 return hdSceneHandle;

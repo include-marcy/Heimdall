@@ -26,7 +26,7 @@ function hdSceneParticipant.new(hdSceneParticipantCreateInfo : hdTypes.hdScenePa
 	local participantInstance = hdSceneParticipantCreateInfo.participantInstance;
 
 	if not hdSceneParticipant._validateWrappedInstance(participantInstance) then
-		error("failed to validate wrapped instance; make sure what you are passing is a valid ROBLOX character object!")
+		error("failed to validate wrapped instance; make sure what you are passing is a valid character object!")
 		return nil;
 	end
 
@@ -51,10 +51,10 @@ function hdSceneParticipant._validateWrappedInstance(wrappedInstance : Model?) :
 		return false;
 	end
 	
-	local humanoidObject = wrappedInstance:WaitForChild("Humanoid", 15);
-	if not humanoidObject then
-		return false;
-	end
+	--// local humanoidObject = wrappedInstance:WaitForChild("Humanoid", 15);
+	--// if not humanoidObject then
+		--// return false;
+	--// end
 	
 	local humanoidRootPart = wrappedInstance:WaitForChild("HumanoidRootPart", 15);
 	if not humanoidRootPart then

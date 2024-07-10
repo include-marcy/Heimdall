@@ -30,7 +30,7 @@ end
 
 --[=[
 	Instantiates an hdObject instance, which is used to bootstrap the main objects of Heimdall.
-	
+
 	:::info
 	By default, a User is provided so that only 1 hdObject singleton is generated per environment unless specified.
 	InitializationArgs allow you to create multiple hdObject instances in one environment, thus initializing different types of hdObjects
@@ -76,12 +76,12 @@ function Heimdall:hdCreateInstance(hdInstanceCreateInfo : hdTypes.hdInstanceCrea
 	local instance = hdInstance.new(hdInstanceCreateInfo);
 	object._hdInstance = instance;
 
-	return instance;
+	return instance :: hdInstance.hdInstance;
 end
 
 --[=[
 	Creates a hdDebugMessenger object, which can be used to output helpful debug information at runtime.
-	
+
 	:::info
 	You can create multiple hdDebugMessengers to split or categorize your outputs.
 	:::
@@ -93,55 +93,57 @@ function Heimdall:hdCreateDebugMessenger(hdDebugMessengerCreateInfo : hdTypes.hd
 	if self.debugMessenger then
 		return self.debugMessenger;
 	end
-	
+
 	local debugMessenger = hdDebugMessenger.new(hdDebugMessengerCreateInfo);
 	self.debugMessenger = debugMessenger;
-	
+
 	return debugMessenger;
 end
 
 function Heimdall:awaitHdDebugMessenger(nameSpace) : hdDebugMessenger.hdDebugMessenger?
-	if not nameSpace then
-		nameSpace = "global";
+	local space : string = nameSpace;
+	if space == nil then
+		space = "global";
 	end
 
-	local self = hdObjects[nameSpace];
-	if not self then
+	local object = hdObjects[space];
+	if not object then
 		repeat
-			self = hdObjects[nameSpace];
+			object = hdObjects[space];
 			task.wait();
-		until self
+		until object
 	end
 
 	repeat
 		task.wait();
-	until self.debugMessenger ~= nil;
+	until object.debugMessenger ~= nil;
 
-	return self.debugMessenger;
+	return object.debugMessenger;
 end
 
 --[=[
 	Returns the hdInstance object, which is the central object from which most other Heimdall objects are created.
 	@return hdInstance;
 ]=]
-function Heimdall:awaitHdInstance(nameSpace) : hdInstance.hdInstance?
-	if not nameSpace then
-		nameSpace = "global";
+function Heimdall:awaitHdInstance(nameSpace : string?) : hdInstance.hdInstance?
+	local space : string = nameSpace;
+	if space == nil then
+		space = "global";
 	end
 
-	local self = hdObjects[nameSpace];
-	if not self then
+	local object = hdObjects[space];
+	if not object then
 		repeat
-			self = hdObjects[nameSpace];
+			object = hdObjects[space];
 			task.wait();
-		until self
+		until object
 	end
 
 	repeat
 		task.wait();
-	until self._hdInstance ~= nil;
+	until object._hdInstance ~= nil;
 
-	return self._hdInstance;
+	return object._hdInstance;
 end
 
 function Heimdall:hdCreateLaunchToken(hdLaunchTokenCreateInfo : hdTypes.hdLaunchTokenCreateInfo) : hdLaunchToken.hdLaunchToken

@@ -384,9 +384,9 @@ end
 ]=]
 function hdInstance:hdCreateScene(hdSceneCreateInfo : hdTypes.hdSceneCreateInfo) : (hdTypes.hdProtectedCallResult, hdScene.hdScene)
 	local instance : hdInstance = self;
-	local hdPassResult : hdTypes.hdProtectedCallResult, hdScene = instance.prototype._callInternal(instance, "_createSceneInternal", hdSceneCreateInfo);
+	local hdPassResult : hdTypes.hdProtectedCallResult, scene = instance.prototype._callInternal(instance, "_createSceneInternal", hdSceneCreateInfo);
 
-	return hdPassResult, hdScene;
+	return hdPassResult, scene;
 end
 
 function hdInstance.prototype:_createSceneInternal(hdSceneCreateInfo : hdTypes.hdSceneCreateInfo) : hdScene.hdScene

@@ -12,11 +12,26 @@ local hdScene = {
 };
 hdScene.__index = hdScene;
 
+local function GET_SCENE_FOLDER()
+	local hdSceneFolder = workspace:FindFirstChild("hdSceneFolder");
+
+	if not hdSceneFolder then
+		hdSceneFolder = Instance.new("Folder");
+		hdSceneFolder.Name = "hdSceneFolder";
+		hdSceneFolder.Parent = workspace;
+	end
+
+	return hdSceneFolder;
+end
+
 export type hdScene = typeof(setmetatable({}::{
 	debugMessenger : hdDebugMessenger.hdDebugMessenger;
 	protectedCaller : hdProtectedCallResultEmitter.hdProtectedCallResultEmitter;
 	sceneHandles : {hdSceneHandle.hdSceneHandle};
 	participants : {hdSceneParticipant.hdSceneParticipant};
+	name : string?;
+	description : Model?;
+	sceneModel : Model?;
 }, {} :: typeof(hdScene)));
 
 --[=[
@@ -42,13 +57,17 @@ export type hdScene = typeof(setmetatable({}::{
 ]=]
 function hdScene.new(hdSceneCreateInfo : hdTypes.hdSceneCreateInfo) : hdScene
 	local scene = setmetatable({}, hdScene);
-	
+
 	scene.debugMessenger = hdSceneCreateInfo.debugMessenger;
-	
+
 	local hdProtectedCallResultEmitterCreateInfo : hdTypes.hdProtectedCallEmitterCreateInfo = {};
 	scene.protectedCaller = hdProtectedCallResultEmitter.new(hdProtectedCallResultEmitterCreateInfo);
 	scene.sceneHandles = {};
 	scene.participants = {};
+	scene.name = hdSceneCreateInfo.sceneName;
+	scene.description = hdSceneCreateInfo.sceneDescription;
+
+	scene.sceneModel = scene.prototype._callInternal(scene, "_createSceneInternal");
 
 	return scene :: hdScene;
 end
@@ -62,13 +81,13 @@ end
 
 function hdScene:hdGetSceneParticipants() : {hdSceneParticipant.hdSceneParticipant}
 	local scene : hdScene = self;
-	
+
 	return scene.participants;
 end
 
 function hdScene:hdCreateSceneHandle(hdSceneHandleCreateInfo : hdTypes.hdSceneHandleCreateInfo) : hdTypes.hdProtectedCallResult
 	local scene : hdScene = self;
-	
+
 	hdSceneHandleCreateInfo.handleScene = scene::hdScene;
 
 	return scene.prototype._callInternal(scene, "_createSceneHandleInternal", hdSceneHandleCreateInfo);
@@ -81,9 +100,20 @@ function hdScene.prototype:_createSceneHandleInternal(hdSceneHandleCreateInfo : 
 	table.insert(scene.sceneHandles, hdSceneHandle);
 end
 
+function hdScene:hdGetRootHandle() : hdSceneHandle.hdSceneHandle?
+	local scene : hdScene = self;
+
+	for _, handle in scene.sceneHandles do
+		warn(handle, handle:hdGetHandleTag("hdRootHandle"));
+		if handle:hdGetHandleTag("hdRootHandle") then
+			return handle;
+		end
+	end
+end
+
 function hdScene:hdAddSceneParticipant(sceneParticipant : hdSceneParticipant.hdSceneParticipant) : hdTypes.hdProtectedCallResult
 	local scene : hdScene = self;
-	
+
 	return scene.prototype._callInternal(scene, "_addSceneParticipantInternal", sceneParticipant);
 end
 
@@ -125,6 +155,34 @@ function hdScene.prototype:_removeSceneParticipantInternal(sceneParticipant : hd
 	end
 
 	table.remove(scene.participants, index);
+end
+
+function hdScene.prototype:_createSceneInternal()
+	local scene : hdScene = self;
+	local name = scene.name;
+	local sceneDescription = scene.description;
+	local hdSceneFolder = GET_SCENE_FOLDER();
+
+	local sceneModel = sceneDescription:Clone();
+	sceneModel.Name = name;
+	sceneModel.Parent = hdSceneFolder;
+
+	local sceneHandles = sceneModel:FindFirstChild("sceneHandles");
+	if sceneHandles then
+		for _, handle in sceneHandles:GetChildren() do
+			local sceneHandleCreateInfo : hdTypes.hdSceneHandleCreateInfo = {
+				handleName = handle.name;
+				handleScene = scene;
+				handleMaxParticipants = handle:GetAttribute("hdMaxParticipants");
+				handleMinParticipants = handle:GetAttribute("hdMinParticipants");
+				handleCFrame = handle.CFrame;
+				handleTags = handle:GetAttributes();
+			};
+			print(scene:hdCreateSceneHandle(sceneHandleCreateInfo));
+		end
+	end
+
+	return sceneModel;
 end
 
 return hdScene;

@@ -153,6 +153,7 @@ export type hdCoreModuleCreateInfo = {
 export type sceneOwner = string | number;
 export type hdSceneCreateInfo = {
 	sceneName : string;
+	sceneDescription : Model;
 	sceneOwner : sceneOwner;
 	debugMessenger : any;
 };

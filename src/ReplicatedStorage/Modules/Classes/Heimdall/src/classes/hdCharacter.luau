@@ -12,7 +12,20 @@ local hdHumanoid = require(hdClasses.hdHumanoid);
 local hdCharacter = {};
 hdCharacter.__index = hdCharacter;
 
-export type hdCharacter = typeof(setmetatable({} :: {}, {} :: typeof(hdCharacter)));
+export type hdCharacter = typeof(setmetatable({} :: {
+    physical : hdPhysicalCharacterR6;
+    wrapping : hdWrapping.hdWrapping;
+}, {} :: typeof(hdCharacter)));
+
+export type hdPhysicalCharacterR6 = typeof(setmetatable({} :: {
+    Head : BasePart;
+    Torso : BasePart;
+    ["Left Arm"] : BasePart;
+    ["Right Arm"] : BasePart;
+    ["Left Leg"] : BasePart;
+    ["Right Leg"] : BasePart;
+    HumanoidRootPart : BasePart;
+}, {} :: typeof(getmetatable(Instance.new("Model")))));
 
 function hdCharacter.new(hdCharacterCreateInfo : hdTypes.hdCharacterCreateInfo) : hdCharacter
     local character = setmetatable({}, hdCharacter);
@@ -27,7 +40,15 @@ function hdCharacter.new(hdCharacterCreateInfo : hdTypes.hdCharacterCreateInfo) 
         hdCharacter = character;
     })
 
+    character.wrapping = wrapping;
+
     return character;
+end
+
+function hdCharacter:hdGetPhysicalCharacter() : hdPhysicalCharacterR6?
+    local character : hdCharacter = self;
+
+    return character.physical;
 end
 
 return hdCharacter;
