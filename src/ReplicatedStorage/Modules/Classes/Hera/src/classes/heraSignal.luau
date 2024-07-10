@@ -20,7 +20,7 @@ function heraSignal.new() : heraSignal
 end
 
 function heraSignal:Connect(callback : (any) -> (any)) : heraConnection.heraConnection
-    return heraConnection.new(self, callback);;
+    return heraConnection.new(self, callback);
 end
 
 function heraSignal:Fire(...)
