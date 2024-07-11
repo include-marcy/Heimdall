@@ -19,7 +19,7 @@ return function ()
                 print(5 + 5);
             end;
             local athFrequencyHook = athBench:athMakeFrequencyHook("name", callback);
-            expect(athFrequencyHook.Signaled).to.be.a("function");
+            expect(athFrequencyHook).to.be.a("function");
 
             athFrequencyHook();
         end);

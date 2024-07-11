@@ -1,9 +1,16 @@
+-- This file is part of the Hera library and is licensed under MIT License; see LICENSE.md for details
+
+--!strict
+--!native
+--!optimize 2
+
+-- ROBLOX Services
 local TweenService = game:GetService("TweenService");
 
+-- Hera Dependencies
 local hera = game.ReplicatedStorage.Modules.Classes.Hera.src;
 local heraTypes = require(hera.lib.heraTypes);
 local heraClasses = hera.classes;
-
 local heraSignal = require(heraClasses.heraSignal);
 
 local heraAnimator = {
@@ -27,6 +34,7 @@ export type heraAnimator = typeof(setmetatable({} :: {
     };
     Position : number;
     IsPlaying : boolean;
+    Speed : number;
 }, {} :: typeof(heraAnimator)));
 
 function heraAnimator.new(heraAnimatorCreateInfo : heraTypes.heraAnimatorCreateInfo) : heraAnimator
@@ -41,6 +49,7 @@ function heraAnimator.new(heraAnimatorCreateInfo : heraTypes.heraAnimatorCreateI
     animator.markers = {};
     animator.Position = 0;
     animator.IsPlaying = false;
+    animator.Speed = 0;
     animator._keyframeDataPool = {};
 
     for _, keyframe in animator.keyframes do
@@ -64,16 +73,18 @@ function heraAnimator:heraPlay(fade : number, playbackSpeed : number)
 
     animator.IsPlaying = true;
 
+    animator:heraAdjustSpeed(playbackSpeed);
+
     local timeElapsed = 0;
     while animator.IsPlaying do
         local deltaTime : number = task.wait();
-        timeElapsed += deltaTime * playbackSpeed;
+        timeElapsed += deltaTime * animator.Speed;
 
         animator.prototype._getFramesAndRunAt(animator, timeElapsed);
     end
 end
 
-function heraAnimator:heraStop(fade : number)
+function heraAnimator:heraStop(_ : number)
     local animator : heraAnimator = self;
     if not animator.IsPlaying then
         return;
@@ -87,6 +98,7 @@ end
 
 function heraAnimator:heraAdjustSpeed(speed : number)
     local animator : heraAnimator = self;
+    animator.Speed = speed;
     animator.SpeedChanged:Fire();
 end
 

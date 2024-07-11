@@ -1,3 +1,9 @@
+-- This file is part of the Hera library and is licensed under MIT License; see LICENSE.md for details
+
+--!strict
+--!native
+--!optimize 2
+
 local hera = game.ReplicatedStorage.Modules.Classes.Hera.src;
 local heraClasses = hera.classes;
 local heraTypes = require(hera.lib.heraTypes);

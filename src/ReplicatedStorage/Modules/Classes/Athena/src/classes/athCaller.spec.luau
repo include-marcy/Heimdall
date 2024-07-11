@@ -1,7 +1,6 @@
 return function ()
     local ath = script.Parent.Parent;
     local athCallerClass = require(ath.classes.athCaller);
-    local athTypes = require(ath.lib.athTypes);
 
     describe("athCaller", function()
         local athCaller = athCallerClass.new();
