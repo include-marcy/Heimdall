@@ -6,6 +6,10 @@ local RunService = game:GetService("RunService");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local Players = game:GetService("Players");
 
+if true then
+	return;
+end
+
 --// Dependencies
 local hd = ReplicatedStorage.Modules.Classes.Heimdall;
 local hdLib = hd.src.lib;

@@ -1,4 +1,7 @@
 --!strict
+--!native
+--!optimize 2
+
 --// ROBLOX Services
 local RunService = game:GetService("RunService");
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
@@ -10,14 +13,7 @@ local hdLib = hd.src.lib;
 local hdClasses = hd.src.classes;
 local Heimdall = require(hd);
 local hdTypes = require(hdLib.hdTypes);
-local hdEnums = require(hdLib.hdEnums);
 local hdFence = require(hdClasses.hdFence);
-
-local hs = ReplicatedStorage.Modules.Classes.Hermes;
-local hsLib = hs.src.lib;
-local hsClasses = hs.src.classes;
-local hsTypes = require(hsLib.hsTypes);
-local hsEnums = require(hsLib.hsEnums);
 
 --// Local variables
 local Player = Players.LocalPlayer;
@@ -112,13 +108,6 @@ if not hdCreateCommandChainResult.Success then
 	return;
 end
 
---// Example code of reconciling the hdCommandChainFunctionMap:
-local hdGetFunctionMapResult, hdCommandChainFunctionMap = hdCommandChain:hdGetCommandChainFunctionMap();
-if not hdGetFunctionMapResult then
-	error("failed to fetch command chain function map!");
-	return;
-end
-
 --// Now that the hdServiceManager has been successfully initialized, we can invoke its command chain to boot all the game services!
 --// The hdCommandChain allows us to overwrite arrays of instructions for the hdServiceManager, so we will re-use this hdCommandChain object later on when we
 --// need to call more commands on all services at once.
@@ -204,69 +193,3 @@ end
 --// The hdClient object can be referenced on both the client and the server, but it usually is only useful on the server.
 --// hdClient objects will be used further on when creating hdSceneHandles and hdSceneParticipants, while specifically involving players.
 hdClient = hdClientResult;
-
---// Using the Heimdall instance, render a new hdScene
-local hdScene;
-local hdSceneCreateInfo : hdTypes.hdSceneCreateInfo = {
-	sceneName = "testScene";
-	sceneOwner = "global";
-	debugMessenger = hdDebugMessenger;
-};
-local hdCreateSceneResult, hdSceneResult = hdInstance:hdCreateScene(hdSceneCreateInfo);
-if not hdCreateSceneResult.Success then
-	error("failed to create heimdall scene");
-	return;
-end
-
-hdScene = hdSceneResult;
-
---// Because we may want to interact with our scene using participants, we need a way to move participants in and out of the scene.
---// Enter the hdSceneWarper, an object expressly designed for this purpose!
-local hdSceneWarperCreateInfo : hdTypes.hdSceneWarperCreateInfo = {
-	hdScene = hdScene;
-	hdDebugMessenger = hdDebugMessenger;
-	hdWarpType = "HD_DEFAULT_SET_ROOT_CFRAME_CALLBACK"; -- since we aren't changing anything about how we set the cframe of our participant, use the default callback.
-};
-local hdCreateSceneWarperResult, hdSceneWarper = hdInstance:hdCreateSceneWarper(hdSceneWarperCreateInfo);
-if not hdCreateSceneWarperResult.Success then
-	error("failed to create scene warper!");
-	return;
-end
-
---// Now that we have created our scene, we want to create an hdSceneParticipant object to interact with the scene
-local hdSceneParticipantCreateInfo : hdTypes.hdSceneParticipantCreateInfo = {
-	participantClient = hdClient;
-	participantInstance = Player.Character or Player.CharacterAdded:Wait();
-	debugMessenger = hdDebugMessenger;
-};
-local hdCreateSceneParticipantResult, hdSceneParticipant = hdInstance:hdCreateSceneParticipant(hdSceneParticipantCreateInfo);
-if not hdCreateSceneParticipantResult.Success then
-	error("failed to create scene participant!");
-	return;
-end
-
-local hdAddSceneParticipantResult = hdScene:hdAddSceneParticipant(hdSceneParticipant);
-if not hdAddSceneParticipantResult.Success then
-	error("failed to append scene participant to scene!");
-end
-
---// Then, using the same Heimdall instance, create a new hdSceneHandle
---// This handle will allow a point of entry into the scene and act as a gateway between the hdScene and the hdSceneParticipant
-local hdSceneHandleCreateInfo : hdTypes.hdSceneHandleCreateInfo = {
-	handleName = "TestHandle";
-	handleCFrame = CFrame.identity;
-	handleScene = hdScene;
-	handleTags = {
-		hdHandleType = hdEnums.hdHandleType.hdRootHandle;
-	};
-};
-local hdCreateSceneHandleResult, hdSceneHandle = hdInstance:hdCreateSceneHandle(hdSceneHandleCreateInfo);
-if not hdCreateSceneHandleResult.Success then
-	error("failed to create scene handle!");
-	return;
-end
-
-print("Successfully initialized Heimdall.");
-print(hdScene:hdGetSceneParticipants());
-
-hdSceneWarper:Warp(hdSceneHandle, hdSceneParticipant);

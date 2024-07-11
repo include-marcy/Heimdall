@@ -1,4 +1,7 @@
 --!strict
+--!native
+--!optimize 2
+
 -- ROBLOX Services
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local ServerStorage = game:GetService("ServerStorage");

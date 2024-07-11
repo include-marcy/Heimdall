@@ -21,11 +21,10 @@ local ServiceCreateInfo : hdTypes.hdServiceCreateInfo = {
 
 local _, CharacterService = hdInstance:hdCreateService(ServiceCreateInfo);
 
-CharacterService.CharacterRootDirectory = workspace; --// The object that characters are parented to
+CharacterService.CharacterRootDirectory = workspace; --// The Roblox object that characters are parented to
 
 function CharacterService:Boot()
 	--// Create a default scene, where characters can reside.
-	warn("booting character service...");
 	local defaultSceneCreateInfo : hdTypes.hdSceneCreateInfo = {
 		sceneName = "defaultScene";
 		sceneOwner = nil; -- server owned.
@@ -37,13 +36,13 @@ function CharacterService:Boot()
 		CharacterService.defaultScene = defaultScene;
 	end
 
+	--// Then, create an hdSceneWarper to fulfill demand for entry to the scene
 	local defaultSceneWarperCreateInfo : hdTypes.hdSceneWarperCreateInfo = {
 		hdWarpType = "HD_DEFAULT_SET_ROOT_CFRAME_CALLBACK";
 		debugMessenger = Heimdall.awaitHdDebugMessenger();
 		hdScene = CharacterService.defaultScene;
 	};
 	local warperCreateResult, defaultWarper = hdInstance:hdCreateSceneWarper(defaultSceneWarperCreateInfo);
-	warn("default warper: ", defaultWarper);
 	if warperCreateResult.Success then
 		CharacterService.defaultWarper = defaultWarper;
 	end
@@ -69,25 +68,28 @@ function CharacterService:hdCreatePhysicalCharacter(Player : Player?)
 end
 
 function CharacterService:PlayerAdded(Player : Player)
-	print(Player, " is going to get a character now.");
+	--// Create the physical character, this will be their character in the Roblox workspace
 	local physicalCharacter = CharacterService:hdCreatePhysicalCharacter(Player);
 	local hdCharacterCreateInfo : hdTypes.hdCharacterCreateInfo = {
 		physical = physicalCharacter;
 	};
+
+	--// Create the hdCharacter Heimdall object. This will represent their character in Luau.
 	local character = hdCharacter.new(hdCharacterCreateInfo);
+
+	--// Create their hdSceneParticipant, since we want them to spawn in the world.
 	local hdSceneParticipantCreateInfo : hdTypes.hdSceneParticipantCreateInfo = {
 		participantInstance = character:hdGetPhysicalCharacter();
 		debugMessenger = Heimdall.awaitHdDebugMessenger;
 	};
 	local participantResult, hdSceneParticipant = hdInstance:hdCreateSceneParticipant(hdSceneParticipantCreateInfo);
-	print(hdCharacter);
 	if not participantResult.Success then
 		error("Failed to create scene participant!");
 		return;
 	end
 
+	--// Get and use the hdSceneWarper to plant them in the default scene.
 	local defaultWarper = CharacterService.defaultWarper;
-
 	defaultWarper:Warp(CharacterService.defaultScene:hdGetRootHandle(), hdSceneParticipant);
 end
 

@@ -1,5 +1,6 @@
 --!strict
-local ScriptEditorService = game:GetService("ScriptEditorService");
+--!native
+--!optimize 2
 
 local hdTypes = require(script.Parent.Parent.lib.hdTypes);
 local hdEnums = require(script.Parent.Parent.lib.hdEnums);

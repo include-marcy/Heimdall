@@ -145,6 +145,8 @@ export type hdHumanoidCreateInfo = {
 
 export type hdCoreModuleRuntimeBehavior = "HD_CORE_CHARACTER" | "HD_CORE_PLAYER";
 
+export type hdCameraTypeUnion = typeof(hdEnums.hdCameraType.hdCameraDefault) | typeof(hdEnums.hdCameraType.hdCameraScriptable);
+
 --// hd core modules extend the service type so that we can reuse hdCommandChain structure to execute hdCoreModule functions with the hdCoreModuleManager
 export type hdCoreModuleCreateInfo = {
 	runtimeBehavior : hdCoreModuleRuntimeBehavior;

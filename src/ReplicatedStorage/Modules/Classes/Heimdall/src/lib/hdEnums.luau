@@ -25,6 +25,19 @@ local function hdDefineEnum(enumData) : hdEnum
 	return setmetatable(enumData, enumDebugOutput);
 end
 
+hdEnums["hdCameraType"] = {
+	hdCameraDefault = hdDefineEnum {
+		Name = "hdCameraDefault";
+		Value = 1;
+        HdEnumFamily = "hdCameraType";
+	} :: hdEnum;
+	hdCameraScriptable = hdDefineEnum {
+		Name = "hdCameraScriptable";
+		Value = 2;
+        HdEnumFamily = "hdCameraType";
+	} :: hdEnum;
+};
+
 hdEnums["hdHumanoidState"] = {
 	hdIdling = hdDefineEnum { --// The hdHumanoid state which is enabled when not moving nor doing anything else
 		Name = "hdIdling";

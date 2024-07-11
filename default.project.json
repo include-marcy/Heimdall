@@ -1,6 +1,5 @@
 {
   "name": "project",
-  "emitLegacyScripts": false,
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {

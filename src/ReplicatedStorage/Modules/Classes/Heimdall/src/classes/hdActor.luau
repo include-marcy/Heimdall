@@ -37,7 +37,7 @@ function hdActor:PerformCompute(computeRange)
 end
 
 function hdActor.createActor(hdActorCreateInfo : hdTypes.hdActorCreateInfo) : hdActor?
-	local hdParallelActor = script.Parent.Parent.dependencies.hdActor:Clone();
+	local hdParallelActor = script.Parent.Parent.assets.hdActor:Clone();
 	hdParallelActor.Parent = script.Parent.Parent.bin;
 
 	local hdActorObj = hdParallelActor:WaitForChild("hdActorEvent"):Invoke("hdNewInstance", hdActorCreateInfo);
