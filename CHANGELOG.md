@@ -1,8 +1,8 @@
 # Heimdall v1.0.0.a
 Heimdall v1.0.0 is not yet available[^1]
 
-# Heimdall v0.0.2.a.7.11.24
-## Release Date: July 11th, 2024
+# Heimdall v0.0.2.a.7.12.24
+## ETA Release Date: July 12th, 2024
 This release contains the following changes and additions to the Heimdall framework:
 - Full Alpha Release of hdCharacterService
     - [x] hdCharacter R6 Pre-Production Release
