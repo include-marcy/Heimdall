@@ -21,8 +21,17 @@ function hdHumanoid.new(hdHumanoidCreateInfo : hdTypes.hdHumanoidCreateInfo) : h
     humanoid.humanoidState = hdEnums.hdHumanoidState.hdIdlingState;
     humanoid.disabledStates = {};
     humanoid.hdCharacter = hdHumanoidCreateInfo.hdCharacter;
+    humanoid.hdHumanoidHandleType = hdHumanoidCreateInfo.hdHumanoidHandleType;
 
     return humanoid;
+end
+
+function hdHumanoid:hdMove(Direction : Vector3)
+    
+end
+
+function hdHumanoid:hdMoveTo(PositionOrPart : Vector3 | BasePart)
+
 end
 
 --[==[

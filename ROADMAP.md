@@ -14,6 +14,7 @@ The Heimdall project is not complete! We are always interested in ways to improv
 - [ ] Heimdall Character Objects API
 - [ ] Heimdall ECS Full Launch
 - [ ] Heimdall Scene Full Launch
+- [ ] Heimdall JudgedValue API [^✚]
 - [ ] HECL Executor API
 - [ ] roblox-ts integration needs?
 - [ ] Heimdall Testing API
@@ -47,6 +48,15 @@ The Heimdall project is not complete! We are always interested in ways to improv
 - [ ] Hera Benchmarking API
 - [ ] Hera OSS Utility and Tinker Tools [^7]
 
+# Odin API Goals
+- [ ] Odin Administrator API
+- [ ] Odin Permission API
+- [ ] Odin Value Types API
+- [ ] Odin Moderation Panel API
+- [ ] Odin Anticheat API
+- [ ] Odin Validation Layers API
+- [ ] Odin Sanitizer API
+
 # Open Problems and Highlighted Issues
 There are no current open highlighted issues.
 
@@ -56,6 +66,7 @@ There are no current open highlighted issues.
 - [ ] Heimdall Physical Character R15 and Rthro API Extensions
 - [ ] Heimdall Assets API [^9]
 - [ ] Heimdall Cloud Tools API [^10]
+- [ ] Heimdall Profile API (Part of Cloud Tools API) [^✼]
 - [ ] Heimdall Package Manager API and Plugin [^11]
 - [ ] Heimdall Hot Reload API [^12]
 - [ ] Heimdall Debug Dump API [^13]
@@ -65,6 +76,7 @@ There are no current open highlighted issues.
 - [ ] HECL IDE plugin and `.hc` file support in third party editors
 
 [^1]: Contents of the *Hermes* Project, a subset of Heimdall
+[^✚]: JudgedValue API refers to a theoretical system where competing ephemeral values are compared and one is determined to be the current state of truth. This is useful for cases where real properties are subject to various actors attempting to modify the state of the same object.
 [^2]: Basic globals/builtins, basic data types
 [^3]: Functions, strings, other objects
 [^4]: Include statements and file management
@@ -74,6 +86,7 @@ There are no current open highlighted issues.
 [^8]: Tools to convert existing projects to Heimdall
 [^9]: Asset management, loading and unloading assets, etc.
 [^10]: Datastore, Live Cloud Features, Cloud Integration API features and quality of life
+[^✼]: A revision of popular DataStoreService wrapper solutions that will aim to improve and secure data stores across servers.
 [^11]: GitHub synchronization, Roblox Team Create support
 [^12]: Re-build a project while it is running a simulation
 [^13]: Output files and debug information about a running project

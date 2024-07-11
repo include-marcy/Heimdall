@@ -22,6 +22,7 @@ local userRotation =  Vector3.zero;
 local realUserRotation = Vector3.zero;
 local userZoom = Instance.new("NumberValue");
 userZoom.Value = 10;
+local actualZoom = userZoom.Value;
 
 local cameraCFrameOffset = CFrame.new(0, 1, -userZoom.Value) * CFrame.Angles(0, math.rad(180), 0);
 
@@ -30,6 +31,10 @@ local MIN_Y_ROTATION = -90;
 
 local MIN_ZOOM = 0;
 local MAX_ZOOM = 20;
+
+local function Lerp(a, b, t)
+	return a + (b - a) * t
+end
 
 function hdCameraDefault:Update(deltaTime : number)
     local Character = hdCharacterService:hdGetCharacter(Players.LocalPlayer, 15);
@@ -44,25 +49,43 @@ function hdCameraDefault:Update(deltaTime : number)
         return;
     end
 
-    realUserRotation = userRotation; --realUserRotation:Lerp(userRotation, deltaTime * 10);
+    realUserRotation = userRotation; --realUserRotation:Lerp(userRotation, deltaTime * 20);
 
     local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart");
     local CameraOffset = hdCameraDefault:hdGetCameraCFrameOffset();
 
-    Camera.CFrame = (HumanoidRootPart.CFrame * CameraOffset) * CFrame.new(0, 0, -userZoom.Value) * CFrame.Angles(0, math.rad(180), 0);
+    local CameraGoalCFrame = (HumanoidRootPart.CFrame * CameraOffset) * CFrame.new(0, 0, -userZoom.Value) * CFrame.Angles(0, math.rad(180), 0);
+    local Zoom = hdCameraDefault:hdGetOccludedCameraZoom(Character, HumanoidRootPart.CFrame, CameraGoalCFrame, userZoom.Value);
+    actualZoom = Lerp(actualZoom, Zoom, deltaTime * 8);
+    local FinalCFrame = (HumanoidRootPart.CFrame * CameraOffset) * CFrame.new(0, 0, -actualZoom) * CFrame.Angles(0, math.rad(180), 0);
+
+    Camera.CFrame = FinalCFrame;
 end
 
 function hdCameraDefault:hdSetCameraCFrameOffset(newCameraCFrameOffset)
     cameraCFrameOffset = newCameraCFrameOffset;
 end
 
+function hdCameraDefault:hdGetOccludedCameraZoom(Character : Model, Origin : CFrame, CameraGoalCFrame : CFrame, Zoom : number) : CFrame
+    local RaycastParameters = RaycastParams.new();
+    RaycastParameters.FilterType = Enum.RaycastFilterType.Exclude;
+    RaycastParameters.FilterDescendantsInstances = {Character};
+
+    local RaycastResult = workspace:Raycast(Origin.Position, (CFrame.lookAt(Origin.Position, CameraGoalCFrame.Position).LookVector) * Zoom, RaycastParameters);
+    if RaycastResult then
+        return RaycastResult.Distance - 0.1;
+    end
+
+    return Zoom;
+end
+
 function hdCameraDefault:hdGetCameraCFrameOffset()
     local leftRight = -math.rad(realUserRotation.X);
 
     --// Calculate camera position and angle around the horizontal axis:
-    local z = userZoom.Value;
-    local xOffset = math.cos(leftRight) * z;
-    local yOffset = math.sin(leftRight) * z;
+    local zoom = userZoom.Value;
+    local xOffset = math.cos(leftRight) * zoom;
+    local yOffset = math.sin(leftRight) * zoom;
 
     local yAngleOffset = -math.atan2(yOffset, xOffset);
 
@@ -73,7 +96,7 @@ function hdCameraDefault:hdGetCameraCFrameOffset()
 
     local X, Y, Z = CameraCFrame:ToOrientation();
 
-    return CFrame.Angles(X, -Y, Z) * CFrame.Angles(-math.rad(realUserRotation.Y), 0, 0);
+    return CFrame.Angles(X, -Y, Z) * CFrame.Angles(math.rad(realUserRotation.Y), 0, 0);
 end
 
 local zoomInProgress = false;

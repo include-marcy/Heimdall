@@ -175,6 +175,7 @@ function hdScene.prototype:_createSceneInternal()
 				handleMaxParticipants = handle:GetAttribute("hdMaxParticipants");
 				handleMinParticipants = handle:GetAttribute("hdMinParticipants");
 				handleCFrame = handle.CFrame;
+				handleSize = handle.Size;
 				handleTags = handle:GetAttributes();
 			};
 			scene:hdCreateSceneHandle(sceneHandleCreateInfo);

@@ -34,8 +34,10 @@ local function DEFAULT_HD_WARP_CALLBACK(sceneWarper : hdSceneWarper, hdSceneHand
 		end
 
 		local hdHandleCFrame = hdSceneHandle:hdGetHandleAssemblyCFrame();
-		hdSceneParticipantRootAssembly.CFrame = hdHandleCFrame;
-		
+		local hdHandleObjectSize = hdSceneHandle:hdGetHandleAssemblySize();
+
+		hdSceneParticipantRootAssembly.CFrame = hdHandleCFrame * CFrame.new(0, 2 + hdHandleObjectSize.Y / 2, 0);
+
 		return;
 	end));
 end

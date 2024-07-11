@@ -25,6 +25,24 @@ local function hdDefineEnum(enumData) : hdEnum
 	return setmetatable(enumData, enumDebugOutput);
 end
 
+hdEnums["hdHumanoidHandleType"] = {
+	hdHumanoidCapsule = hdDefineEnum { --// Humanoid collider is a capsule of user defined radius and height
+		Name = "hdHumanoidCapsule";
+		Value = 1;
+		HdEnumFamily = "hdHumanoidHandleType";
+	} :: hdEnum;
+	hdHumanoidCube = hdDefineEnum { --// Humanoid collider is a single cube the size of the bounding box
+		Name = "hdHumanoidCube";
+		Value = 2;
+		HdEnumFamily = "hdHumanoidHandleType";
+	} :: hdEnum;
+	hdHumanoidPartPrecise = hdDefineEnum { --// All parts of the character are precise colliders
+		Name = "hdHumanoidPartPrecise";
+		Value = 3;
+		HdEnumFamily = "hdHumanoidHandleType";
+	} :: hdEnum;
+};
+
 hdEnums["hdCameraType"] = {
 	hdCameraDefault = hdDefineEnum {
 		Name = "hdCameraDefault";

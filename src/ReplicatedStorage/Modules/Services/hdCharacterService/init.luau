@@ -75,4 +75,47 @@ function hdCharacterService:PlayerAdded(Player : Player)
     hdCharacterService:hdSetCharacter(Player, character);
 end
 
+function hdCharacterService:hdDecodeArg(instruction : buffer) : string
+    local argline = buffer.readu8(instruction, 0);
+    local args = {
+        [0] = "hdWriteCharacterPosition";
+    };
+
+    return args[argline];
+end
+
+function hdCharacterService:hdDecodeBufferVariadics(instruction : buffer)
+    local offset = 8;
+    local variadicArgs = {};
+
+    for i = offset, buffer.len(instruction), 16 do
+        local arg = buffer.readu16(instruction, i);
+        table.insert(variadicArgs, i);
+    end
+
+    return variadicArgs;
+end
+
+function hdCharacterService:hdWriteCharacterPosition(Player, p1, p2, p3)
+    
+end
+
+function hdCharacterService:Boot()
+    local characterNet = Heimdall.hdNet:UnreliableRemoteEvent("hdCharacterNet");
+    characterNet.OnServerEvent:Connect(function(player : Player, instruction : buffer)
+        local decodedFunctionName = hdCharacterService:hdDecodeArg(instruction);
+        if not decodedFunctionName then
+            return;
+        end
+        local rawFunc = hdCharacterService[decodedFunctionName];
+        if not rawFunc then
+            return;
+        end
+
+        local args = hdCharacterService:hdDecodeBufferVariadics(instruction);
+
+        rawFunc(hdCharacterService, player, table.unpack(args));
+    end)
+end
+
 return hdCharacterService;

@@ -23,6 +23,7 @@ function hdSceneHandle.new(hdSceneHandleCreateInfo : hdTypes.hdSceneHandleCreate
 	sceneHandle.name = hdSceneHandleCreateInfo.handleName;
 	sceneHandle._handleTags = hdSceneHandleCreateInfo.handleTags;
 	sceneHandle._CFrame = hdSceneHandleCreateInfo.handleCFrame;
+	sceneHandle._Size = hdSceneHandleCreateInfo.handleSize;
 
 	sceneHandle.Properties = {
 		MaxParticipants = hdSceneHandleCreateInfo.handleMaxParticipants or math.huge;
@@ -39,6 +40,12 @@ function hdSceneHandle:hdGetHandleAssemblyCFrame() : CFrame
 	local sceneHandle : hdSceneHandle = self;
 	
 	return sceneHandle._CFrame;
+end
+
+function hdSceneHandle:hdGetHandleAssemblySize() : Vector3
+	local sceneHandle : hdSceneHandle = self;
+
+	return sceneHandle._Size;
 end
 
 function hdSceneHandle:hdGetHandleTag(handleTagName : string) : boolean

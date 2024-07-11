@@ -142,6 +142,7 @@ export type hdCharacterCreateInfo = {
 
 export type hdHumanoidCreateInfo = {
 	hdCharacter : any;
+	hdHumanoidHandleType : hdEnums.hdEnum;
 };
 
 export type hdCoreModuleRuntimeBehavior = "HD_CORE_CHARACTER" | "HD_CORE_PLAYER";
@@ -167,6 +168,7 @@ export type hdSceneHandleCreateInfo = {
 	handleName : string;
 	handleScene : any;
 	handleCFrame : CFrame;
+	handleSize : Vector3;
 	handleMaxParticipants : number?;
 	handleMinParticipants : number?;
 	handleTags : any;

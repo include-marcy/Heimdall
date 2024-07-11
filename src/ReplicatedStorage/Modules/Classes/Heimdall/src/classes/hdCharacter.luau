@@ -14,6 +14,7 @@ hdCharacter.__index = hdCharacter;
 export type hdCharacter = typeof(setmetatable({} :: {
     physical : hdPhysicalCharacterR6;
     wrapping : hdWrapping.hdWrapping;
+    humanoid : hdHumanoid.hdHumanoid;
 }, {} :: typeof(hdCharacter)));
 
 export type hdPhysicalCharacterR6 = typeof(setmetatable({} :: {
@@ -36,7 +37,7 @@ function hdCharacter.new(hdCharacterCreateInfo : hdTypes.hdCharacterCreateInfo) 
         instance = character.physical;
     };
     local wrapping = hdWrapping.new(wrappingInfo);
-    wrapping:Create(hdHumanoid, {
+    character.humanoid = wrapping:Create(hdHumanoid, {
         hdCharacter = character;
     })
 
