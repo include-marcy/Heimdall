@@ -45,3 +45,5 @@ The initial version of Heimdall which contains project layouts, some complete cl
     - [x] TestEZ
     - [x] Trove
     - [x] Net
+
+[^1]: v1.0.0a will be the first stable alpha release, still signed as pre-production.
