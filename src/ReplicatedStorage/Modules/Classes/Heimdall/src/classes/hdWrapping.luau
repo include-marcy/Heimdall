@@ -21,7 +21,7 @@ export type hdWrapping = typeof(setmetatable({} :: {
 	
 	All you have to do is define a new CharacterAdded callback in your hdService, and then return an hdWrapping from that
 	callback to make a new cleanup object that also contains a trove.
-	
+
 	```luau
 	function fooService:CharacterAdded(character : Model) : hdWrapping.hdWrapping
 		local hdWrappingCreateInfo : hdTypes.hdWrappingCreateInfo = {
@@ -44,7 +44,7 @@ export type hdWrapping = typeof(setmetatable({} :: {
 ]=]
 function hdWrapping.new(hdWrappingCreateInfo : hdTypes.hdWrappingCreateInfo) : hdWrapping
 	local Wrapping = setmetatable({}, hdWrapping);
-	
+
 	local friend = hdWrappingCreateInfo.instance;
 	Wrapping.friend = friend;
 	Wrapping.friendTrove = hdTrove.instanceTrove(friend);

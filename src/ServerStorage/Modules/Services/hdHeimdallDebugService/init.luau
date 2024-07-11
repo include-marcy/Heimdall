@@ -42,7 +42,7 @@ function HeimdallDebugService:PlayerAdded(player : Player) : hdWrapping.hdWrappi
 			hdInstance:hdRemoveEntity(entityName)
 		end
 	end)
-	
+
 	return wrapping;
 end
 

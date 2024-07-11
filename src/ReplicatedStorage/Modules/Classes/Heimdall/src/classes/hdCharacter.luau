@@ -4,7 +4,6 @@
 local hdLib = script.Parent.Parent.lib;
 local hdClasses = script.Parent;
 local hdTypes = require(hdLib.hdTypes);
-local hdEnums = require(hdLib.hdEnums);
 
 local hdWrapping = require(hdClasses.hdWrapping);
 local hdHumanoid = require(hdClasses.hdHumanoid);
@@ -31,6 +30,7 @@ function hdCharacter.new(hdCharacterCreateInfo : hdTypes.hdCharacterCreateInfo) 
     local character = setmetatable({}, hdCharacter);
 
     character.physical = hdCharacterCreateInfo.physical;
+    character.context = hdCharacterCreateInfo.context;
 
     local wrappingInfo : hdTypes.hdWrappingCreateInfo = {
         instance = character.physical;
@@ -49,6 +49,24 @@ function hdCharacter:hdGetPhysicalCharacter() : hdPhysicalCharacterR6?
     local character : hdCharacter = self;
 
     return character.physical;
+end
+
+function hdCharacter:Destroy()
+    local character : hdCharacter = self;
+
+    if character.physical then
+        character.physical:Destroy();
+        character.physical = nil;
+    end
+
+    if character.wrapping then
+        character.wrapping:Destroy();
+        character.wrapping = nil;
+    end
+
+    table.clear(character);
+    setmetatable(character, nil);
+    character = nil;
 end
 
 return hdCharacter;

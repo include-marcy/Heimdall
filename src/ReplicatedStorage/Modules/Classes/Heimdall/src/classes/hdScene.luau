@@ -104,7 +104,6 @@ function hdScene:hdGetRootHandle() : hdSceneHandle.hdSceneHandle?
 	local scene : hdScene = self;
 
 	for _, handle in scene.sceneHandles do
-		warn(handle, handle:hdGetHandleTag("hdRootHandle"));
 		if handle:hdGetHandleTag("hdRootHandle") then
 			return handle;
 		end
@@ -178,7 +177,7 @@ function hdScene.prototype:_createSceneInternal()
 				handleCFrame = handle.CFrame;
 				handleTags = handle:GetAttributes();
 			};
-			print(scene:hdCreateSceneHandle(sceneHandleCreateInfo));
+			scene:hdCreateSceneHandle(sceneHandleCreateInfo);
 		end
 	end
 

@@ -150,6 +150,36 @@ end
 --// We can reuse the prior hdFence to await all :PlayerAdded() callbacks to complete as well.
 synchronization:hdWaitForFence();
 
+local hdCharacterService = hdInstance:hdGetService("hdCharacterService", 15);
+
+local function hdAddHdCharacter(hdCharacter)
+	local hdAddHdCharacterCommandInfo : hdTypes.hdCommandInfo = {
+		name = "hdAddCharacter";
+		commandSafetyLevel = "HD_CMD_SAFETY_LEVEL_HIGH";
+		commandInvocationType = "HD_COMMAND_INVOC_TYPE_MIXED";
+		commands = {
+			"HD_ADD_HD_CHAR";
+		};
+	};
+
+	local hdAddHdCharacterResult = hdCommandChain:hdSetCommandInfo(hdAddHdCharacterCommandInfo);
+	if not hdAddHdCharacterResult.Success then
+		error("failed to reconfigure command chain!");
+	end
+
+	local hdResult = hdServiceManager:hdInvokeCommandChain(hdCommandChain, nil, hdCharacter);
+	if not hdResult.Success then
+		error("failed to add hd character!");
+	end
+end
+
+local hdCharacter = hdCharacterService:hdGetCharacter(Players.LocalPlayer);
+if hdCharacter then
+	hdAddHdCharacter(hdCharacter);
+end
+
+hdCharacterService.hdCharacterAdded:Connect(hdAddHdCharacter);
+
 --// Since we want to utilize hdService's Update function each frame, we can now rebind the hdCommandChain to run the HD_UPDT command.
 local hdUpdateCommandInfo : hdTypes.hdCommandInfo = {
 	name = "Update";

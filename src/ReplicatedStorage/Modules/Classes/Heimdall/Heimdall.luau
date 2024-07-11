@@ -10,6 +10,7 @@ local hdClasses = script.Parent.src.classes;
 local hdDebugMessenger = require(hdClasses.hdDebugMessenger);
 local hdInstance = require(hdClasses.hdInstance);
 local hdLaunchToken = require(hdClasses.hdLaunchToken);
+local hdSettings = require(script.Parent.settings);
 
 local Heimdall = {
 	hdTypes = hdTypes;
@@ -18,7 +19,9 @@ local Heimdall = {
 Heimdall.__index = Heimdall;
 
 export type hdObject = typeof(setmetatable({} :: {
+	_user : string;
 	_hdInstance : hdInstance.hdInstance?;
+	settings : typeof(hdSettings);
 	debugMessenger : hdDebugMessenger.hdDebugMessenger?;
 }, {} :: typeof(Heimdall)));
 
@@ -58,6 +61,7 @@ function Heimdall.new(hdObjectCreateInfo : hdTypes.hdObjectCreateInfo) : hdObjec
 
 	local _hdObject = setmetatable({
 		_user = nameSpace;
+		settings = hdSettings;
 	}, Heimdall);
 
 	hdObjects[nameSpace] = _hdObject;

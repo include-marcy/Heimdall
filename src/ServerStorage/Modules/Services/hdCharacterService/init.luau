@@ -14,16 +14,16 @@ local hdCharacter = require(hdClasses.hdCharacter);
 
 -- Service declaration
 local ServiceCreateInfo : hdTypes.hdServiceCreateInfo = {
-	name = "CharacterService";
+	name = "hdCharacterService";
 	loadPriority = 2;
 	moduleReference = script;
 };
 
-local _, CharacterService = hdInstance:hdCreateService(ServiceCreateInfo);
+local _, hdCharacterService = hdInstance:hdCreateService(ServiceCreateInfo);
 
-CharacterService.CharacterRootDirectory = workspace; --// The Roblox object that characters are parented to
+hdCharacterService.CharacterRootDirectory = Heimdall.settings.hdCharacterRootDirectory; --// The Roblox object that characters are parented to
 
-function CharacterService:Boot()
+function hdCharacterService:Boot()
 	--// Create a default scene, where characters can reside.
 	local defaultSceneCreateInfo : hdTypes.hdSceneCreateInfo = {
 		sceneName = "defaultScene";
@@ -33,22 +33,22 @@ function CharacterService:Boot()
 	};
 	local defaultSceneResult, defaultScene = hdInstance:hdCreateScene(defaultSceneCreateInfo);
 	if defaultSceneResult.Success then
-		CharacterService.defaultScene = defaultScene;
+		hdCharacterService.defaultScene = defaultScene;
 	end
 
 	--// Then, create an hdSceneWarper to fulfill demand for entry to the scene
 	local defaultSceneWarperCreateInfo : hdTypes.hdSceneWarperCreateInfo = {
 		hdWarpType = "HD_DEFAULT_SET_ROOT_CFRAME_CALLBACK";
 		debugMessenger = Heimdall.awaitHdDebugMessenger();
-		hdScene = CharacterService.defaultScene;
+		hdScene = hdCharacterService.defaultScene;
 	};
 	local warperCreateResult, defaultWarper = hdInstance:hdCreateSceneWarper(defaultSceneWarperCreateInfo);
 	if warperCreateResult.Success then
-		CharacterService.defaultWarper = defaultWarper;
+		hdCharacterService.defaultWarper = defaultWarper;
 	end
 end
 
-function CharacterService:hdCreatePhysicalCharacter(Player : Player?)
+function hdCharacterService:hdCreatePhysicalCharacter(Player : Player?)
 	local StarterCharacter = StarterPlayer:FindFirstChild("StarterCharacter");
 	local physicalCharacter;
 	if StarterCharacter then
@@ -58,7 +58,7 @@ function CharacterService:hdCreatePhysicalCharacter(Player : Player?)
 	end
 
 	physicalCharacter.Name = Player and Player.Name or "hdCharacter";
-	physicalCharacter.Parent = CharacterService.CharacterRootDirectory;
+	physicalCharacter.Parent = hdCharacterService.CharacterRootDirectory;
 
 	if Player then
 		Player.ReplicationFocus = physicalCharacter;
@@ -67,11 +67,12 @@ function CharacterService:hdCreatePhysicalCharacter(Player : Player?)
 	return physicalCharacter;
 end
 
-function CharacterService:PlayerAdded(Player : Player)
+function hdCharacterService:PlayerAdded(Player : Player)
 	--// Create the physical character, this will be their character in the Roblox workspace
-	local physicalCharacter = CharacterService:hdCreatePhysicalCharacter(Player);
+	local physicalCharacter = hdCharacterService:hdCreatePhysicalCharacter(Player);
 	local hdCharacterCreateInfo : hdTypes.hdCharacterCreateInfo = {
 		physical = physicalCharacter;
+		context = "server";
 	};
 
 	--// Create the hdCharacter Heimdall object. This will represent their character in Luau.
@@ -89,8 +90,8 @@ function CharacterService:PlayerAdded(Player : Player)
 	end
 
 	--// Get and use the hdSceneWarper to plant them in the default scene.
-	local defaultWarper = CharacterService.defaultWarper;
-	defaultWarper:Warp(CharacterService.defaultScene:hdGetRootHandle(), hdSceneParticipant);
+	local defaultWarper = hdCharacterService.defaultWarper;
+	defaultWarper:Warp(hdCharacterService.defaultScene:hdGetRootHandle(), hdSceneParticipant);
 end
 
-return CharacterService;
+return hdCharacterService;

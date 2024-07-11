@@ -137,6 +137,7 @@ export type hdWrappingCreateInfo = {
 
 export type hdCharacterCreateInfo = {
 	physical : Model;
+	context : string;
 };
 
 export type hdHumanoidCreateInfo = {
@@ -146,6 +147,8 @@ export type hdHumanoidCreateInfo = {
 export type hdCoreModuleRuntimeBehavior = "HD_CORE_CHARACTER" | "HD_CORE_PLAYER";
 
 export type hdCameraTypeUnion = typeof(hdEnums.hdCameraType.hdCameraDefault) | typeof(hdEnums.hdCameraType.hdCameraScriptable);
+
+export type hdControlModeUnion = typeof(hdEnums.hdControlMode.hdControlModeDefault) | typeof(hdEnums.hdControlMode.hdControlModeScriptable);
 
 --// hd core modules extend the service type so that we can reuse hdCommandChain structure to execute hdCoreModule functions with the hdCoreModuleManager
 export type hdCoreModuleCreateInfo = {

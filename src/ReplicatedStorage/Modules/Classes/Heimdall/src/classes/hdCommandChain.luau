@@ -7,7 +7,6 @@ local hdEnums = require(hdLib.hdEnums);
 local hdClasses = script.Parent;
 local hdProtectedCallResultEmitter = require(hdClasses.hdProtectedCallResultEmitter);
 local hdDebugMessenger = require(hdClasses.hdDebugMessenger);
-local hdService = require(hdClasses.hdService);
 local hdFence = require(hdClasses.hdFence);
 
 local HD_FUNCTIONS_COMMAND_MAP : hdTypes.hdCommandChainFunctionMap = {
@@ -17,6 +16,7 @@ local HD_FUNCTIONS_COMMAND_MAP : hdTypes.hdCommandChainFunctionMap = {
 	HD_UPDT = "Update";
 	HD_ADD_CHR = "CharacterAdded";
 	HD_ADD_PLR = "PlayerAdded";
+	HD_ADD_HD_CHR = "hdCharacterAdded";
 };
 
 local hdCommandChain = {
@@ -186,40 +186,40 @@ end
 ]=]
 function hdCommandChain:hdRunCommandChain(fence : hdFence.hdFence?, ...) : hdTypes.hdProtectedCallResult
 	local commandChain : hdCommandChain = self;
-	
+
 	return commandChain.prototype._callInternal(commandChain, "_runCommandChainInternal", fence, ...)
 end
 
 function hdCommandChain.prototype:_runCommandChainInternal(fence : hdFence.hdFence?, ...)
 	local commandChain : hdCommandChain = self;
-	
+
 	if hdCommandChain:hdGetCommandChainState() == "HD_COMMAND_CHAIN_BUSY" then
 		if fence then
 			fence:hdSignalFence()
 		end
 
 		error(hdEnums.hdFailureTypes.hdCommandChainBusy);
-		
+
 		return;
 	end
-	
+
 	--// print("attempting to run command chain, setting state to busy")
 	local hdResult = commandChain:hdSetCommandChainState("HD_COMMAND_CHAIN_BUSY");
 	if not hdResult.Success then
 		error(hdEnums.hdFailureTypes.hdCommandChainStateSetFail);
 		return;
 	end
-	
+
 	local commandInfo = commandChain.commandInfo;
 	local commandInvocationType : hdTypes.hdCommandInvocationType = commandInfo.commandInvocationType;
 	local commandSafetyLevel : hdTypes.hdCommandSafetyLevel = commandInfo.commandSafetyLevel;
 	local commands = commandInfo.commands
-	
+
 	for _, hdCommand : hdTypes.hdCommand in commands do
 		local clock = os.clock();
-		-- print("Running: ", hdCommand);
+		--// print("Running: ", hdCommand);
 		commandChain.prototype._runCommand(commandChain, hdCommand, commandInvocationType, commandSafetyLevel, ...);
-		-- print("Command ", hdCommand, " took ", os.clock() - clock, "s to run.")
+		--// print("Command ", hdCommand, " took ", os.clock() - clock, "s to run.")
 	end
 
 	--// print("finished running command chain, setting state to free")
@@ -240,8 +240,7 @@ function hdCommandChain.prototype:_runCommand(command : hdTypes.hdCommand, comma
 		if not hdServiceFunction then
 			continue
 		end
-				
-		local protectedCallResult
+
 		if commandInvocationType == "HD_COMMAND_INVOC_TYPE_MIXED" or commandInvocationType == "HD_CMD_INVOC_TYPE_ASYNC" then
 			local fence : hdFence.hdFence
 			if commandInvocationType == "HD_COMMAND_INVOC_TYPE_MIXED" then
@@ -249,7 +248,7 @@ function hdCommandChain.prototype:_runCommand(command : hdTypes.hdCommand, comma
 					fenceInitialState = "HD_FENCE_UNSIGNALED"
 				};
 				fence = hdFence.new(hdFenceCreateInfo);
-				
+
 				table.insert(hdFences, fence);
 			end
 			task.spawn(hdServiceFunction, fence);
@@ -304,7 +303,7 @@ function hdCommandChain.prototype:_getServiceFunction(hdService : hdService.hdSe
 			local Pass, Fail = pcall(function()
 				hdServiceFunction(hdService, table.unpack(hdArgs));
 			end)
-			
+
 			if not Pass then
 				--debug.profileend();
 

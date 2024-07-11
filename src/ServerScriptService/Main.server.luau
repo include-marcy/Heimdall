@@ -113,9 +113,8 @@ if hdResult.ProtectedCallResult ~= hdEnums.hdProtectedCallResults.Passed.Value t
 	error("failed to invoke command chain!");
 	return;
 end
-print "waiting for fence...";
+
 sync:hdWaitForFence();
-print "done waiting for fence!";
 
 print("Successfully initialized Heimdall.");
 local function addPlayer(player)

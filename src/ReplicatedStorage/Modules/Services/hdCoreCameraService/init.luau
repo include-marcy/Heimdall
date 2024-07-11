@@ -1,4 +1,6 @@
 --!strict
+--!native
+--!optimize 2
 -- ROBLOX Services
 local ReplicatedStorage = game:GetService("ReplicatedStorage");
 
@@ -10,7 +12,7 @@ local hdInstance = Heimdall.awaitHdInstance();
 
 -- Service declaration
 local hdCoreCameraServiceCreateInfo : hdTypes.hdServiceCreateInfo = {
-	name = "CoreCamera";
+	name = "hdCoreCameraService";
 	loadPriority = 1;
 	moduleReference = script;
 };
@@ -32,7 +34,6 @@ function hdCoreCameraService:hdSetCameraType(hdCameraType : hdTypes.hdCameraType
 
 	local module = hdCoreCameraService:hdGetCoreCameraTypeModule(hdCameraType);
 	if module then
-		module.parentService = hdCoreCameraService;
 		hdCoreCameraService.cameraModule = module;
 	end
 end
@@ -61,7 +62,7 @@ function hdCoreCameraService:Boot()
 	hdCoreCameraService:hdSetCameraType(hdEnums.hdCameraType.hdCameraDefault);
 end
 
-function hdCoreCameraService:CharacterAdded(Character)
+function hdCoreCameraService:hdCharacterAdded(Character)
 	hdCoreCameraService.Character = Character;
 end
 

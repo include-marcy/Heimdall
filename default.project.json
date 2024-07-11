@@ -1,5 +1,5 @@
 {
-  "name": "project",
+  "name": "heimdall",
   "tree": {
     "$className": "DataModel",
     "ReplicatedStorage": {

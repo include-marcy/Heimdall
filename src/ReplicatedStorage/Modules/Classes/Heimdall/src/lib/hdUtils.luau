@@ -11,11 +11,11 @@ function hdUtils:hdWaitForFences(hdFences : {hdFence.hdFence}, timeOut : number?
 		local startTime = os.clock();
 		local allFencesLoaded = false;
 
-		local signaled : hdTypes.hdFenceState = "HD_FENCE_SIGNALED"
+		local signaled : hdTypes.hdFenceState = "HD_FENCE_SIGNALED";
 		repeat
 			allFencesLoaded = true;
-			for _, hdFence in hdFences do
-				if hdFence:hdGetFenceState() ~= signaled then
+			for _, fence in hdFences do
+				if fence:hdGetFenceState() ~= signaled then
 					allFencesLoaded = false;
 					break;
 				end
@@ -29,9 +29,21 @@ function hdUtils:hdWaitForFences(hdFences : {hdFence.hdFence}, timeOut : number?
 			warn("Heimdall Debug Output: Timed out waiting for fences to load.");
 		end
 	else
-		for _, hdFence in hdFences do
-			hdFence:hdWaitForFence();
+		local allFencesLoaded = true;
+		local signaled : hdTypes.hdFenceState = "HD_FENCE_SIGNALED";
+
+		for _, fence in hdFences do
+			if fence:hdGetFenceState() ~= signaled then
+				allFencesLoaded = false;
+				break;
+			end
 		end
+		if not allFencesLoaded then
+			for _, fence in hdFences do
+				fence:hdWaitForFence();
+			end
+		end
+
 	end
 end
 

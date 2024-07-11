@@ -13,5 +13,6 @@ end
 export type hdObject = hd.hdObject;
 
 hd.hdNet = require(script.src.packages.net);
+hd.settings = require(script.settings);
 
 return hd;

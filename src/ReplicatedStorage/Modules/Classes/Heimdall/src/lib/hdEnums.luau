@@ -38,6 +38,19 @@ hdEnums["hdCameraType"] = {
 	} :: hdEnum;
 };
 
+hdEnums["hdControlMode"] = {
+	hdCameraDefault = hdDefineEnum {
+		Name = "hdControlModeDefault";
+		Value = 1;
+        HdEnumFamily = "hdControlMode";
+	} :: hdEnum;
+	hdCameraScriptable = hdDefineEnum {
+		Name = "hdControlModeScriptable";
+		Value = 2;
+        HdEnumFamily = "hdControlMode";
+	} :: hdEnum;
+};
+
 hdEnums["hdHumanoidState"] = {
 	hdIdling = hdDefineEnum { --// The hdHumanoid state which is enabled when not moving nor doing anything else
 		Name = "hdIdling";
