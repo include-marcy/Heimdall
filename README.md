@@ -7,9 +7,12 @@ Heimdall (ˈhaɪmdɔl) is a ©Roblox Experience Framework and API (Application P
 The Heimdall API provides a series of objects that each provide their own methods and properties, and each usually requires an `<hdObjectType>CreateInfo` argument. Heimdall's API is strictly typed and it is recommended to enable `--!strict` in all implementations. Include the type header file in your source code to take advantage of the many built-in types by requiring the `lib.hdTypes` module. We also recommend compiling in native with `--!native`[^1] for further boosts to performance.
 
 # Installation
-Installation can be made in the following ways:
-- Download a [recent release](https://github.com/include-marcy/Heimdall/releases/tag/prototype) of a prototype project demo ([Rojo](https://github.com/rojo-rbx/rojo) compatible)
+Currently, there are no public releases which are recommended for installation.
+<!--- 
+Install Heimdall using any of the following methods:
+- Download a [recent release](https://github.com/include-marcy/Heimdall/releases/tag/prototype) of a prototype project demo ([Rojo](https://github.com/rojo-rbx/rojo) compatible) (`TODO`)
 - Install the Heimdall standalonge package (`TODO`)
+--->
 
 # Initialization
 To initialize Heimdall, you have to make a single[^2] object twice, for both the client and server —that being the `hdObject` singleton— as the base of your application.
