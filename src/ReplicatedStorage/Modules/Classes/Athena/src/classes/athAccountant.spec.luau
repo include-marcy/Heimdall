@@ -1,3 +1,5 @@
+-- This file is part of the Athena library and is licensed under MIT License; see LICENSE.md for details
+
 return function ()
     local athAccountantClass = require(script.Parent.athAccountant);
     local athBenchClass = require(script.Parent.athBench);

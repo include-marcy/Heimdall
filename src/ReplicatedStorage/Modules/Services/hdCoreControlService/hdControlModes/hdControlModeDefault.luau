@@ -21,7 +21,7 @@ function hdControlModeDefault:Update(deltaTime : number)
         return;
     end
 
-    
+    local hdHumanoid = hdCharacter:hdGetHumanoid()
 end
 
 return hdControlModeDefault;

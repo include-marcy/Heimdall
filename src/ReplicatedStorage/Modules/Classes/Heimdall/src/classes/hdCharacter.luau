@@ -46,6 +46,12 @@ function hdCharacter.new(hdCharacterCreateInfo : hdTypes.hdCharacterCreateInfo) 
     return character;
 end
 
+function hdCharacter:hdGetHumanoid() : hdHumanoid.hdHumanoid
+    local character : hdCharacter = self;
+
+    return character.humanoid;
+end
+
 function hdCharacter:hdGetPhysicalCharacter() : hdPhysicalCharacterR6?
     local character : hdCharacter = self;
 

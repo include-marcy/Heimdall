@@ -1,0 +1,199 @@
+-- This file is part of the Athena library and is licensed under MIT License; see LICENSE.md for details
+
+--!strict
+--!native
+--!optimize 2
+
+-- ROBLOX Services
+local UserInputService = game:GetService("UserInputService");
+
+-- Athena Dependencies
+local athena = script.Parent.Parent;
+local athTypes = require(athena.lib.athTypes);
+local athUtils = require(athena.lib.athUtils);
+local athSignal = require(athena.classes.athSignal);
+local athTrove = require(athena.packages.trove);
+
+local athMobileButton = require(athena.classes.athMobileButton);
+
+-- Class Definition
+local athInputStream = athUtils.Class();
+
+export type athInputStream = typeof(setmetatable({} :: {
+    athInputBeganSignal : athSignal.athSignal;
+    athInputEndedSignal : athSignal.athSignal;
+    athInformedInputTypeChanged : athSignal.athSignal;
+    athInputChannels : {};
+    athTrove : athTrove.athTrove;
+}, {} :: typeof(athInputStream)));
+
+--[==[
+    @class athInputStream
+
+    Creates a new athInputStream, a cross-platform input streaming object that facilitates libraries demand for
+    a unified input detection method across all ©Roblox platforms.
+
+]==]
+function athInputStream.new() : athInputStream
+    local inputStream = setmetatable({}, athInputStream);
+
+    inputStream.athInputBeganSignal = athSignal.new();
+    inputStream.athInputEndedSignal = athSignal.new();
+    inputStream.athInformedInputTypeChanged = athSignal.new();
+
+    inputStream.athInputChannels = {};
+    inputStream.athTrove = athTrove.new();
+
+    return inputStream;
+end
+
+function athInputStream:athGetInputBeganSignal() : athSignal.athSignal
+    local inputStream : athInputStream = self;
+
+    return inputStream.athInputBeganSignal;
+end
+
+function athInputStream:athGetInputEndedSignal() : athSignal.athSignal
+    local inputStream : athInputStream = self;
+
+    return inputStream.athInputEndedSignal;
+end
+
+--[==[
+    Returns a signal which, when fired, outputs a unit vector describing the desired movement direction of the client.
+    For use in core script replacements where implementations should be platform blind.
+
+    Supports:
+    Input stream from customizable keyboard inputs (WASD and arrow keys by default)
+    Input stream from mobile joystick implementation
+    Input stream from gamepad
+    Input stream from VR
+]==]
+function athInputStream:athGetMovementSignal() : athSignal.athSignal
+
+end
+
+--[==[
+    Sets up this athInputStream to begin outputting input signals.
+]==]
+function athInputStream:athInit()
+    local inputStream : athInputStream = self;
+    local athInputTrove : athTrove.athTrove = inputStream.athTrove;
+    local recordedInputType = inputStream:athGetInformedInputMethod();
+
+    athInputTrove:Connect(UserInputService.InputBegan, function(inputObject : InputObject, eventConsumedByGame : boolean)
+        if eventConsumedByGame then
+            return;
+        end
+
+        local informedInputType = inputStream:athGetInformedInputMethod();
+        if informedInputType ~= recordedInputType then
+            inputStream.athInformedInputTypeChanged:Fire(recordedInputType, informedInputType);
+            recordedInputType = informedInputType;
+        end
+
+        inputStream.athInputBeganSignal:Fire(inputObject);
+    end);
+
+    athInputTrove:Connect(UserInputService.InputEnded, function(inputObject : InputObject, eventConsumedByGame : boolean)
+        if eventConsumedByGame then
+            return;
+        end
+
+        inputStream.athInputEndedSignal:Fire(inputObject);
+    end);
+end
+
+function athInputStream:athGetInformedInputMethod() : athTypes.athInformedInputType
+    local keyboardEnabled = UserInputService.KeyboardEnabled;
+    local touchEnabled = UserInputService.TouchEnabled;
+    local gamepadEnabled = UserInputService.GamepadEnabled;
+    local vrEnabled = UserInputService.VREnabled;
+
+    if keyboardEnabled then
+        return "ATH_KEYBOARD";
+    elseif touchEnabled then
+        return "ATH_TOUCH_SCREEN";
+    elseif gamepadEnabled then
+        return "ATH_GAMEPAD";
+    elseif vrEnabled then
+        return "ATH_VR";
+    end
+end
+
+function athInputStream:athGetDedicatedInputChannel(inputChannel : string)
+    local inputStream : athInputStream = self;
+
+    return inputStream.athInputChannels[inputChannel];
+end
+
+function athInputStream:athMakeDedicatedInputChannel(inputChannel : string, inputContext : string, streamPriority : number)
+    local inputStream : athInputStream = self;
+
+    if inputStream:athGetDedicatedInputChannel(inputChannel) then
+        return;
+    end
+
+    local athInputTrove : athTrove.athTrove = inputStream.athTrove;
+    local athInputChannelTrove = athInputTrove:Extend();
+    local athInputChannelInformedInputType = inputStream:athGetInformedInputMethod();
+
+    athInputChannelTrove:Connect(inputStream.athInformedInputTypeChanged, function(_, newInformedInputType : athTypes.athInformedInputType)
+        if newInformedInputType ~= athInputChannelInformedInputType then
+            athInputChannelInformedInputType = newInformedInputType;
+        end
+    end);
+
+    local dedicatedInputChannel = {
+        athInputChannelTrove = athInputChannelTrove;
+        streamPriority = streamPriority;
+        inputContext = inputContext;
+    };
+
+    inputStream.athInputChannels[inputChannel] = dedicatedInputChannel;
+
+    return dedicatedInputChannel;
+end
+
+function athInputStream:athDestroyDedicatedInputChannel(inputChannel : string)
+    local inputStream : athInputStream = self;
+    local dedicatedInputChannel = inputStream:athGetDedicatedInputChannel(inputChannel);
+    if not dedicatedInputChannel then
+        return;
+    end
+
+    local athInputChannelTrove = dedicatedInputChannel.athInputChannelTrove;
+    if athInputChannelTrove then
+        athInputChannelTrove:Destroy();
+        athInputChannelTrove = nil;
+    end
+
+    inputStream.athInputChannels[inputChannel] = nil;
+    dedicatedInputChannel = nil;
+end
+
+function athInputStream:athConfigureChannelForMobile(inputChannel : string, channelConfiguration)
+    local inputStream : athInputStream = self;
+    local dedicatedInputChannel = inputStream:athGetDedicatedInputChannel(inputChannel);
+    if not dedicatedInputChannel then
+        return;
+    end
+
+    return inputStream:athMakeMobileButton(dedicatedInputChannel, channelConfiguration.athMobileButtonCreateInfo);
+end
+
+function athInputStream:athMakeMobileButton(dedicatedInputChannel, athMobileButtonCreateInfo : athTypes.athMobileButtonCreateInfo)
+    local mobileButton = athMobileButton.new(athMobileButtonCreateInfo);
+
+    return mobileButton;
+end
+
+function athInputStream:athOrganizeMobileButtons()
+
+end
+
+function athInputStream:athCreateMobileOrganizationLayer(name : string, sortFunction : (athMobileButton) -> (number))
+
+end
+
+return athInputStream;

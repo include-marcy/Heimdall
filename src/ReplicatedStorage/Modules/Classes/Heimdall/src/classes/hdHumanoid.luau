@@ -26,6 +26,10 @@ function hdHumanoid.new(hdHumanoidCreateInfo : hdTypes.hdHumanoidCreateInfo) : h
     return humanoid;
 end
 
+function hdHumanoid:hdApplyHandleType(hdHumanoidHandleType : hdEnums.hdEnum)
+    
+end
+
 function hdHumanoid:hdMove(Direction : Vector3)
     
 end

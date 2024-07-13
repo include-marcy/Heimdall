@@ -1,51 +1,55 @@
+-- This file is part of the Athena library and is licensed under MIT License; see LICENSE.md for details
+
 return function ()
     local athHostClass = require(script.Parent.athHost);
 
     describe("athHost", function ()
+        --@example.sln.luau
         local athHost = athHostClass.new();
         local exampleProject;
 
-        it ("should host a project", function ()
+        it ("should host a project for a library developer", function ()
             exampleProject = athHost:athHostProject();
         end);
 
-        it ("should allow decomposition of a project", function ()
-            athHost:athDecomposeProject(exampleProject);
-        end);
-
-        it ("should expose configuration of a project", function ()
+        it ("should expose configuration of a project to the library developer", function ()
             local projectSettings = {
-
+                buildMode = "debug";
             };
 
             exampleProject:athSetProjectSettings(projectSettings);
         end);
 
-        it ("should allow quick solution deployment", function ()
+        it ("should allow quick solution deployment for a client", function ()
             local solution = {}; -- stored in solution file like example.sln.luau
 
-            local exampleProject = athHost:athRun(solution);
+            exampleProject = athHost:athRun(solution);
+        end);
+
+        it ("should allow decomposition of a project for a client", function ()
+            athHost:athDecomposeProject(exampleProject);
         end);
 
         it ("should facilitate access to the project and its components", function ()
-            local athProjectTypes = exampleProject.athGetProjectTypes();
-            local athProjectClasses = exampleProject.athGetProjectClasses();
-            local athProjectSingletons = exampleProject.athGetProjectSingletons();
+            local fooTypes = exampleProject.types();
+            local fooClasses = exampleProject.classes();
+            local fooSingleton = exampleProject.singleton("foo");
 
-            expect(athProjectTypes).to.be.a("table");
-            expect(athProjectClasses).to.be.a("table");
-            expect(athProjectSingletons).to.be.a("table");
+            expect(fooTypes).to.be.a("table");
+            expect(fooClasses).to.be.a("table");
+            expect(fooSingleton).to.be.a("table");
         end);
 
         it ("should provide complete overview of the project and the performance of individual components", function ()
-            local athProjectBench = exampleProject.athGetProjectBench();
-            local athProjectAccountant = exampleProject.athGetProjectAccountant();
+            local fooBench = exampleProject.bench();
+            local fooAccountant = exampleProject.accountant();
         end);
 
         it ("should allow for build modes", function()
-            local buildMode = exampleProject.athGetBuildMode();
+            local fooBuildMode = exampleProject.buildMode();
 
-            expect(buildMode).to.be.a("string");
+            expect(fooBuildMode).to.be.a("string");
+            expect(fooBuildMode).to.equal("debug");
         end);
     end);
 end
