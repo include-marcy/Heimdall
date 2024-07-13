@@ -1,3 +1,4 @@
+![ODIN Logo](../../../../../assets/OdinLogo.png)
 # What is Odin?
 Odin is a ©2024 Roblox Anti-Cheat and Network Security Protocol API (Application Program Interface) for Roblox Studio. Odin is designed to protect your application with non-intrusive, standardized and secure techniques. A fundamental principle behind cyber security is the notion that one must never trust the client. Odin revolves around this principle, and in the world where bad actors are constantly evolving, Odin provides an additional safeguard against malicious attacks made to your experience.
 
