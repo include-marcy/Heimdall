@@ -1,4 +1,4 @@
-![HeimdallTextLogo](assets/HeimdallTextDropShadow.png)
+![HeimdallTextLogo](assets/HeimdallTextDropShadow-2.png)
 ![DOCS](https://img.shields.io/badge/latest_release-v1.0.0-blue?style=flat-square&logo=Roblox%20Studio)  ![Non-Production](https://img.shields.io/badge/production-no-red?style=flat-square&logo=Roblox%20Studio)
 # What is Heimdall? 
 Heimdall (ˈhaɪmdɔl) is a ©2024 Roblox Experience Framework and API (Application Program Interface) for the ©2024 Roblox Studio software. Heimdall is designed to build high-performing applications, providing a standardized way to create and develop services and utilize parallel [Luau](https://github.com/luau-lang/luau) features. Heimdall users benefit from its explicit API, which offers them ultimate control over the execution and control flow of their backend.
