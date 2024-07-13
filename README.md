@@ -1,4 +1,4 @@
-![HeimdallTextLogo](https://github.com/include-marcy/Heimdall/assets/173523610/d16b957d-42ec-492e-a3a1-1ad10ef7b6d1)
+![HeimdallTextLogo](assets/HeimdallText.png)
 ![DOCS](https://img.shields.io/badge/latest_release-v1.0.0-blue?style=flat-square&logo=Roblox%20Studio)  ![Non-Production](https://img.shields.io/badge/production-no-red?style=flat-square&logo=Roblox%20Studio)
 # What is Heimdall? 
 Heimdall (ˈhaɪmdɔl) is a ©2024 Roblox Experience Framework and API (Application Program Interface) for the ©2024 Roblox Studio software. Heimdall is designed to build high-performing applications, providing a standardized way to create and develop services and utilize parallel [Luau](https://github.com/luau-lang/luau) features. Heimdall users benefit from its explicit API, which offers them ultimate control over the execution and control flow of their backend.
@@ -7,12 +7,7 @@ Heimdall (ˈhaɪmdɔl) is a ©2024 Roblox Experience Framework and API (Applicat
 The Heimdall API provides a series of objects that each provide their own methods and properties, and each usually requires an `<hdObjectType>CreateInfo` argument. Heimdall's API is strictly typed and it is recommended to enable the `--!strict` Luau fast flag in all implementations. Include the type header file in your source code to take advantage of the many built-in types by requiring the `lib.hdTypes` module. We also recommend compiling in native with the `--!native`[^1] Luau fast flag for further boosts to performance. Finally, if build times are not a concern, we recommend enabling the `--!optimize 2` Luau dynamic fast flag to get consistent Luau code generation with production builds, reducing inconsistencies between developer builds and live builds.
 
 # Installation
-Currently, there are no public releases which are recommended for installation.
-<!--- 
-Install Heimdall using any of the following methods:
-- Download a [recent release](https://github.com/include-marcy/Heimdall/releases/tag/prototype) of a prototype project demo ([Rojo](https://github.com/rojo-rbx/rojo) compatible) (`TODO`)
-- Install the Heimdall standalonge package (`TODO`)
---->
+Currently, there are no public releases which are recommended for installation. This framework is under development.
 
 # Initialization
 To initialize Heimdall, you have to make a single[^2] object twice, for both the client and server —that being the `hdObject` singleton— as the base of your application.
