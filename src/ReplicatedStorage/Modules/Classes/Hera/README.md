@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="570" height="906" src="../../../../../assets/HeraTextLogo.png">
+  <img width="570" height="906" src="../../../../../assets/HeraTextLogoDarkMode.png">
 </p>
 
 <div align="center">
