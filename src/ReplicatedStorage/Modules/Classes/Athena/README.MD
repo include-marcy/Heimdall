@@ -9,12 +9,14 @@ The prefix "ath" is used to distinguish Athena source files. (e.g '`athClassifie
 # Overview of the Athena API
 The Athena API is divided into several components, each of which was included in this API to facilitate the creation of fast, powerful, portable libraries that work on every platform for everyone.
 
+# Athena Library API
 The primary component of the Athena API is the athHost object. This object may be used by both maintainers and developers in order to ship and build libraries/frameworks for Roblox Studio and its associated software.
 
-Maintainers will be interested in the athLibrary object, a psueod-format object that abstracts the library into a Luau first class object. The athLibrary object exposes many useful methods for managing and exporting information about a library, such as the constituent classes, the type information, and the singletons that make up the library's API.
+Maintainers will be interested in the athLibrary object, a psuedo-format object that abstracts the library into a Luau first class object. The athLibrary object exposes many useful methods for managing and exporting information about a library, such as the constituent classes, the type information, and the singletons that make up the library's API.
 
-Developers will utilize the athHost to build an athLibrary object, stored in any `example.ath.luau` file. This will link the library to the developers workflow and will lend them access to maintainer's libraries.
+Developers will utilize the athHost to build an athLibrary object, stored in any `example.ath.luau` file. This will link the library to the developers workflow and will lend them access to maintainer's library. This interface, a 'Library to Host' mechanism, allows developers to easily manage version control and allows maintainers to easily package their library for developers to use.
 
+# Athena Platform API
 The secondary components of the Athena API are designed to make it easy to create libraries and frameworks that function on different platforms. These components are not required but their effective usage can tremendously increase quality and speed of library development.
 - athTester: Provides application testing support.
 - athToken: Provides application information tokens. These are immutable, small objects that signal information about the library.
@@ -40,8 +42,7 @@ The following documentation describes the goals and behavior of the Athena Mobil
 4. Mobile Button Implementations should be highly customizable and flexible for maintainers.
     a. Mobile Button Style should be entirely customizable.
     b. Mobile Button Behaviour should be maintainer exposed.
-5. Mobile Button Implementations should exceed the standards of quality in terms of existing open-source mobile button implementations (i.e (ContextActionUtility)[https://devforum.roblox.com/t/source-code-contextactionutility/804187]).
-
+5. Mobile Button Implementations should exceed the standards of quality in terms of existing open-source mobile button implementations (i.e [ContextActionUtility](https://devforum.roblox.com/t/source-code-contextactionutility/804187)).
 
 ## Athena MBI Checklist
 - [ ] Athena MBI: Dynamically position input streaming GUI objects using a balanced priority.
