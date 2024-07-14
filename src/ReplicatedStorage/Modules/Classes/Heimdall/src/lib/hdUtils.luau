@@ -1,4 +1,9 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
+
 local hdTypes = require(script.Parent.hdTypes);
 
 local hdClasses = script.Parent.Parent.classes;

@@ -1,4 +1,10 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
+
+--// Heimdall Dependencies
 local hdTypes = require(script.Parent.Parent.lib.hdTypes);
 
 local hdClasses = script.Parent;
@@ -7,11 +13,7 @@ local hdProtectedCallResultEmitter = require(hdClasses.hdProtectedCallResultEmit
 local hdSceneHandle = require(hdClasses.hdSceneHandle);
 local hdSceneParticipant = require(hdClasses.hdSceneParticipant);
 
-local hdScene = {
-	prototype = {};
-};
-hdScene.__index = hdScene;
-
+--// Constants
 local function GET_SCENE_FOLDER()
 	local hdSceneFolder = workspace:FindFirstChild("hdSceneFolder");
 
@@ -24,6 +26,12 @@ local function GET_SCENE_FOLDER()
 	return hdSceneFolder;
 end
 
+--// Class Declaration
+local hdScene = {
+	prototype = {};
+};
+hdScene.__index = hdScene;
+
 export type hdScene = typeof(setmetatable({}::{
 	debugMessenger : hdDebugMessenger.hdDebugMessenger;
 	protectedCaller : hdProtectedCallResultEmitter.hdProtectedCallResultEmitter;
@@ -35,18 +43,19 @@ export type hdScene = typeof(setmetatable({}::{
 }, {} :: typeof(hdScene)));
 
 --[=[
+	@class hdScene
 	Returns a new hdScene, a built-in framework type of ROBLOX object that is designed to facilitate a predictable, error-free and advanced methodology
 	for managing and orchestrating the loading and unloading of hypothetical scenes.
-	
+
 	The design philosophy of the hdScene object is loosely based on the following scenario:
 		Imagine you wish to create a game that features a number of different possible scenes, each with their own unique set of objects, scripts and logic.
-		
+
 		However, you also want to ensure that these scenes are loaded and unloaded in a safe and error-free manner, without any unforeseen
 		consequences or bugs.
-		
+
 		You also want to ensure that these scenes can be localized or globalized to anyone in the server, regardless of time or state.
 		All of these scenes might co-exist with a larger game state or world seperate from the scenes, and should not interfere with each other.
-		
+
 		You probably also want to ensure that these scenes can be easily managed and orchestrated by a centralized server-side mastermind.
 
 	The hdScene object and its dependencies provide a perfect solution to this problem, allowing instanced, server-side logic to orchestrate the
@@ -95,9 +104,9 @@ end
 
 function hdScene.prototype:_createSceneHandleInternal(hdSceneHandleCreateInfo : hdTypes.hdSceneHandleCreateInfo)
 	local scene : hdScene = self;
-	local hdSceneHandle = hdSceneHandle.new(hdSceneHandleCreateInfo);
+	local sceneHandle = hdSceneHandle.new(hdSceneHandleCreateInfo);
 
-	table.insert(scene.sceneHandles, hdSceneHandle);
+	table.insert(scene.sceneHandles, sceneHandle);
 end
 
 function hdScene:hdGetRootHandle() : hdSceneHandle.hdSceneHandle?

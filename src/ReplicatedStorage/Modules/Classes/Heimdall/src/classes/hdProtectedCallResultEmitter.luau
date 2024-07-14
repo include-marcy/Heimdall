@@ -1,9 +1,16 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
+
+--// Heimdall Dependencies
 local hdTypes = require(script.Parent.Parent.lib.hdTypes);
 local hdEnums = require(script.Parent.Parent.lib.hdEnums);
 
+--// Class Declaration
 local hdProtectedCallResultEmitter = {
-	prototype = {};	
+	prototype = {};
 };
 
 hdProtectedCallResultEmitter.__index = hdProtectedCallResultEmitter;
@@ -11,20 +18,20 @@ hdProtectedCallResultEmitter.__index = hdProtectedCallResultEmitter;
 export type hdProtectedCallResultEmitter = typeof(setmetatable({}::{}, {} :: typeof(hdProtectedCallResultEmitter)));
 
 --[=[
+	@class hdProtectedCallResultEmitter
 	Creates an hdProtectedCallResultEmitter, an internal tool used to safely call functions and emit internal pass/fail results
 
 	@param hdProtectedCallResultEmitterCreateInfo;
 	@return hdProtectedCallResultEmitter;
 ]=]
-function hdProtectedCallResultEmitter.new(hdProtectedCallResultEmitterCreateInfo : hdTypes.hdProtectedCallEmitterCreateInfo) : hdProtectedCallResultEmitter
+function hdProtectedCallResultEmitter.new(_ : hdTypes.hdProtectedCallEmitterCreateInfo) : hdProtectedCallResultEmitter
 	local protectedCallResultEmitter = setmetatable({}, hdProtectedCallResultEmitter);
-	
-	-- foobar 2000!
-	
+
 	return protectedCallResultEmitter;
 end
 
 --[=[
+	@class hdProtectedCallResultEmitter
 	Calls the given callback with variadic arguments, returning an hdProtectedCallResult with a value of either HD_SUCCESS or HD_FAILURE, depending on if
 	the callback executed without errors or not.
 
@@ -41,9 +48,8 @@ function hdProtectedCallResultEmitter:getProtectedCallResult(callback : (any?) -
 		failureType = protectedCallResultEmitter.prototype._errorHandler(protectedCallResultEmitter, ...);
 	end;
 
-	local debugThread;
 	local pass, result = xpcall(callback, error_handler, ...);
-	
+
 	if not pass then
 		return protectedCallResultEmitter.prototype._handleFail(protectedCallResultEmitter, callback, result, failureType);
 	else
@@ -88,7 +94,7 @@ function hdProtectedCallResultEmitter.prototype:_getScriptForDebugInfo(debugInfo
 	local parent = game;
 	local tree = string.split(debugInfo_script, ".");
 
-	for i, v in tree do
+	for _, v in tree do
 		parent = parent:FindFirstChild(v);
 		if parent == nil then
 			break;
@@ -117,12 +123,12 @@ function hdProtectedCallResultEmitter.prototype:_emitFailure(hdFailureCreateInfo
 
 	local failureType : hdTypes.hdFailureType = hdFailureCreateInfo.failureType or hdEnums.hdFailureTypes.hdUnknown;
 	local errorString = hdFailureCreateInfo.errorString
-	
+
 	if not errorString and typeof(failureType) == "string" then
 		errorString = failureType;
 		failureType = hdEnums.hdFailureTypes.hdUnknown;
 	end
-	
+
 	local hdFailure : hdTypes.HD_FAILURE = setmetatable({
 		ErrorString = errorString or "no error string available";
 		Traceback = hdFailureCreateInfo.traceback or "no traceback available";
@@ -131,11 +137,11 @@ function hdProtectedCallResultEmitter.prototype:_emitFailure(hdFailureCreateInfo
 		ProtectedCallResult = 2;
 		Success = false;
 	}, logger);
-	
+
 	return hdFailure :: hdTypes.HD_FAILURE;
 end
 
-function hdProtectedCallResultEmitter:_emitSuccess(hdSuccessCreateInfo : hdTypes.hdSuccessCreateInfo) : hdTypes.HD_SUCCESS
+function hdProtectedCallResultEmitter:_emitSuccess(_ : hdTypes.hdSuccessCreateInfo) : hdTypes.HD_SUCCESS
 	local logger = {
 		__tostring = function()
 			return "HD_SUCCESS";

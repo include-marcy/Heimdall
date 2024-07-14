@@ -1,12 +1,16 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
 --!native
 --!optimize 2
+
+--// Heimdall Dependencies
 local hdLib = script.Parent.Parent.lib;
-local hdClasses = script.Parent;
 
 local hdTypes = require(hdLib.hdTypes);
 local hdEnums = require(hdLib.hdEnums);
 
+--// Class Declaration
 local hdHumanoid = {};
 hdHumanoid.__index = hdHumanoid;
 
@@ -39,7 +43,10 @@ function hdHumanoid:hdMoveTo(PositionOrPart : Vector3 | BasePart)
 end
 
 --[==[
+    @class hdHumanoid
     Returns the current state of this humanoid.
+
+    @return hdHumanoidState
 ]==]
 function hdHumanoid:hdGetHumanoidState() : typeof(hdEnums.hdHumanoidState)
     local humanoid : hdHumanoid = self;
@@ -48,7 +55,10 @@ function hdHumanoid:hdGetHumanoidState() : typeof(hdEnums.hdHumanoidState)
 end
 
 --[==[
+    @class hdHumanoid
     Attempts to enter the given humanoid state on this humanoid.
+
+    @param hdHumanoidState;
 ]==]
 function hdHumanoid:hdSetHumanoidState(hdHumanoidState : typeof(hdEnums.hdHumanoidState))
     local humanoid : hdHumanoid = self;
@@ -60,7 +70,10 @@ function hdHumanoid:hdSetHumanoidState(hdHumanoidState : typeof(hdEnums.hdHumano
 end
 
 --[==[
+    @class hdHumanoid
     Toggles whether the given hdHumanoidState is allowed to be entered by this humanoid.
+
+    @param hdHumanoidState;
 ]==]
 function hdHumanoid:hdToggleStateEnabled(hdHumanoidState : typeof(hdEnums.hdHumanoidState))
     local humanoid : hdHumanoid = self;
@@ -73,6 +86,10 @@ function hdHumanoid:hdToggleStateEnabled(hdHumanoidState : typeof(hdEnums.hdHuma
     end
 end
 
+--[==[
+    @class hdHumanoid
+    Removes this hdHumanoid from the Heimdall environment and from Luau.
+]==]
 function hdHumanoid:Destroy()
 
 end

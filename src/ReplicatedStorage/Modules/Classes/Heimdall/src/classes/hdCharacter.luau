@@ -1,6 +1,10 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
 --!native
 --!optimize 2
+
+--// Heimdall Dependencies
 local hdLib = script.Parent.Parent.lib;
 local hdClasses = script.Parent;
 local hdTypes = require(hdLib.hdTypes);
@@ -8,6 +12,7 @@ local hdTypes = require(hdLib.hdTypes);
 local hdWrapping = require(hdClasses.hdWrapping);
 local hdHumanoid = require(hdClasses.hdHumanoid);
 
+--// Class Declaration
 local hdCharacter = {};
 hdCharacter.__index = hdCharacter;
 

@@ -1,4 +1,8 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
 
 --[=[
 	The hdTypes module exports a series of important hdTypes that are re-used throughout Heimdall's environment, and are intended for safe usage outside of Heimdall's

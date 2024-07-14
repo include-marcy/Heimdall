@@ -1,4 +1,9 @@
-local hdTypes = require(script.Parent.src.lib.hdTypes);
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
+--!strict
+--!native
+--!optimize 2
+
 local Heimdall = require(script.Parent.Heimdall);
 
 local HeimdallServer = {};

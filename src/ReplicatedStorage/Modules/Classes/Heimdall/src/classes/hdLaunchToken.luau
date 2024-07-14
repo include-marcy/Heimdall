@@ -1,10 +1,16 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
+
+--// Heimdall Dependencies
 local hd = script.Parent.Parent;
 local hdLib = hd.lib;
-local hdClasses = hd.classes;
 
 local hdTypes = require(hdLib.hdTypes);
 
+--// Class Declaration
 local hdLaunchToken = {};
 hdLaunchToken.__index = hdLaunchToken;
 
@@ -26,7 +32,7 @@ end
 
 function hdLaunchToken:hdGetVersion() : hdTypes.hdVersion
 	local launchToken : hdLaunchToken = self;
-	
+
 	return launchToken.hdVersion;
 end
 

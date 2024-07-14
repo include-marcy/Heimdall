@@ -1,10 +1,14 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
 --!native
 --!optimize 2
 
+--// Heimdall Dependencies
 local hdTypes = require(script.Parent.Parent.lib.hdTypes);
 local hdEnums = require(script.Parent.Parent.lib.hdEnums);
 
+--// Class Declaration
 local hdDebugMessenger = {};
 hdDebugMessenger.__index = hdDebugMessenger;
 
@@ -15,6 +19,7 @@ export type hdDebugMessenger = typeof(setmetatable({}::{
 }, {} :: typeof(hdDebugMessenger)));
 
 --[=[
+	@class hdDebugMessenger
 	Creates a new hdDebugMessenger object. These are generic, reusable debugger objects that unify the framework's output.
 
 	@param hdDebugMessengerCreateInfo;
@@ -29,6 +34,7 @@ function hdDebugMessenger.new(hdDebugMessengerCreateInfo : hdTypes.hdDebugMessen
 end
 
 --[=[
+	@class hdDebugMessenger
 	Runs an error handler integration that is designed to go after hdProtectedCallResultEmitter emissions.
 
 	:::info
@@ -63,6 +69,7 @@ function hdDebugMessenger:catch<a...>(hdFunction : string, hdProtectedCallResult
 end
 
 --[=[
+	@class hdDebugMessenger
 	Throws an error to the debug messenger
 
 	:::info
@@ -82,15 +89,15 @@ function hdDebugMessenger:throw(hdFailure : hdTypes.hdProtectedCallResult)
 			hdErrorMessage ..= `@@ hd Failure Type : {hdEnums.hdFailureTypes.hdUnknown.Value} was encountered\n`;
 		end
 	end
-	
+
 	if hdFailure.scr then
 		warn("script (clickme): ", hdFailure.scr);
 	end
-	
+
 	if hdFailure.ErrorString then
 		hdErrorMessage ..= "@@ hd Failure Message : " .. hdFailure.ErrorString .. "\n";
 	end
-	
+
 	if hdFailure.Traceback then
 		hdErrorMessage ..= "@@ hd Failure Traceback : " .. hdFailure.Traceback .. "\n";
 	end

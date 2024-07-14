@@ -1,5 +1,13 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
+
+--// Heimdall Dependencies
 local hdTypes = require(script.Parent.Parent.lib.hdTypes);
+
+--// Class Declaration
 local hdCompiledService = {};
 hdCompiledService.__index = hdCompiledService;
 
@@ -13,11 +21,11 @@ export type hdCompiledService = typeof(setmetatable({} :: {
 
 --[=[
 	Creates an hdCompiledService, services with a special runtime priority for filling out large or complex arrays of data prior to service command initialization. 
-	
+
 	:::info
 	An hdCompiledService is virtually identical to an hdService, with the exception of containing a :Compile() function which is expected to populate a
 	field in the hdCompiledService based on a specified compileRoot argument passed to the instantiation of this class.
-	
+
 	Typically, the hdCommandChain will be configured so that the Compile function is mapped to run first, so that in boot phases the other services can use an
 	hdCompileService's compiledData field to read out game data structs safely, like a list of items or abilities.
 	:::
@@ -27,17 +35,17 @@ export type hdCompiledService = typeof(setmetatable({} :: {
 ]=]
 function hdCompiledService.new(hdCompiledServiceCreateInfo : hdTypes.hdCompiledServiceCreateInfo) : hdCompiledService
 	local compiledService = setmetatable({}, hdCompiledService);
-	
+
 	local name = hdCompiledServiceCreateInfo.name;
 	local compiledRoot = hdCompiledServiceCreateInfo.compileRoot;
 	local loadPriority = hdCompiledServiceCreateInfo.loadPriority;
-	
-	compiledService.name = hdCompiledServiceCreateInfo.name;
+
+	compiledService.name = name;
 	compiledService.compiledRoot = compiledRoot;
-	compiledService.loadPriority = hdCompiledServiceCreateInfo.loadPriority;
+	compiledService.loadPriority = loadPriority;
 	compiledService.IsService = true;
 	compiledService.compiledData = {};
-	
+
 	return compiledService;
 end
 
@@ -59,10 +67,7 @@ end
 function hdCompiledService:Boot()
 end
 
-function hdCompiledService:Start()	
+function hdCompiledService:Start()
 end
-
---function hdCompiledService:Update()
---end
 
 return hdCompiledService;

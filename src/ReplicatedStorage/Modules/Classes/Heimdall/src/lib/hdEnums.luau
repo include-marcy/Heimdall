@@ -1,4 +1,8 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
 
 --[=[
 	The hdEnums module is a container which holds references to a series of re-used data types across Heimdall.

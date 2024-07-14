@@ -1,4 +1,10 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
+
+--// Heimdall Dependencies
 local hdLib = script.Parent.Parent.lib;
 local hdTypes = require(hdLib.hdTypes);
 local hdUtils = require(hdLib.hdUtils);
@@ -9,6 +15,7 @@ local hdProtectedCallResultEmitter = require(hdClasses.hdProtectedCallResultEmit
 local hdDebugMessenger = require(hdClasses.hdDebugMessenger);
 local hdFence = require(hdClasses.hdFence);
 
+--// Constants
 local HD_FUNCTIONS_COMMAND_MAP : hdTypes.hdCommandChainFunctionMap = {
 	HD_BOOT = "Boot";
 	HD_STRT = "Start";
@@ -19,6 +26,7 @@ local HD_FUNCTIONS_COMMAND_MAP : hdTypes.hdCommandChainFunctionMap = {
 	HD_ADD_HD_CHR = "hdCharacterAdded";
 };
 
+--// Class Declaration
 local hdCommandChain = {
 	prototype = {};
 };

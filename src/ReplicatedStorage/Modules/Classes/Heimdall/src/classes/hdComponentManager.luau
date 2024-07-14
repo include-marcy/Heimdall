@@ -1,4 +1,10 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
+
+--// Heimdall Dependencies
 local hd = script.Parent.Parent;
 local hdLib = hd.lib;
 local hdClasses = hd.classes;
@@ -10,6 +16,7 @@ local hdProtectedCallResultEmitter = require(hdClasses.hdProtectedCallResultEmit
 local hdInternalComponent = require(hdClasses.hdInternalComponent);
 local hdComponent = require(hdClasses.hdComponent);
 
+--// Class Declaration
 local hdComponentManager = {
 	prototype = {};
 };
@@ -22,11 +29,8 @@ export type hdComponentManager = typeof(setmetatable({} :: {
 }, {} :: typeof(hdComponentManager)));
 
 --[=[
+	@class hdComponentManager
 	Creates an hdComponentManager, a warehouse of hdComponent definitions
-	
-	:::info
-		
-	:::
 
 	@param hdComponentManagerCreateInfo;
 	@return hdComponentManager;
@@ -44,18 +48,20 @@ function hdComponentManager.new(hdComponentManagerCreateInfo : hdTypes.hdCompone
 end
 
 --[=[
+	@class hdComponentManager
 	Takes an hdComponent and adds it to the internal registry, allowing it to be recognized by the hdComponentManager in creation of new real components.
 
 	@param hdComponent;
 	@return hdProtectedCallResult;
 ]=]
-function hdComponentManager:hdRegisterComponent(hdComponent : hdComponent.hdComponent) : hdTypes.hdProtectedCallResult
+function hdComponentManager:hdRegisterComponent(component : hdComponent.hdComponent) : hdTypes.hdProtectedCallResult
 	local componentManager : hdComponentManager = self;
 
-	return componentManager.prototype._callInternal(componentManager, "_registerComponentInternal", hdComponent);
+	return componentManager.prototype._callInternal(componentManager, "_registerComponentInternal", component);
 end
 
 --[=[
+	@class hdComponentManager
 	Takes a given name string and returns an hdComponent, if one is registered under that name.
 
 	@param name : string;
@@ -68,6 +74,7 @@ function hdComponentManager:hdReadComponent(name : string) : hdComponent.hdCompo
 end
 
 --[=[
+	@class hdComponentManager
 	Takes a given name string and returns a new hdInternalComponent, if there is a registered hdComponent with name
 
 	@param name : string;
@@ -75,7 +82,7 @@ end
 ]=]
 function hdComponentManager:hdCreateInternalComponentFromRegistration(name : string) : (hdTypes.hdProtectedCallResult, hdInternalComponent.hdInternalComponent?)
 	local componentManager : hdComponentManager = self;
-	
+
 	return componentManager.prototype._callInternal(componentManager, "_createInternalComponentFromRegistrationInternal", name);
 end
 
@@ -86,27 +93,27 @@ function hdComponentManager.prototype._callInternal(componentManager : hdCompone
 	return debugMessenger:catch(f, protectedCaller:getProtectedCallResult(componentManager.prototype[f], componentManager, ...));
 end
 
-function hdComponentManager.prototype:_registerComponentInternal(hdComponent : hdComponent.hdComponent)
+function hdComponentManager.prototype:_registerComponentInternal(component : hdComponent.hdComponent)
 	local componentManager : hdComponentManager = self;
 	local components = componentManager.components;
-	
-	if componentManager:hdReadComponent(hdComponent.name) then
+
+	if componentManager:hdReadComponent(component.name) then
 		return;
 	end
-	
-	components[hdComponent.name] = hdComponent;
+
+	components[component.name] = component;
 end
 
 function hdComponentManager.prototype:_createInternalComponentFromRegistrationInternal(name : string) : hdInternalComponent.hdInternalComponent?
 	local componentManager : hdComponentManager = self;
 
-	local hdComponent = componentManager:hdReadComponent(name);
-	if not hdComponent then
+	local component = componentManager:hdReadComponent(name);
+	if not component then
 		return;
 	end
-	
+
 	return hdInternalComponent.new({
-		refComponent = hdComponent
+		refComponent = component
 	});
 end
 
