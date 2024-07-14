@@ -6,6 +6,11 @@ export type athBenchCreateInfo = {
 
 };
 
+export type athTokenCreateInfo = {
+    tokenName : string;
+    tokenValue : any;
+};
+
 export type athMobileButtonType = "ATH_BUTTON_NORMAL" | "ATH_BUTTON_JOYSTICK";
 export type athInformedInputType = "ATH_KEYBOARD" | "ATH_TOUCH_SCREEN" | "ATH_GAMEPAD" | "ATH_VR";
 
@@ -23,7 +28,8 @@ export type athMobileButtonCreateInfo = {
     active : boolean?;
 };
 
-export type athPerformanceRatingDiagnosticInfo = {  
+export type athPerformanceRatingDiagnosticInfo = {
+    patient : any;
     diagnose : {string}; -- a list of function names to try
     athBench : any; -- an athBench instance
 };

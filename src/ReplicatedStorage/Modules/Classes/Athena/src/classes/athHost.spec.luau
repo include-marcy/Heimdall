@@ -34,15 +34,20 @@ return function ()
             local fooTypes = exampleProject.types();
             local fooClasses = exampleProject.classes();
             local fooSingleton = exampleProject.singleton("foo");
+            local fooTokens = exampleProject.tokens();
 
             expect(fooTypes).to.be.a("table");
             expect(fooClasses).to.be.a("table");
             expect(fooSingleton).to.be.a("table");
+            expect(fooTokens).to.be.a("table");
         end);
 
         it ("should provide complete overview of the project and the performance of individual components", function ()
             local fooBench = exampleProject.bench();
             local fooAccountant = exampleProject.accountant();
+
+            expect(fooBench).to.be.a("table");
+            expect(fooAccountant).to.be.a("table");
         end);
 
         it ("should allow for build modes", function()

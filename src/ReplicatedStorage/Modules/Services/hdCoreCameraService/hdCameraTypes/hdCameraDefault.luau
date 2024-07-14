@@ -49,7 +49,7 @@ function hdCameraDefault:Update(deltaTime : number)
         return;
     end
 
-    realUserRotation = userRotation; --realUserRotation:Lerp(userRotation, deltaTime * 20);
+    realUserRotation = realUserRotation:Lerp(userRotation, deltaTime * 20);
 
     local HumanoidRootPart = Character:WaitForChild("HumanoidRootPart");
     local CameraOffset = hdCameraDefault:hdGetCameraCFrameOffset();

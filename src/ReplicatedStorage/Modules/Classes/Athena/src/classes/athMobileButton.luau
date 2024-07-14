@@ -33,7 +33,6 @@ local function GET_RAW_SCALE_FOR_SYSTEM_SIZE_MOBILE(systemSize : number) : UDim2
 
 end
 
-
 --[==[
     @class athMobileButton
 

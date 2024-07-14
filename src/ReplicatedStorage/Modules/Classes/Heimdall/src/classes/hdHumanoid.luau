@@ -31,7 +31,7 @@ function hdHumanoid:hdApplyHandleType(hdHumanoidHandleType : hdEnums.hdEnum)
 end
 
 function hdHumanoid:hdMove(Direction : Vector3)
-    
+    print(Direction);
 end
 
 function hdHumanoid:hdMoveTo(PositionOrPart : Vector3 | BasePart)

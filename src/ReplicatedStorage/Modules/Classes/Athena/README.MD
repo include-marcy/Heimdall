@@ -1,6 +1,6 @@
 ![Athena Logo (Dark Theme)](../../../../../assets/AthenaLogoBright.png)
 # What is Athena?
-Athena is a ©2024 Roblox Library Manager and API (Application Program Interface) for Roblox Studio and its associated software. Athena is designed to seamlessly and quickly set up libraries and frameworks for applications with an explicit developer hands-on, non-user-facing interface.
+Athena is a Roblox Library Manager and API (Application Program Interface) for Roblox Studio and its associated software. Athena is designed to seamlessly and quickly set up libraries and frameworks for applications with an explicit developer hands-on, non-user-facing interface.
 The prefix "ath" is used to distinguish Athena source files. (e.g '`athClassifier.luau`').
 
 "Maintainer" refers to the developers who use the Athena API directly to develop a library or framework.
