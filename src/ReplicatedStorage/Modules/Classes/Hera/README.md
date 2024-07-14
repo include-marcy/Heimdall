@@ -2,7 +2,10 @@
   <img width="570" height="906" src="../../../../../assets/HeraTextLogo.png">
 </p>
 
+<p align="center">
+
 # What is Hera?
+</p>
 Hera is a Roblox UI Library and API (Application Program Interface) for Roblox Studio and its associated software. Hera is designed to empower applications to build fluid and world class interfaces easily and quickly. Hera overlaps with its sister plugin, the Hera Transit Designer, which allows artists to create and customize interface animations and sound design. Programmers need only be able to know how to download a file from their artist to instantly generate a stunning interface complete with responsive visual and audio features.
 
 # Hera API Overview
