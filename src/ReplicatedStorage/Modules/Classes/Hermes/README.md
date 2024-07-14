@@ -1,4 +1,4 @@
-![Hermes Text Logo Dark](../../../../../assets/HermesTextLogo.png)
+![Hermes Text Logo Dark](../../../../../assets/HermesTextLogoDarkMode.png)
 # What is Hermes?
 Hermes is a Roblox Parallel Luau Library and API (Application Program Interface) designed solely for Roblox Studio and its associated software. Hermes simplifies and organizes the process of utilizing Parallel Luau in your projects, reducing overhead complexity associated with standard implementations of the parallel API.
 
