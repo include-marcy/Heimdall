@@ -14,6 +14,7 @@ local hdClasses = script.Parent;
 local hdProtectedCallResultEmitter = require(hdClasses.hdProtectedCallResultEmitter);
 local hdDebugMessenger = require(hdClasses.hdDebugMessenger);
 local hdFence = require(hdClasses.hdFence);
+local hdService = require(hdClasses.hdService);
 
 --// Constants
 local HD_FUNCTIONS_COMMAND_MAP : hdTypes.hdCommandChainFunctionMap = {
@@ -42,8 +43,9 @@ export type hdCommandChain = typeof(setmetatable({} :: {
 }, {} :: typeof(hdCommandChain)));
 
 --[=[
+	@class hdCommandChain
 	Creates a hdCommandChain object, which can be used to execute commands on an hdServiceManager.
-	
+
 	:::info
 	You can create 1 hdCommandChain at runtime and change out its internal command set to reuse the object and run different commands on all
 	services at once.
@@ -56,14 +58,14 @@ function hdCommandChain.new(hdCommandChainCreateInfo : hdTypes.hdCommandChainCre
 	if not hdCommandChainCreateInfo.debugMessenger then
 		error("command chain expects an hdDebugMessenger object in hdCommandChainCreateInfo!");
 	end
-	
+
 	local commandedStructs = hdCommandChainCreateInfo.commandedStructs;
 	local hdSortedStructs = {};
 
 	for _, commandedStruct in commandedStructs do
 		table.insert(hdSortedStructs, commandedStruct);
 	end
-	
+
 	local hdProtectedCallResultEmitterCreateInfo : hdTypes.hdProtectedCallEmitterCreateInfo = {};
 	local protectedCaller = hdProtectedCallResultEmitter.new(hdProtectedCallResultEmitterCreateInfo);
 	local commandChainState : hdTypes.hdCommandChainState = "HD_COMMAND_CHAIN_FREE";
@@ -77,13 +79,14 @@ function hdCommandChain.new(hdCommandChainCreateInfo : hdTypes.hdCommandChainCre
 		commandChainState = commandChainState;
 		protectedCaller = protectedCaller;
 	}, hdCommandChain);
-	
+
 	commandChain:hdApplyCommandDirectionSorting()
 
 	return commandChain :: hdCommandChain;
 end
 
 --[=[
+	@class hdCommandChain
 	Calls a protected call to the specified function with the specified arguments.
 	Returns a protected call result and the result of the protected call.
 
@@ -99,9 +102,9 @@ function hdCommandChain.prototype._callInternal<a...>(commandChain : hdCommandCh
 end
 
 function hdCommandChain:hdApplyCommandDirectionSorting()
-	local hdCommandChain : hdCommandChain = self;
-	local hdSortedStructs = hdCommandChain.commandedStructs;
-	local commandDirection : hdTypes.hdCommandDirection = hdCommandChain.commandDirection;
+	local commandChain : hdCommandChain = self;
+	local hdSortedStructs = commandChain.commandedStructs;
+	local commandDirection : hdTypes.hdCommandDirection = commandChain.commandDirection;
 
 	table.sort(hdSortedStructs, function(a : any, b : any)
 		if not a.loadPriority or not b.loadPriority then
@@ -119,73 +122,69 @@ function hdCommandChain:hdApplyCommandDirectionSorting()
 end
 
 function hdCommandChain:hdGetCommandChainState() : hdTypes.hdCommandChainState
-	local hdCommandChain : hdCommandChain = self;
-	
-	return hdCommandChain.commandChainState;
+	local commandChain : hdCommandChain = self;
+
+	return commandChain.commandChainState;
 end
 
 function hdCommandChain:hdSetCommandChainState(hdCommandChainState : hdTypes.hdCommandChainState) : (hdTypes.hdProtectedCallResult)
-	local hdCommandChain : hdCommandChain = self;
-	
-	return hdCommandChain.prototype._callInternal(hdCommandChain, "_setCommandChainStateInternal", hdCommandChainState);
+	local commandChain : hdCommandChain = self;
+
+	return commandChain.prototype._callInternal(commandChain, "_setCommandChainStateInternal", hdCommandChainState);
 end
 
 function hdCommandChain.prototype:_setCommandChainStateInternal(hdCommandChainState : hdTypes.hdCommandChainState)
-	local hdCommandChain : hdCommandChain = self;
-	
-	--if hdCommandChain:hdGetCommandChainState() == "HD_COMMAND_CHAIN_BUSY" then
-	--	error(hdEnums.hdFailureTypes.hdCommandChainBusy);
-	--	return;
-	--end
-	
-	hdCommandChain.commandChainState = hdCommandChainState;
+	local commandChain : hdCommandChain = self;
+
+	commandChain.commandChainState = hdCommandChainState;
 end
 
 function hdCommandChain:hdGetCommandChainFunctionMap() : (hdTypes.hdProtectedCallResult, hdTypes.hdCommandChainFunctionMap)
-	local hdCommandChain : hdCommandChain = self;
-	
-	local hdResult, hdCommandChainFunctionMap = hdCommandChain.prototype._callInternal(hdCommandChain, "_getCommandChainFunctionMap");
-	
+	local commandChain : hdCommandChain = self;
+
+	local hdResult, hdCommandChainFunctionMap = commandChain.prototype._callInternal(commandChain, "_getCommandChainFunctionMap");
+
 	return hdResult, hdCommandChainFunctionMap;
 end
 
 function hdCommandChain.prototype:_getCommandChainFunctionMap() : hdTypes.hdCommandChainFunctionMap?
-	local hdCommandChain : hdCommandChain = self;
-	
-	return hdCommandChain.commandInfo.commandChainFunctionMap;
+	local commandChain : hdCommandChain = self;
+
+	return commandChain.commandInfo.commandChainFunctionMap;
 end
 
 function hdCommandChain:hdSetCommandInfo(hdCommandInfo : hdTypes.hdCommandInfo) : (hdTypes.hdProtectedCallResult)
-	local hdCommandChain : hdCommandChain = self;
-	
-	return hdCommandChain.prototype._callInternal(hdCommandChain, "_setCommandInfoInternal", hdCommandInfo);
+	local commandChain : hdCommandChain = self;
+
+	return commandChain.prototype._callInternal(commandChain, "_setCommandInfoInternal", hdCommandInfo);
 end
 
 function hdCommandChain.prototype:_setCommandInfoInternal(hdCommandInfo : hdTypes.hdCommandInfo)
-	local hdCommandChain : hdCommandChain = self;
-	
-	hdCommandChain.commandInfo = hdCommandInfo;
+	local commandChain : hdCommandChain = self;
+
+	commandChain.commandInfo = hdCommandInfo;
 end
 
 function hdCommandChain:getCommandInvocationType() : hdTypes.hdCommandInvocationType
-	local hdCommandChain : hdCommandChain = self;
-	
-	return hdCommandChain.commandInfo.commandInvocationType;
+	local commandChain : hdCommandChain = self;
+
+	return commandChain.commandInfo.commandInvocationType;
 end
 
 function hdCommandChain:hdSetCommandChainFunctionsMap(hdCommandChainFunctionMap : hdTypes.hdCommandChainFunctionMap) : hdTypes.hdProtectedCallResult
-	local hdCommandChain : hdCommandChain = self;
+	local commandChain : hdCommandChain = self;
 
-	return hdCommandChain.prototype._callInternal(hdCommandChain, "_setCommandChainFunctionsMapInternal", hdCommandChainFunctionMap);
+	return commandChain.prototype._callInternal(commandChain, "_setCommandChainFunctionsMapInternal", hdCommandChainFunctionMap);
 end
 
 function hdCommandChain.prototype:_setCommandChainFunctionsMapInternal(hdCommandChainFunctionMap : hdTypes.hdCommandChainFunctionMap)
-	local hdCommandChain : hdCommandChain = self;
-	
-	hdCommandChain.commandInfo.commandChainFunctionMap = hdCommandChainFunctionMap;
+	local commandChain : hdCommandChain = self;
+
+	commandChain.commandInfo.commandChainFunctionMap = hdCommandChainFunctionMap;
 end
 
 --[=[
+	@class hdCommandChain
 	Runs the hdCommandChain as is with its currently set hdCommandInfo
 
 	@param hdFence; -- an optional hdFence sync object that will signal when the command chain has completed running every command, regardless of invocation mode
@@ -211,7 +210,6 @@ function hdCommandChain.prototype:_runCommandChainInternal(fence : hdFence.hdFen
 		return;
 	end
 
-	--// print("attempting to run command chain, setting state to busy")
 	local hdResult = commandChain:hdSetCommandChainState("HD_COMMAND_CHAIN_BUSY");
 	if not hdResult.Success then
 		error(hdEnums.hdFailureTypes.hdCommandChainStateSetFail);
@@ -224,7 +222,7 @@ function hdCommandChain.prototype:_runCommandChainInternal(fence : hdFence.hdFen
 	local commands = commandInfo.commands
 
 	for _, hdCommand : hdTypes.hdCommand in commands do
-		local clock = os.clock();
+		--// local clock = os.clock();
 		--// print("Running: ", hdCommand);
 		commandChain.prototype._runCommand(commandChain, hdCommand, commandInvocationType, commandSafetyLevel, ...);
 		--// print("Command ", hdCommand, " took ", os.clock() - clock, "s to run.")
@@ -243,8 +241,8 @@ function hdCommandChain.prototype:_runCommand(command : hdTypes.hdCommand, comma
 	local commandChain : hdCommandChain = self;
 	local hdFences : {hdFence.hdFence} = {};
 
-	for _, hdService in commandChain.commandedStructs do
-		local hdServiceFunction = commandChain.prototype._getServiceFunction(commandChain, hdService, command, commandSafetyLevel, ...);
+	for _, struct in commandChain.commandedStructs do
+		local hdServiceFunction = commandChain.prototype._getServiceFunction(commandChain, struct, command, commandSafetyLevel, ...);
 		if not hdServiceFunction then
 			continue
 		end
@@ -274,17 +272,17 @@ function hdCommandChain.prototype:_runCommand(command : hdTypes.hdCommand, comma
 end
 
 function hdCommandChain.prototype:_getFunctionForCommand(command : hdTypes.hdCommand)
-	local hdCommandChain : hdCommandChain = self;
-	local commandInfo = hdCommandChain.commandInfo;
+	local commandChain : hdCommandChain = self;
+	local commandInfo = commandChain.commandInfo;
 	local commandChainFunctionMap : hdTypes.hdCommandChainFunctionMap = commandInfo.commandChainFunctionMap or HD_FUNCTIONS_COMMAND_MAP;
 
 	return commandChainFunctionMap[command];
 end
 
-function hdCommandChain.prototype:_getServiceFunction(hdService : hdService.hdService, command : hdTypes.hdCommand, commandSafetyLevel : hdTypes.hdCommandSafetyLevel, ...) : ((hdFence.hdFence?) -> (any))?
+function hdCommandChain.prototype:_getServiceFunction(service : hdService.hdService, command : hdTypes.hdCommand, commandSafetyLevel : hdTypes.hdCommandSafetyLevel, ...) : ((hdFence.hdFence?) -> (any))?
 	local commandChain : hdCommandChain = self;
 	local hdServiceFunctionName = self.prototype._getFunctionForCommand(commandChain, command);
-	local hdServiceFunction = hdService[hdServiceFunctionName];
+	local hdServiceFunction = service[hdServiceFunctionName];
 
 	if not hdServiceFunction then
 		return nil;
@@ -292,8 +290,8 @@ function hdCommandChain.prototype:_getServiceFunction(hdService : hdService.hdSe
 
 	local hdArgs = {...};
 
-	return function(hdFence : hdFence.hdFence?)
-		local debug_profile_string = hdService.name .. hdServiceFunctionName;
+	return function(fence : hdFence.hdFence?)
+		--local debug_profile_string = service.name .. hdServiceFunctionName;
 		--debug.profilebegin(debug_profile_string);
 
 		local Result;
@@ -301,7 +299,7 @@ function hdCommandChain.prototype:_getServiceFunction(hdService : hdService.hdSe
 			Result = commandChain.debugMessenger:catch(hdServiceFunctionName, commandChain.protectedCaller:getProtectedCallResult(hdServiceFunction, hdService, table.unpack(hdArgs)));
 		elseif commandSafetyLevel == "HD_CMD_SAFETY_LEVEL_MEDIUM" then
 			local Pass, Fail = pcall(function()
-				hdServiceFunction(hdService, table.unpack(hdArgs));
+				hdServiceFunction(service, table.unpack(hdArgs));
 			end);
 			if not Pass then
 				Result = Fail;
@@ -309,14 +307,14 @@ function hdCommandChain.prototype:_getServiceFunction(hdService : hdService.hdSe
 			end
 		elseif commandSafetyLevel == "HD_CMD_SAFETY_LEVEL_NONE" then
 			local Pass, Fail = pcall(function()
-				hdServiceFunction(hdService, table.unpack(hdArgs));
+				hdServiceFunction(service, table.unpack(hdArgs));
 			end)
 
 			if not Pass then
 				--debug.profileend();
 
-				if hdFence then
-					hdFence:hdSignalFence();
+				if fence then
+					fence:hdSignalFence();
 				end
 
 				error(Fail);
@@ -327,10 +325,10 @@ function hdCommandChain.prototype:_getServiceFunction(hdService : hdService.hdSe
 
 		--debug.profileend();
 
-		if hdFence then
-			hdFence:hdSignalFence();
+		if fence then
+			fence:hdSignalFence();
 		end
-		
+
 		return Result;
 	end
 end

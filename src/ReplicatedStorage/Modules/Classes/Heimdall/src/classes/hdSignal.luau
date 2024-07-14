@@ -1,9 +1,16 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
--- ROBLOX Services
+--!native
+--!optimize 2
+
+--// ROBLOX Services
 local HttpService = game:GetService("HttpService");
 
+--// Heimdall Dependencies
 local hdTypes = require(script.Parent.Parent.lib.hdTypes);
 
+--// Class Declaration
 local hdConnection = {};
 hdConnection.__index = hdConnection;
 export type hdConnection = typeof(setmetatable({} :: {
@@ -21,14 +28,14 @@ function hdConnection.new(hdConnectionCreateInfo : hdTypes.hdConnectionCreateInf
 
 	local signal : hdSignal = connection.signal;
 	signal.payload[connection.connectionId] = connection;
-	
+
 	return connection;
 end
 
 function hdConnection:Disconnect()
 	local connectionId = self.connectionId;
 	local signal : hdSignal = self.signal;
-	
+
 	signal.payload[connectionId] = nil;
 
 	table.clear(self);
@@ -43,6 +50,7 @@ export type hdSignal = typeof(setmetatable({} :: {
 }, {} :: typeof(hdSignal)));
 
 --[=[
+	@class hdSignal
 	Creates an hdSignal, a synchronization object in Heimdall that allows for the connection of callbacks and the firing of the signal to execute all
 	connected callbacks.
 
@@ -50,13 +58,14 @@ export type hdSignal = typeof(setmetatable({} :: {
 ]=]
 function hdSignal.new() : hdSignal
 	local signal = setmetatable({}, hdSignal);
-	
+
 	signal.payload = {};
-	
+
 	return signal;
 end
 
 --[=[
+	@class hdSignal
 	Connects the provided callback to the hdSignal, returning a clean-up object hdConnection which can be used to remove the callback from the execution pool.
 
 	@param func;
@@ -67,12 +76,13 @@ function hdSignal:Connect(func : any) : hdConnection
 		signal = self;
 		callback = func;
 	};
-	local hdConnection : hdConnection = hdConnection.new(hdConnectionCreateInfo);
-	
-	return hdConnection;
+	local connection : hdConnection = hdConnection.new(hdConnectionCreateInfo);
+
+	return connection;
 end
 
 --[=[
+	@class hdSignal
 	Wraps the function so that it will connect to this signal and execute its callback, before promptly disconnecting itself after 1 execution.
 
 	@param func;
@@ -84,11 +94,12 @@ function hdSignal:Once(func : any) : hdConnection
 		connection:Disconnect()
 		func()
 	end);
-	
+
 	return connection;
 end
 
 --[=[
+	@class hdSignal
 	Fires the signal, causing all connected callbacks to execute once with the variadic arguments being passed on.
 
 	@param ...;
@@ -99,7 +110,7 @@ function hdSignal:Fire(...)
 	local payload = signal.payload;
 	local arguments = {...};
 
-	for connectionId, connection in pairs(payload) do
+	for _, connection in pairs(payload) do
 		task.spawn(connection.callback, table.unpack(arguments));
 	end
 end
@@ -110,11 +121,11 @@ end
 function hdSignal:Destroy()
 	local signal : hdSignal = self;
 	local payload = signal.payload;
-	
-	for connectionId, connection in pairs(payload) do
+
+	for _, connection in pairs(payload) do
 		connection:Disconnect();
 	end
-	
+
 	table.clear(self);
 	setmetatable(self, nil);
 end

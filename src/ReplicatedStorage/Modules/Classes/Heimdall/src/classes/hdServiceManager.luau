@@ -1,4 +1,10 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
+
+--// Heimdall Dependencies
 local hd = script.Parent.Parent;
 local hdLib = hd.lib;
 local hdClasses = hd.classes;
@@ -11,9 +17,9 @@ local hdProtectedCallResultEmitter = require(hdClasses.hdProtectedCallResultEmit
 local hdDebugMessenger = require(hdClasses.hdDebugMessenger);
 local hdFence = require(hdClasses.hdFence);
 local hdService = require(hdClasses.hdService);
-local hdParallelService = require(hdClasses.hdParallelService);
 local hdCommandChain = require(hdClasses.hdCommandChain);
 
+--// Class Declaration
 local hdServiceManager = {
 	prototype = {};	
 };
@@ -27,6 +33,7 @@ export type hdServiceManager = typeof(setmetatable({} :: {
 }, {} :: typeof(hdServiceManager)));
 
 --[=[
+	@class hdServiceManager
 	Creates an hdServiceManager, the main housing of a Heimdall hdInstance for hdServices.
 
 	:::info
@@ -51,6 +58,7 @@ function hdServiceManager.new(hdServiceManagerCreateInfo : hdTypes.hdServiceMana
 end
 
 --[=[
+	@class hdServiceManager
 	Makes a protected call to the specified function with the specified arguments.
 	Returns a protected call result and the result of the protected call.
 
@@ -67,35 +75,33 @@ end
 
 function hdServiceManager:hdCreateCommandChain(hdCommandChainCreateInfo : hdTypes.hdCommandChainCreateInfo) : (hdTypes.hdProtectedCallResult, hdCommandChain.hdCommandChain)
 	local serviceManager : hdServiceManager = self;
-	
-	local hdResult, hdCommandChain = serviceManager.prototype._callInternal(serviceManager, "_createCommandChainInternal", hdCommandChainCreateInfo);
 
-	return hdResult, hdCommandChain :: hdCommandChain.hdCommandChain;
+	local hdResult, commandChain = serviceManager.prototype._callInternal(serviceManager, "_createCommandChainInternal", hdCommandChainCreateInfo);
+
+	return hdResult, commandChain :: hdCommandChain.hdCommandChain;
 end
 
 function hdServiceManager.prototype:_createCommandChainInternal(hdCommandChainCreateInfo : hdTypes.hdCommandChainCreateInfo) : hdCommandChain.hdCommandChain
-	local hdCommandChain = hdCommandChain.new(hdCommandChainCreateInfo);
-	
-	return hdCommandChain;
+	local commandChain = hdCommandChain.new(hdCommandChainCreateInfo);
+
+	return commandChain
 end
 
 --[=[
+	@class hdServiceManager
 	Invokes the given hdCommandChain, allowing you to execute a callback in varying ways on every or some loaded service(s) on this hdServiceManager.
 
 	@param hdCommandChain;
 	@return hdProtectedCallResult;
 ]=]
-function hdServiceManager:hdInvokeCommandChain(hdCommandChain : hdCommandChain.hdCommandChain, synchronization : hdFence.hdFence?, ...) : hdTypes.hdProtectedCallResult
+function hdServiceManager:hdInvokeCommandChain(commandChain : hdCommandChain.hdCommandChain, synchronization : hdFence.hdFence?, ...) : hdTypes.hdProtectedCallResult
 	local serviceManager : hdServiceManager = self;
-	
-	return serviceManager.prototype._callInternal(serviceManager, "_invokeCommandChainInternal", hdCommandChain, synchronization, ...);
+
+	return serviceManager.prototype._callInternal(serviceManager, "_invokeCommandChainInternal", commandChain, synchronization, ...);
 end
 
-function hdServiceManager.prototype:_invokeCommandChainInternal(hdCommandChain : hdCommandChain.hdCommandChain, synchronization : hdFence.hdFence?, ...)
-	local serviceManager : hdServiceManager = self;
-	local commandInvocationType : hdTypes.hdCommandInvocationType = hdCommandChain:getCommandInvocationType();
-	
-	local hdResult = hdCommandChain:hdRunCommandChain(synchronization, ...);
+function hdServiceManager.prototype:_invokeCommandChainInternal(commandChain : hdCommandChain.hdCommandChain, synchronization : hdFence.hdFence?, ...)
+	local hdResult = commandChain:hdRunCommandChain(synchronization, ...);
 	if hdResult.ProtectedCallResult ~= hdEnums.hdProtectedCallResults.Passed.Value then
 		error("failed to run command chain!");
 		return;
@@ -103,6 +109,7 @@ function hdServiceManager.prototype:_invokeCommandChainInternal(hdCommandChain :
 end
 
 --[=[
+	@class hdServiceManager
 	Compiles the internal services of this hdServiceManager. Run this function once at runtime to create a cache of services.
 	This is required for the hdServiceManager to function properly.
 
@@ -118,7 +125,6 @@ end
 function hdServiceManager.prototype:_compileServicesInternal(hdCompileServicesInfo : hdTypes.hdCompileServicesInfo)
 	local serviceManager : hdServiceManager = self;
 	local servicesRoot = serviceManager.servicesRoot;
-	local services = serviceManager.services;
 	local fences = {};
 
 	for _, serviceModuleScript in servicesRoot:GetChildren() do
@@ -132,35 +138,30 @@ function hdServiceManager.prototype:_compileServicesInternal(hdCompileServicesIn
 		--// Call compilation function on each service, passing in the appropriate synchronization object so that once it has finished compiling all services
 		--// we can continue running code. (This way, each service will require at the same time but we won't initialize a command chain before they're all done);
 		task.spawn(function()
-			local protectedCallResult : hdTypes.hdProtectedCallResult, compiledService : hdService.hdService = serviceManager.prototype._callInternal(serviceManager, "_compileServiceInternal", serviceModuleScript, fence);
+			local protectedCallResult : hdTypes.hdProtectedCallResult = serviceManager.prototype._callInternal(serviceManager, "_compileServiceInternal", serviceModuleScript, fence);
 			if not protectedCallResult.Success then
 				warn("error while compiling " .. serviceModuleScript.Name .. "\n :: debug prompt thrown ::");
-				--error(hdEnums.hdFailureTypes.hdServiceCompileFailure);
-				--return;
 			end
 		end)
 	end
 
-	--if not async then
-		hdUtils:hdWaitForFences(fences, hdCompileServicesInfo.timeOut);
-	--end
-
+	hdUtils:hdWaitForFences(fences, hdCompileServicesInfo.timeOut);
 end
 
 function hdServiceManager:hdRegisterVirtualService(service : hdService.hdService) : hdTypes.hdProtectedCallResult
 	local serviceManager : hdServiceManager = self;
-	
+
 	return serviceManager.prototype._callInternal(serviceManager, "_registerVirtualServiceInternal", service);
 end
 
 function hdServiceManager.prototype:_registerVirtualServiceInternal(service : hdService.hdService)
 	local serviceManager : hdServiceManager = self;
 	local services = serviceManager:hdGetServices();
-	
+
 	services[service.name] = service;
 end
 
-function hdServiceManager.prototype:_compileServiceInternal(serviceModuleScript : any, hdFence : hdFence.hdFence) : (hdTypes.hdProtectedCallResult, hdService.hdService?)
+function hdServiceManager.prototype:_compileServiceInternal(serviceModuleScript : any, fence : hdFence.hdFence) : (hdTypes.hdProtectedCallResult, hdService.hdService?)
 	local serviceManager : hdServiceManager = self;
 	local services = serviceManager:hdGetServices();
 	local serviceSource = require(serviceModuleScript) :: hdService.hdService?;
@@ -179,42 +180,43 @@ function hdServiceManager.prototype:_compileServiceInternal(serviceModuleScript 
 	end
 
 	services[serviceSource.name] = serviceSource;
-	
-	hdFence:hdSignalFence();
-	
+
+	fence:hdSignalFence();
+
 	local success : hdTypes.hdSuccessCreateInfo = {};
 	return serviceManager.protectedCaller:_emitSuccess(success), serviceSource;
 end
 
 --[=[
+	@class hdServiceManager
 	Returns a list of compiled services on this hdServiceManager
 
 	@return <T>hdServices<>;
 ]=]
 function hdServiceManager:hdGetServices() : {[string] : hdService.hdService}
 	local serviceManager : hdServiceManager = self;
-	
+
 	return serviceManager.services;
 end
 
 function hdServiceManager:hdGetService(serviceName : string, timeOut : number?) : hdService.hdService
 	local serviceManager : hdServiceManager = self;
-	local hdPassResult, hdService = serviceManager.prototype._callInternal(serviceManager, "_getServiceInternal", serviceName, timeOut);
+	local _, service = serviceManager.prototype._callInternal(serviceManager, "_getServiceInternal", serviceName, timeOut);
 
-	return hdService;
+	return service;
 end
 
 function hdServiceManager.prototype:_getServiceInternal(serviceName : string, timeOut : number) : hdService.hdService
 	local serviceManager : hdServiceManager = self;
 	local hdServices = serviceManager:hdGetServices()
-	
+
 	if timeOut and not hdServices[serviceName] then
 		local startTime = os.clock();
 		repeat
 			task.wait();
 		until (os.clock() - startTime) >= timeOut or hdServices[serviceName];
 	end
-	
+
 	return hdServices[serviceName];
 end
 

@@ -1,7 +1,14 @@
+-- This file is part of the Heimdall Roblox Experience Framework and is licensed under MIT License; see LICENSE.md for details
+
 --!strict
+--!native
+--!optimize 2
+
+--// Heimdall Dependencies
 local hdTrove = require(script.Parent.Parent.packages.trove);
 local hdTypes = require(script.Parent.Parent.lib.hdTypes);
 
+--// Class Declaration
 local hdWrapping = {};
 hdWrapping.__index = hdWrapping;
 
@@ -11,6 +18,7 @@ export type hdWrapping = typeof(setmetatable({} :: {
 }, {} :: typeof(hdWrapping)));
 
 --[=[
+	@class hdWrapping
 	Creates an hdWrapping, a helper object which is designed around the following example problem:
 
 	- Say you want to define some kind of behavior or objects that are tied to a player/character, ROBLOX instances or not.
@@ -18,7 +26,7 @@ export type hdWrapping = typeof(setmetatable({} :: {
 	not an uncommon thing in ROBLOX games.
 	- Enter the hdWrapping, a value that could be returned by certain hdService callbacks to facilitate this use case
 	with minimal friction.
-	
+
 	All you have to do is define a new CharacterAdded callback in your hdService, and then return an hdWrapping from that
 	callback to make a new cleanup object that also contains a trove.
 
@@ -28,10 +36,10 @@ export type hdWrapping = typeof(setmetatable({} :: {
 			instance = character;
 		};
 		local hdWrapping = hdWrapping.new(hdWrappingCreateInfo);
-		
+
 		local myObject = hdWrapping:Create(myClass);
 		-- ^ with this line, myObject will be :Destroy()'ed when "character" is parented to nil (destroyed).
-		
+
 		return hdWrapping
 	end
 	```
@@ -53,6 +61,7 @@ function hdWrapping.new(hdWrappingCreateInfo : hdTypes.hdWrappingCreateInfo) : h
 end
 
 --[=[
+	@class hdWrapping
 	Acts as a factory for any passed object, automatically calling .new(), and then including it in this hdWrapping's cleanup list.
 
 	@param Object {.new(), :Destroy()};
@@ -63,6 +72,7 @@ function hdWrapping:Create(Object : any, ...)
 end
 
 --[=[
+	@class hdWrapping
 	Adds the given object for cleanup (May be luau objects or ROBLOX instances)
 
 	@param ... (anything with a cleanup ":Disconnect()" or ":Destroy()")

@@ -13,7 +13,7 @@ hdCoreModuleManager.__index = hdCoreModuleManager;
 
 export type hdCoreModuleManager = typeof(setmetatable({} :: {}, {} :: typeof(hdCoreModuleManager)));
 
-function hdCoreModuleManager.new(hdCoreModuleManagerCreateInfo : hdTypes.hdCoreModuleManagerCreateInfo) : hdCoreModuleManager
+function hdCoreModuleManager.new(_ : hdTypes.hdCoreModuleManagerCreateInfo) : hdCoreModuleManager
 	local coreModuleManager = setmetatable({}, hdCoreModuleManager);
 
 	return coreModuleManager;

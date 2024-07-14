@@ -235,11 +235,11 @@ function hdEntity.prototype:_patchInComponentInternal(hdComponentCreateInfo : hd
 end
 
 function hdEntity.prototype:_patchOutComponentInternal()
-	local entity : hdEntity = self;
+	-- local entity : hdEntity = self;
 end
 
 function hdEntity.prototype:_mixinComponentInternal()
-	local entity : hdEntity = self;
+	-- local entity : hdEntity = self;
 
 	warn("mix")
 end

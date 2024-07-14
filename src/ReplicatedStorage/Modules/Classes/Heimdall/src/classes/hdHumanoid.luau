@@ -30,7 +30,7 @@ function hdHumanoid.new(hdHumanoidCreateInfo : hdTypes.hdHumanoidCreateInfo) : h
     return humanoid;
 end
 
-function hdHumanoid:hdApplyHandleType(hdHumanoidHandleType : hdEnums.hdEnum)
+function hdHumanoid:hdApplyHandleType(_ : hdEnums.hdEnum)
     
 end
 
@@ -38,7 +38,7 @@ function hdHumanoid:hdMove(Direction : Vector3)
     print(Direction);
 end
 
-function hdHumanoid:hdMoveTo(PositionOrPart : Vector3 | BasePart)
+function hdHumanoid:hdMoveTo(_ : Vector3 | BasePart)
 
 end
 

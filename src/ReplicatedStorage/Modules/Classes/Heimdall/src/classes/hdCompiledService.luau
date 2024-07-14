@@ -20,6 +20,7 @@ export type hdCompiledService = typeof(setmetatable({} :: {
 }, {} :: typeof(hdCompiledService)));
 
 --[=[
+	@class hdCompiledService
 	Creates an hdCompiledService, services with a special runtime priority for filling out large or complex arrays of data prior to service command initialization. 
 
 	:::info
@@ -56,8 +57,8 @@ function hdCompiledService:Compile()
 		if v:IsA("ModuleScript") then
 			local source = require(v) :: any;
 			if typeof(source) == "table" then
-				for k, v in source do
-					compiledService.compiledData[k] = v;
+				for k, y in source do
+					compiledService.compiledData[k] = y;
 				end
 			end
 		end
