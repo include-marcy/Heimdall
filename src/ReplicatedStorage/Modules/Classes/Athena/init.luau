@@ -4,8 +4,11 @@ local ath = script;
 local athsrc = ath.src;
 local athClasses = athsrc.classes;
 
+local athHost = require(athClasses.athHost);
+local host : athHost.athHost = athHost.new();
+
 local Athena = {
-    athHost = require(athClasses.athHost);
+    athHost = host;
 };
 
 return Athena;

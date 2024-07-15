@@ -46,7 +46,7 @@ local hdInstance = hdObject:hdCreateInstance(hdInstanceCreateInfo);
 --// Output debug info
 local hdLaunchToken = hdInstance:hdGetLaunchToken();
 local hdVersion = hdLaunchToken:hdGetVersion();
-print(`\nGAME VERSION: {hdVersion.major}_{hdVersion.minor}_{hdVersion.patch}`, `\nIS RELEASE?: {hdVersion.isRelease and "YES" or "NO"}\n-------------------------`);
+print(`\nGAME VERSION: v{hdVersion.major}.{hdVersion.minor}.{hdVersion.patch}.{os.date("%d")}.{os.date("%m")}.{os.date("%y")}.{hdVersion.isRelease and "p" or "a"}`, `\nIS RELEASE?: {hdVersion.isRelease and "YES" or "NO"}\n-------------------------`);
 
 --// Create Component Manager
 local hdComponentManagerCreateInfo : hdTypes.hdComponentManagerCreateInfo = {

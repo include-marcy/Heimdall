@@ -10,6 +10,7 @@ local Heimdall = require(ReplicatedStorage.Modules.Classes.Heimdall);
 local hdTypes = require(ReplicatedStorage.Modules.Classes.Heimdall.src.lib.hdTypes);
 local hdEnums = require(ReplicatedStorage.Modules.Classes.Heimdall.src.lib.hdEnums);
 local hdInstance = Heimdall.awaitHdInstance();
+local athInputStream = require(ReplicatedStorage.Modules.Classes.Athena.src.classes.athInputStream);
 
 -- Service declaration
 local hdCoreControlServiceCreateInfo : hdTypes.hdServiceCreateInfo = {
@@ -61,6 +62,19 @@ end
 
 function hdCoreControlService:Boot()
 	hdCoreControlService:hdSetControlMode(hdEnums.hdControlMode.hdControlModeDefault);
+
+	-- Use ath input stream; It is a cross-platform input manager which contains specialized outputs for all types of
+	-- user input.
+	local controlInputStream = athInputStream.new();
+	controlInputStream:athInit();
+
+	controlInputStream:athGetMovementSignal():Connect(function(MoveDirection : Vector3)
+		local controlModule = hdCoreControlService.controlModule;
+
+		if controlModule then
+			controlModule:hdSetMoveDirection(MoveDirection);
+		end
+	end);
 end
 
 function hdCoreControlService:hdCharacterAdded(hdCharacter)

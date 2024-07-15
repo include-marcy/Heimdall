@@ -101,6 +101,8 @@ function hdCharacterService:hdWriteCharacterPosition(Player, p1, p2, p3)
 end
 
 function hdCharacterService:Boot()
+    if true then return end;
+
     local characterNet = Heimdall.hdNet:UnreliableRemoteEvent("hdCharacterNet");
     characterNet.OnServerEvent:Connect(function(player : Player, instruction : buffer)
         local decodedFunctionName = hdCharacterService:hdDecodeArg(instruction);

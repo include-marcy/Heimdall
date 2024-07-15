@@ -2,17 +2,44 @@
 
 local athTypes = {};
 
-export type athBenchCreateInfo = {
+export type athHostCreateInfo = {
+    projectRoot : ModuleScript; -- Descibes the project object
+    projectClientRoot : ModuleScript; -- Describes the project object that is built for client contexts
+    projectServerRoot : ModuleScript; -- Describes the project object that is built for server contexts
 
+    projectTypes : ModuleScript; -- Describes the strict typing information of the project
+    projectClasses : Folder; -- Describes the list of all classes in the project
+    projectTokens : ModuleScript; -- Describes the list of all tokens in the project (Tokens are immutable fast flags for the project)
+    projectTests : Folder; --- Describes the list of all tests in the project to be performed by Athena
+    projectPackages : Folder; -- Describes the list of all packages in the project to be merged into the project by Athena
+    projectNetcodeObjects : Folder; -- Describes the list of all netcode objects the project might want to expose
+};
+
+export type athMobileButtonType = "ATH_BUTTON_NORMAL" | "ATH_BUTTON_JOYSTICK";
+export type athInformedInputType = "ATH_KEYBOARD" | "ATH_TOUCH_SCREEN" | "ATH_GAMEPAD" | "ATH_VR";
+
+export type athCapturableInputs = Enum.KeyCode | Enum.UserInputType;
+
+export type athInputStreamData = {
+    inputString : string;
+    began : boolean;
+};
+
+export type athInputStreamPathCreateInfo = {
+    inputType : athInformedInputType;
+    inputToCapture : string;
+    inputMobileButtonType : athMobileButtonType?;
+    transform : (athInputStreamData) -> (athInputStreamData)
+};
+
+export type athBenchCreateInfo = {
+    athProject : any;
 };
 
 export type athTokenCreateInfo = {
     tokenName : string;
     tokenValue : any;
 };
-
-export type athMobileButtonType = "ATH_BUTTON_NORMAL" | "ATH_BUTTON_JOYSTICK";
-export type athInformedInputType = "ATH_KEYBOARD" | "ATH_TOUCH_SCREEN" | "ATH_GAMEPAD" | "ATH_VR";
 
 export type athMobileButtonCreateInfo = {
     name : string;

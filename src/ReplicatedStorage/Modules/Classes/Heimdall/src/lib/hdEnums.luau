@@ -61,12 +61,12 @@ hdEnums["hdCameraType"] = {
 };
 
 hdEnums["hdControlMode"] = {
-	hdCameraDefault = hdDefineEnum {
+	hdControlModeDefault = hdDefineEnum {
 		Name = "hdControlModeDefault";
 		Value = 1;
         HdEnumFamily = "hdControlMode";
 	} :: hdEnum;
-	hdCameraScriptable = hdDefineEnum {
+	hdControlModeScriptable = hdDefineEnum {
 		Name = "hdControlModeScriptable";
 		Value = 2;
         HdEnumFamily = "hdControlMode";

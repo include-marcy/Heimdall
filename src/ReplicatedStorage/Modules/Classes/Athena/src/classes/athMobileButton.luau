@@ -7,11 +7,11 @@
 -- Athena Dependencies
 local athena = script.Parent.Parent;
 local athTypes = require(athena.lib.athTypes);
-local athUtils = require(athena.lib.athUtils);
 local athTrove = require(athena.packages.trove);
 
 -- Class Definition
-local athMobileButton = athUtils.Class();
+local athMobileButton = {};
+athMobileButton.__index = athMobileButton;
 
 export type athMobileButton = typeof(setmetatable({} :: {
     organizationLayer : Frame;
@@ -164,12 +164,14 @@ function athMobileButton:athDrawJoystickButton() : Frame
     local athJoystickButtonParent = Instance.new("Frame");
 
     local athButtonSize = GET_RAW_SCALE_FOR_SYSTEM_SIZE_MOBILE(mobileButton.systemSize);
+    athJoystickButtonParent.Name = "athJoystickButtonParent";
     athJoystickButtonParent.Size = athButtonSize;
     athJoystickButtonParent.BackgroundColor3 = mobileButton.color;
     athJoystickButtonParent.BackgroundTransparency = 0.45;
     athJoystickButtonParent.Parent = mobileButton.organizationLayer;
 
     local athJoystickButton = Instance.new("TextButton");
+    athJoystickButton.Name = "athJoystickButton";
     athJoystickButton.BackgroundTransparency = 1;
     athJoystickButton.Text = mobileButton.displayText;
     athJoystickButton.FontFace = mobileButton.displayFont;
@@ -192,6 +194,7 @@ function athMobileButton:athDrawJoystickButton() : Frame
     StyleCorner.Parent = athJoystickButtonParent;
 
     local athJoystickInputRegion = Instance.new("TextButton");
+    athJoystickInputRegion.Name = "athJoystickInputRegion";
     athJoystickInputRegion.Size = UDim2.fromScale(1.5, 1.5);
     athJoystickInputRegion.BackgroundTransparency = 1;
     athJoystickInputRegion.Parent = athJoystickButtonParent;
@@ -272,7 +275,9 @@ end
     Callback that executes when the user begins holding the handle of the joystick.
 ]==]
 function athMobileButton:athJoystickDown(touchPosition : UDim2)
+    local button : athMobileButton = self;
 
+    button.joystickDown = true;
 end
 
 --[==[
@@ -281,7 +286,9 @@ end
     Callback that executes when the user releases the handle of the joystick.
 ]==]
 function athMobileButton:athJoystickUp(touchPosition : UDim2)
+    local button : athMobileButton = self;
 
+    button.joystickDown = true;
 end
 
 --[==[
@@ -291,6 +298,25 @@ end
 ]==]
 function athMobileButton:athJoystickMoved(unit : Vector2)
 
+end
+
+function athMobileButton:athIsJoystickDown() : boolean
+    local button : athMobileButton = self;
+
+    return button.joystickDown;
+end
+
+function athMobileButton:athGetJoystickDirection() : Vector2
+    local button : athMobileButton = self;
+    local buttonInstance = button.buttonInstance;
+
+    local rawOrigin = buttonInstance.AbsolutePosition;
+    local rawOrigin2 = buttonInstance.athJoystickButton.AbsolutePosition;
+
+    local direction : Vector2 = (rawOrigin - rawOrigin2);
+    local normalizedDirection = direction.Unit;
+
+    return normalizedDirection;
 end
 
 --[==[

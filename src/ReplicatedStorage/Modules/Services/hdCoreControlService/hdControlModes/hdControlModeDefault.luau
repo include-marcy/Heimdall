@@ -6,13 +6,14 @@ local ReplicatedStorage = game:GetService("ReplicatedStorage");
 local Players = game:GetService("Players");
 
 -- Heimdall dependencies
-local Heimdall = require(ReplicatedStorage.Modules.Classes.Heimdall);
-local hdTypes = require(ReplicatedStorage.Modules.Classes.Heimdall.src.lib.hdTypes);
-local hdEnums = require(ReplicatedStorage.Modules.Classes.Heimdall.src.lib.hdEnums);
+local hd = ReplicatedStorage.Modules.Classes.Heimdall;
+local Heimdall = require(hd);
+local hdTypes = require(hd.src.lib.hdTypes);
+local hdEnums = require(hd.src.lib.hdEnums);
 local hdInstance = Heimdall.awaitHdInstance();
+local hdHumanoid = require(hd.src.classes.hdHumanoid);
 
 local hdCharacterService = hdInstance:hdGetService("hdCharacterService", 20);
-local hdHumanoid = require(ReplicatedStorage.Modules.Classes.Heimdall.src.classes.hdHumanoid);
 
 local hdControlModeDefault = {
     moveDirection = Vector3.zero;
@@ -27,7 +28,7 @@ function hdControlModeDefault:Update(deltaTime : number)
     local humanoid : hdHumanoid.hdHumanoid = hdCharacter:hdGetHumanoid();
     local moveDirection = self:hdGetMoveDirection();
 
-    hdHumanoid:hdMove(moveDirection);
+    humanoid:hdMove(moveDirection);
 end
 
 function hdControlModeDefault:hdSetMoveDirection(moveDirection : Vector3)

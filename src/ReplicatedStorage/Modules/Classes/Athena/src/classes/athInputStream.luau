@@ -10,18 +10,20 @@ local UserInputService = game:GetService("UserInputService");
 -- Athena Dependencies
 local athena = script.Parent.Parent;
 local athTypes = require(athena.lib.athTypes);
-local athUtils = require(athena.lib.athUtils);
 local athSignal = require(athena.classes.athSignal);
 local athTrove = require(athena.packages.trove);
 
+local athInputStreamPath = require(athena.classes.athInputStreamPath);
 local athMobileButton = require(athena.classes.athMobileButton);
 
 -- Class Definition
-local athInputStream = athUtils.Class();
+local athInputStream = {};
+athInputStream.__index = athInputStream;
 
 export type athInputStream = typeof(setmetatable({} :: {
     athInputBeganSignal : athSignal.athSignal;
     athInputEndedSignal : athSignal.athSignal;
+    athMovementSignal : athSignal.athSignal;
     athInformedInputTypeChanged : athSignal.athSignal;
     athInputChannels : {};
     athTrove : athTrove.athTrove;
@@ -39,6 +41,7 @@ function athInputStream.new() : athInputStream
 
     inputStream.athInputBeganSignal = athSignal.new();
     inputStream.athInputEndedSignal = athSignal.new();
+    inputStream.athMovementSignal = athSignal.new();
     inputStream.athInformedInputTypeChanged = athSignal.new();
 
     inputStream.athInputChannels = {};
@@ -70,7 +73,7 @@ end
     Input stream from VR
 ]==]
 function athInputStream:athGetMovementSignal() : athSignal.athSignal
-
+    return self.athMovementSignal :: athSignal.athSignal;
 end
 
 --[==[
@@ -102,6 +105,69 @@ function athInputStream:athInit()
 
         inputStream.athInputEndedSignal:Fire(inputObject);
     end);
+
+    local MovementDirection = Vector3.zero;
+    local MovementEnums = {
+        ["W"] = Vector3.new(0, 0, -1);
+        ["A"] = Vector3.new(-1, 0, 0);
+        ["S"] = Vector3.new(0, 0, 1);
+        ["D"] = Vector3.new(1, 0, 0);
+    }
+
+    --// Keyboard inputs:
+    local inputStreamPathW = athInputStreamPath.new({
+        inputType = "ATH_KEYBOARD";
+        inputToCapture = "W";
+    });
+    local inputStreamPathA = athInputStreamPath.new({
+        inputType = "ATH_KEYBOARD";
+        inputToCapture = "A";
+    });
+    local inputStreamPathS = athInputStreamPath.new({
+        inputType = "ATH_KEYBOARD";
+        inputToCapture = "S";
+    });
+    local inputStreamPathD = athInputStreamPath.new({
+        inputType = "ATH_KEYBOARD";
+        inputToCapture = "D";
+    });
+
+    local inputStreamPathMobileJoystick = athInputStreamPath.new({
+        inputType = "ATH_MOBILE";
+        inputMobileButtonType = "ATH_BUTTON_JOYSTICK";
+        transform = function(inputStreamData, mobileButton : athMobileButton.athMobileButton)
+            local Direction = mobileButton:athGetJoystickDirection();
+            inputStreamData.MovementChange = Vector3.new(Direction.X, 0, Direction.Y);
+            return inputStreamData;
+        end;
+    });
+
+    inputStream:athMakeDedicatedInputChannel("athMovement_Forward", {
+        inputStreamPathW;
+        inputStreamPathA;
+        inputStreamPathS;
+        inputStreamPathD;
+        inputStreamPathMobileJoystick;
+    }, 1, function(inputStreamData)
+        -- handle non keyboard callback cases
+        -- lifting the joystick and moving it constantly sets this movement direction
+        -- gyrating the joystick on a gamepad navigates the unit of this movement direction
+        -- releasing any type of joystick sets the movement direction to 0
+        if inputStreamData.MovementChange then
+            MovementDirection = inputStreamData.MovementChange;
+            return;
+        end
+
+        -- handle keystrokes
+        local Change = MovementEnums[inputStreamData.InputString]
+        if inputStreamData.Began then
+            MovementDirection += Change
+        else
+            MovementDirection -= Change
+        end
+
+        inputStream.athMovementSignal:Fire(MovementDirection);
+    end);
 end
 
 function athInputStream:athGetInformedInputMethod() : athTypes.athInformedInputType
@@ -127,7 +193,7 @@ function athInputStream:athGetDedicatedInputChannel(inputChannel : string)
     return inputStream.athInputChannels[inputChannel];
 end
 
-function athInputStream:athMakeDedicatedInputChannel(inputChannel : string, inputContext : string, streamPriority : number)
+function athInputStream:athMakeDedicatedInputChannel(inputChannel : string, inputPaths : {athInputStreamPath.athInputStreamPath}, streamPriority : number, onInputReceived)
     local inputStream : athInputStream = self;
 
     if inputStream:athGetDedicatedInputChannel(inputChannel) then
@@ -147,10 +213,51 @@ function athInputStream:athMakeDedicatedInputChannel(inputChannel : string, inpu
     local dedicatedInputChannel = {
         athInputChannelTrove = athInputChannelTrove;
         streamPriority = streamPriority;
-        inputContext = inputContext;
     };
 
     inputStream.athInputChannels[inputChannel] = dedicatedInputChannel;
+
+    local function getInputString(inputObject : InputObject)
+        if inputObject.UserInputType == Enum.UserInputType.Keyboard then
+            return inputObject.KeyCode.Name;
+        else
+            return inputObject.UserInputType.Name;
+        end
+    end
+
+    local function EmitChannelCallback(inputObject : InputObject, began, transform)
+        local inputString = getInputString(inputObject);
+        local inputStreamData = {
+            InputString = inputString;
+            Began = began;
+        };
+
+        if transform then
+            inputStreamData = transform(inputStreamData);
+        end
+
+        onInputReceived(inputStreamData);
+
+        return inputStreamData;
+    end
+
+    for _, inputStreamPath in inputPaths do
+        athInputChannelTrove:Connect(inputStream.athInputBeganSignal, function(inputObject : InputObject)
+            if inputObject.UserInputType == Enum.UserInputType.Keyboard then
+                if inputObject.KeyCode.Name == inputStreamPath.inputToCapture then
+                    EmitChannelCallback(inputObject, true, inputStreamPath.transform);
+                end
+            end
+        end);
+
+        athInputChannelTrove:Connect(inputStream.athInputEndedSignal, function(inputObject : InputObject)
+            if inputObject.UserInputType == Enum.UserInputType.Keyboard then
+                if inputObject.KeyCode.Name == inputStreamPath.inputToCapture then
+                    EmitChannelCallback(inputObject, false, inputStreamPath.transform);
+                end
+            end
+        end);
+    end
 
     return dedicatedInputChannel;
 end
