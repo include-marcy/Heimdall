@@ -28,7 +28,7 @@ function hdControlModeDefault:Update(deltaTime : number)
     local humanoid : hdHumanoid.hdHumanoid = hdCharacter:hdGetHumanoid();
     local moveDirection = self:hdGetMoveDirection();
 
-    humanoid:hdMove(moveDirection);
+    humanoid:hdMove(moveDirection, deltaTime * 8);
 end
 
 function hdControlModeDefault:hdSetMoveDirection(moveDirection : Vector3)

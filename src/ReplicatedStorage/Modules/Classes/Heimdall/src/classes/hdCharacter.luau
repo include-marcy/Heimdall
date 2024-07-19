@@ -8,6 +8,7 @@
 local hdLib = script.Parent.Parent.lib;
 local hdClasses = script.Parent;
 local hdTypes = require(hdLib.hdTypes);
+local hdEnums = require(hdLib.hdEnums);
 
 local hdWrapping = require(hdClasses.hdWrapping);
 local hdHumanoid = require(hdClasses.hdHumanoid);
@@ -42,8 +43,12 @@ function hdCharacter.new(hdCharacterCreateInfo : hdTypes.hdCharacterCreateInfo) 
         instance = character.physical;
     };
     local wrapping = hdWrapping.new(wrappingInfo);
+    local physical = hdCharacterCreateInfo.physical;
+    local hipHeight = physical:GetExtentsSize().Y / 2;
     character.humanoid = wrapping:Create(hdHumanoid, {
         hdCharacter = character;
+        hipHeight = hipHeight;
+        hdHumanoidHandleType = hdEnums.hdHumanoidHandleType.hdHumanoidCapsule;
     })
 
     character.wrapping = wrapping;

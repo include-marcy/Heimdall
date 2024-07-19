@@ -147,6 +147,7 @@ export type hdCharacterCreateInfo = {
 export type hdHumanoidCreateInfo = {
 	hdCharacter : any;
 	hdHumanoidHandleType : hdEnums.hdEnum;
+	hipHeight : number;
 };
 
 export type hdCoreModuleRuntimeBehavior = "HD_CORE_CHARACTER" | "HD_CORE_PLAYER";
@@ -164,7 +165,7 @@ export type sceneOwner = string | number;
 export type hdSceneCreateInfo = {
 	sceneName : string;
 	sceneDescription : Model;
-	sceneOwner : sceneOwner;
+	sceneOwner : sceneOwner?;
 	debugMessenger : any;
 };
 

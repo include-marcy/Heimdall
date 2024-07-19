@@ -15,6 +15,7 @@ export type hdSceneHandle = typeof(setmetatable({} :: {
 	name : string;
 	_handleTags : any;
 	_CFrame : CFrame;
+	_Size : Vector3;
 }, {} :: typeof(hdSceneHandle)));
 
 --[=[
